@@ -8,7 +8,7 @@ import { Lightbulb, LoaderCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useLanguage } from '@/contexts/language-context';
@@ -54,13 +54,11 @@ export function RegionalStandards({ areaValue, areaUnit }: { areaValue: string, 
 
   return (
     <Card className="w-full shadow-lg">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 font-headline text-primary">
-          <Lightbulb />
-          {t('regionalStandards')}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
+        <div className="flex items-center gap-2 font-headline text-primary mb-4">
+            <Lightbulb />
+            <h2 className="text-lg font-semibold">{t('regionalStandards')}</h2>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
