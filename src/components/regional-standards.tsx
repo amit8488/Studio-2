@@ -55,46 +55,7 @@ export function RegionalStandards({ areaValue, areaUnit }: { areaValue: string, 
   return (
     <Card className="w-full shadow-lg">
       <CardContent className="p-6">
-        <div className="flex items-center gap-2 font-headline text-primary mb-4">
-            <Lightbulb />
-            <h2 className="text-lg font-semibold">{t('regionalStandards')}</h2>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('enterLocation')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. Saurashtra, Ahmedabad" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isLoading || !areaValue || parseFloat(areaValue) <= 0} className="w-full rounded-full bg-accent hover:bg-accent/90">
-              {isLoading ? (
-                <>
-                  <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
-                  {t('loading')}
-                </>
-              ) : (
-                t('getSuggestion')
-              )}
-            </Button>
-          </form>
-        </Form>
-        {suggestion && (
-          <Alert className="mt-4 border-primary/50 text-primary bg-primary/5">
-            <Lightbulb className="h-4 w-4 !text-primary" />
-            <AlertTitle className="font-bold">{t('aiSuggestion')}</AlertTitle>
-            <AlertDescription className="text-foreground">
-              {suggestion}
-            </AlertDescription>
-          </Alert>
-        )}
+        
       </CardContent>
     </Card>
   );
