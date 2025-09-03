@@ -19,6 +19,9 @@ export const translations = {
     aiSuggestion: 'AI Suggestion',
     loading: 'Thinking...',
     clear: 'Clear',
+    hectareLabel: 'Hec.',
+    areLabel: 'Are',
+    sqmLabel: 'Sq.M.',
   },
   gu: {
     appName: 'વિઘા કેલ્ક્યુલેટ',
@@ -40,5 +43,8 @@ export const translations = {
     aiSuggestion: 'AI સૂચન',
     loading: 'વિચારી રહ્યું છે...',
     clear: 'સાફ કરો',
+    hectareLabel: 'હેક.',
+    areLabel: 'એર..',
+    sqmLabel: 'ચો.મી.',
   },
 };
