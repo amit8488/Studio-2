@@ -8,7 +8,7 @@ import { Lightbulb, LoaderCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useLanguage } from '@/contexts/language-context';
@@ -54,8 +54,46 @@ export function RegionalStandards({ areaValue, areaUnit }: { areaValue: string, 
 
   return (
     <Card className="w-full shadow-lg">
-      <CardContent className="p-6">
-        
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-xl">
+          <Lightbulb className="h-6 w-6" />
+          {t('regionalStandards')}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-6 pt-0 space-y-4">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-start gap-4">
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem className="flex-grow">
+                  <FormLabel className="sr-only">{t('enterLocation')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('enterLocation')} {...field} className="h-11" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isLoading} className="h-11">
+              {isLoading ? (
+                <>
+                  <LoaderCircle className="animate-spin" />
+                  {t('loading')}
+                </>
+              ) : t('getSuggestion')}
+            </Button>
+          </form>
+        </Form>
+        {suggestion && (
+          <Alert>
+            <AlertTitle className="font-semibold">{t('aiSuggestion')}</AlertTitle>
+            <AlertDescription className="prose prose-sm dark:prose-invert">
+              {suggestion}
+            </AlertDescription>
+          </Alert>
+        )}
       </CardContent>
     </Card>
   );
