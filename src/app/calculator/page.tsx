@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/app-logo';
+import type { Metadata } from 'next';
 
 function evaluateExpression(expression: string): number {
   expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
@@ -122,7 +123,7 @@ function StandardCalculatorComponent() {
              <div className="bg-primary p-2 rounded-lg hidden sm:block">
               <AppLogo className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">Calculator</h1>
           </div>
           <div className="flex items-center gap-1">
             <LanguageToggle />

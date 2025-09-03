@@ -4,7 +4,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { SidebarProvider } from '@/components/ui/sidebar';
 
 export const metadata: Metadata = {
-  title: 'ViGha Calculate',
+  title: {
+    default: 'ViGha Calculate',
+    template: '%s | ViGha Calculate',
+  },
   description: 'A modern land area conversion calculator with regional standards.',
 };
 
