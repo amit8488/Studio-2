@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { HomeIcon, FileTextIcon, Calculator } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
@@ -8,6 +8,7 @@ import { LanguageToggle } from '@/components/language-toggle';
 
 function SevenTwelveToVighaComponent() {
   const { t } = useLanguage();
+  const pathname = usePathname();
 
   return (
     <div className="flex h-full">
@@ -18,19 +19,15 @@ function SevenTwelveToVighaComponent() {
             </SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/">
-                  <HomeIcon />
-                  Home
-                </Link>
+              <SidebarMenuButton href="/" isActive={pathname === '/'}>
+                <HomeIcon />
+                Home
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/seven-twelve-to-vigha">
-                  <FileTextIcon />
-                  7/12 થી વિઘા
-                </Link>
+              <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
+                <FileTextIcon />
+                7/12 થી વિઘા
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

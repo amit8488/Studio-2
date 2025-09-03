@@ -4,6 +4,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { Menu, X } from "lucide-react"
+import NextLink from "next/link"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -538,11 +539,16 @@ const sidebarMenuButtonVariants = cva(
 
 const SidebarMenuButton = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<"button"> & {
-    asChild?: boolean
-    isActive?: boolean
-    tooltip?: string | React.ComponentProps<typeof TooltipContent>
-  } & VariantProps<typeof sidebarMenuButtonVariants>
+  Omit<React.ComponentProps<typeof NextLink>, "as" | "className" | "children" | "href"> & {
+    asChild?: boolean;
+    isActive?: boolean;
+    variant?: "default" | "outline";
+    size?: "default" | "sm" | "lg";
+    tooltip?: string | React.ComponentProps<typeof TooltipContent>;
+    className?: string;
+    children?: React.ReactNode;
+    href?: string;
+  }
 >(
   (
     {
@@ -552,32 +558,73 @@ const SidebarMenuButton = React.forwardRef<
       size = "default",
       tooltip,
       className,
+      href,
       ...props
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button"
-    const { isMobile, state } = useSidebar()
+    const { isMobile, state, setOpenMobile } = useSidebar();
 
-    const button = (
-      <Comp
-        ref={ref}
-        data-sidebar="menu-button"
-        data-size={size}
-        data-active={isActive}
-        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
-        {...props}
-      />
-    )
+    const commonProps = {
+      "data-sidebar": "menu-button",
+      "data-size": size,
+      "data-active": isActive,
+      className: cn(sidebarMenuButtonVariants({ variant, size }), className),
+      onClick: () => {
+        if (isMobile) {
+          setOpenMobile(false);
+        }
+      },
+      ...props,
+    };
 
+    const buttonContent = (
+      <>
+        {props.children}
+      </>
+    );
+
+    const renderButton = () => {
+      if (asChild) {
+        return (
+          <Slot
+            ref={ref as React.Ref<HTMLButtonElement>}
+            {...commonProps}
+          >
+            {buttonContent}
+          </Slot>
+        );
+      }
+
+      if (href) {
+        return (
+          <NextLink
+            href={href}
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            {...commonProps}
+          >
+            {buttonContent}
+          </NextLink>
+        );
+      }
+
+      return (
+        <button ref={ref as React.Ref<HTMLButtonElement>} {...commonProps}>
+          {buttonContent}
+        </button>
+      );
+    };
+
+    const button = renderButton();
+    
     if (!tooltip) {
-      return button
+      return button;
     }
 
     if (typeof tooltip === "string") {
       tooltip = {
         children: tooltip,
-      }
+      };
     }
 
     return (
@@ -590,9 +637,9 @@ const SidebarMenuButton = React.forwardRef<
           {...tooltip}
         />
       </Tooltip>
-    )
+    );
   }
-)
+);
 SidebarMenuButton.displayName = "SidebarMenuButton"
 
 const SidebarMenuAction = React.forwardRef<
@@ -764,5 +811,3 @@ export {
   SidebarTrigger,
   useSidebar,
 }
-
-    

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Calculator, History, Trash2, HomeIcon, FileTextIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -31,6 +31,7 @@ const formatNumber = (num: number) => {
 
 function CalculatorComponent() {
   const { t, language } = useLanguage();
+  const pathname = usePathname();
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -116,19 +117,15 @@ function CalculatorComponent() {
             </SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/">
-                  <HomeIcon />
-                  Home
-                </Link>
+              <SidebarMenuButton href="/" isActive={pathname === '/'}>
+                <HomeIcon />
+                Home
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/seven-twelve-to-vigha">
-                  <FileTextIcon />
-                  7/12 થી વિઘા
-                </Link>
+              <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
+                <FileTextIcon />
+                7/12 થી વિઘા
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
