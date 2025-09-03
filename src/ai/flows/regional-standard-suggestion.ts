@@ -6,7 +6,7 @@
  * @remarks
  * - `suggestRegionalStandard`: An async function that takes user input and returns a suggestion for regional land measurement standards.
  * - `RegionalStandardSuggestionInput`: The input type for the `suggestRegionalStandard` function.
- * - `RegionalStandardSuggestionOutput`: The output type for the `suggestRegionalStandard` function.
+ * - `RegionalStandardSuggestionOutput`: The output type for the `suggestRegionalstandard` function.
  */
 
 import {ai} from '@/ai/genkit';
@@ -31,10 +31,11 @@ const prompt = ai.definePrompt({
   name: 'regionalStandardSuggestionPrompt',
   input: {schema: RegionalStandardSuggestionInputSchema},
   output: {schema: RegionalStandardSuggestionOutputSchema},
-  prompt: `You are an expert in land measurement standards, familiar with regional variations.
+  prompt: `You are an expert in land measurement standards, familiar with regional variations in Gujarat, India.
 
   Based on the user's input, suggest relevant regional land measurement standards.
   Consider both the area and location (if provided) to provide the most accurate suggestion.
+  Your entire response MUST be in Gujarati.
 
   Area: {{{area}}}
   Location: {{{location}}}
