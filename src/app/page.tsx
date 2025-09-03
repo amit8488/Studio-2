@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Calculator, History, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { Calculator, History, Trash2, HomeIcon, FileTextIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -12,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { translations } from '@/lib/translations';
+import { Sidebar, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader } from '@/components/ui/sidebar';
 
 type HistoryItem = {
   id: string;
@@ -28,7 +30,7 @@ const formatNumber = (num: number) => {
 };
 
 function CalculatorComponent() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -106,9 +108,36 @@ function CalculatorComponent() {
   );
 
   return (
+    <div className="flex h-full">
+      <Sidebar>
+        <SidebarContent>
+            <SidebarHeader>
+                <h2 className="text-xl font-semibold">{t('appName')}</h2>
+            </SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link href="/">
+                  <HomeIcon />
+                  Home
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link href="/seven-twelve-to-vigha">
+                  <FileTextIcon />
+                  7/12 થી વિઘા
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+      </Sidebar>
       <div className="container mx-auto max-w-4xl p-4 sm:p-6">
         <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
+             <SidebarTrigger />
             <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
               <Calculator className="h-8 w-8 text-primary" />
             </div>
@@ -184,7 +213,7 @@ function CalculatorComponent() {
                         <div className="space-y-2">
                         {history.map((item) => (
                             <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                            <p className="font-semibold">{t('enterArea')}: {item.input.value} {t(item.input.unit as keyof typeof translations.en)}</p>
+                            <p className="font-semibold">{item.input.value} {t(item.input.unit as keyof typeof translations.en)}</p>
                             <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
                             </div>
                         ))}
@@ -198,6 +227,7 @@ function CalculatorComponent() {
 
         </main>
       </div>
+    </div>
   );
 }
 
