@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { AppLogo } from '@/components/app-logo';
 
 function evaluateExpression(expression: string): number {
   expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
@@ -101,7 +102,8 @@ function StandardCalculatorComponent() {
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-6">
                         <Link href="/" className="flex items-center gap-2">
-                            <span className="font-bold text-lg text-primary hidden sm:block">ViGha Calculate</span>
+                            <AppLogo className="h-8 w-8 text-primary" />
+                            <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
                             <NavLink href="/">Home</NavLink>

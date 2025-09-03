@@ -12,6 +12,7 @@ import { convertArea, type ConversionResult, type ConversionInput, UNITS } from 
 import { Button } from '@/components/ui/button';
 import { translations } from '@/lib/translations';
 import Link from 'next/link';
+import { AppLogo } from '@/components/app-logo';
 
 const formatNumber = (num: number) => {
     if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -139,7 +140,8 @@ function SevenTwelveToVighaComponent() {
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-6">
                         <Link href="/" className="flex items-center gap-2">
-                            <span className="font-bold text-lg text-primary hidden sm:block">ViGha Calculate</span>
+                            <AppLogo className="h-8 w-8 text-primary" />
+                            <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
                             <NavLink href="/">Home</NavLink>
