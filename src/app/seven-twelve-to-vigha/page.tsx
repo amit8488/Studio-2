@@ -1,8 +1,8 @@
+
 'use client';
 import { usePathname } from 'next/navigation';
 import { HomeIcon, FileTextIcon, History, Trash2, CalculatorIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
-import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import { convertArea, type ConversionResult, type ConversionInput, UNITS } from 
 import { Button } from '@/components/ui/button';
 import { translations } from '@/lib/translations';
 import { AppLogo } from '@/components/app-logo';
+import Link from 'next/link';
 
 const formatNumber = (num: number) => {
     if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -99,7 +100,7 @@ function SevenTwelveToVighaComponent() {
   }, [results, totalSqm, hectare, are, sqm, history, updateHistory]);
 
   const clearHistory = () => {
-    const newHistory = history.filter(item => item.sourcePage !== 'seven-twelve');
+    const newHistory = history.filter(item => item.sourcePage !== 'home' && item.sourcePage !== 'seven-twelve');
     updateHistory(newHistory);
   };
 
@@ -121,133 +122,128 @@ function SevenTwelveToVighaComponent() {
     }
     return `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`;
   };
+  
+  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+    const isActive = pathname === href;
+    return (
+      <Link href={href} className={`px-3 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'}`}>
+        {children}
+      </Link>
+    );
+  };
 
 
   return (
-    <div className="flex h-full">
-      <Sidebar>
-        <SidebarContent>
-            <SidebarHeader>
-                <h2 className="text-xl font-semibold">ViGha Calculate</h2>
-            </SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/" isActive={pathname === '/'}>
-                <HomeIcon />
-                Home
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
-                <FileTextIcon />
-                7/12 ViGha
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/calculator" isActive={pathname === '/calculator'}>
-                <CalculatorIcon />
-                Calculator
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <div className="container mx-auto max-w-4xl p-4 sm:p-6">
-        <header className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-                <SidebarTrigger />
-                <div className="bg-primary p-2 rounded-lg hidden sm:block">
-                    <AppLogo className="h-8 w-8 text-primary-foreground" />
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="border-b">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center gap-6">
+                        <Link href="/" className="flex items-center gap-2">
+                            <AppLogo className="h-8 w-8 text-primary" />
+                            <span className="font-bold text-lg text-primary hidden sm:block">ViGha Calculate</span>
+                        </Link>
+                        <nav className="hidden md:flex items-center gap-4">
+                            <NavLink href="/">Home</NavLink>
+                            <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                            <NavLink href="/calculator">Calculator</NavLink>
+                        </nav>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <LanguageToggle />
+                        <ThemeToggle />
+                    </div>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
-            </div>
-            <div className="flex items-center gap-1">
-                <LanguageToggle />
-                <ThemeToggle />
+                 <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
+                    <NavLink href="/">Home</NavLink>
+                    <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                    <NavLink href="/calculator">Calculator</NavLink>
+                </nav>
             </div>
         </header>
-        <main className="grid md:grid-cols-3 gap-8">
-            <div className="md:col-span-2 flex flex-col items-center text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 ViGha</h2>
-                <Card className="w-full max-w-lg shadow-lg">
-                    <CardContent className="p-6">
-                        <div className="grid grid-cols-3 gap-4 text-center">
-                            <div>
-                                <label htmlFor="hectare-input" className="block text-lg font-medium text-foreground mb-2">{t('hectareLabel')}</label>
-                                <Input
-                                    id="hectare-input"
-                                    type="text"
-                                    inputMode="decimal"
-                                    value={hectare}
-                                    onChange={handleInputChange(setHectare)}
-                                    className="text-lg h-16 w-full text-center"
-                                />
+        <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6">
+            <div className="grid md:grid-cols-3 gap-8">
+                <div className="md:col-span-2 flex flex-col items-center text-center">
+                    <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 ViGha</h2>
+                    <Card className="w-full max-w-lg shadow-lg">
+                        <CardContent className="p-6">
+                            <div className="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <label htmlFor="hectare-input" className="block text-lg font-medium text-foreground mb-2">{t('hectareLabel')}</label>
+                                    <Input
+                                        id="hectare-input"
+                                        type="text"
+                                        inputMode="decimal"
+                                        value={hectare}
+                                        onChange={handleInputChange(setHectare)}
+                                        className="text-lg h-16 w-full text-center"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="are-input" className="block text-lg font-medium text-foreground mb-2">{t('areLabel')}</label>
+                                    <Input
+                                        id="are-input"
+                                        type="text"
+                                        inputMode="decimal"
+                                        value={are}
+                                        onChange={handleInputChange(setAre)}
+                                        className="text-lg h-16 w-full text-center"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="sqm-input" className="block text-lg font-medium text-foreground mb-2">{t('sqmLabel')}</label>
+                                    <Input
+                                        id="sqm-input"
+                                        type="text"
+                                        inputMode="decimal"
+                                        value={sqm}
+                                        onChange={handleInputChange(setSqm)}
+                                        className="text-lg h-16 w-full text-center"
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <label htmlFor="are-input" className="block text-lg font-medium text-foreground mb-2">{t('areLabel')}</label>
-                                <Input
-                                    id="are-input"
-                                    type="text"
-                                    inputMode="decimal"
-                                    value={are}
-                                    onChange={handleInputChange(setAre)}
-                                    className="text-lg h-16 w-full text-center"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="sqm-input" className="block text-lg font-medium text-foreground mb-2">{t('sqmLabel')}</label>
-                                <Input
-                                    id="sqm-input"
-                                    type="text"
-                                    inputMode="decimal"
-                                    value={sqm}
-                                    onChange={handleInputChange(setSqm)}
-                                    className="text-lg h-16 w-full text-center"
-                                />
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
 
-                {results && (
-                    <div className="grid grid-cols-2 w-full max-w-lg gap-4 pt-8 animate-in fade-in duration-500">
-                        <ResultCard title={t('vigha')} value={results.vigha} />
-                        <ResultCard title={t('guntha')} value={results.guntha} />
-                    </div>
-                )}
-            </div>
-            <div className="space-y-8">
-                <Card className="shadow-lg">
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="flex items-center gap-2 text-xl">
-                            <History />
-                            {t('conversionHistory')}
-                        </CardTitle>
-                        {history.filter(item => item.sourcePage === 'seven-twelve').length > 0 && (
-                            <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
-                            <Trash2 className="h-4 w-4" />
-                            </Button>
-                        )}
-                    </CardHeader>
-                    <CardContent>
-                    {history.length > 0 ? (
-                        <div className="space-y-2">
-                        {history.map((item) => (
-                            <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                            <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
-                            <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
-                            </div>
-                        ))}
+                    {results && (
+                        <div className="grid grid-cols-2 w-full max-w-lg gap-4 pt-8 animate-in fade-in duration-500">
+                            <ResultCard title={t('vigha')} value={results.vigha} />
+                            <ResultCard title={t('guntha')} value={results.guntha} />
                         </div>
-                    ) : (
-                        <p className="text-muted-foreground text-center p-4">{t('noHistory')}</p>
                     )}
-                    </CardContent>
-                </Card>
+                </div>
+                <div className="space-y-8">
+                    <Card className="shadow-lg">
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <CardTitle className="flex items-center gap-2 text-xl">
+                                <History />
+                                {t('conversionHistory')}
+                            </CardTitle>
+                            {history.length > 0 && (
+                                <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
+                                <Trash2 className="h-4 w-4" />
+                                </Button>
+                            )}
+                        </CardHeader>
+                        <CardContent>
+                        {history.length > 0 ? (
+                            <div className="space-y-2 max-h-96 overflow-y-auto">
+                            {history.map((item) => (
+                                <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
+                                <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
+                                <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
+                                </div>
+                            ))}
+                            </div>
+                        ) : (
+                            <p className="text-muted-foreground text-center p-4">{t('noHistory')}</p>
+                        )}
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         </main>
       </div>
-    </div>
   );
 }
 

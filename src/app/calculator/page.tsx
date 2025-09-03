@@ -3,14 +3,13 @@
 import { usePathname } from 'next/navigation';
 import { HomeIcon, FileTextIcon, CalculatorIcon, DivideIcon, PercentIcon, XIcon, PlusIcon, MinusIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
-import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { Card, CardContent } from '@/components/ui/card';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/app-logo';
-import type { Metadata } from 'next';
+import Link from 'next/link';
 
 function evaluateExpression(expression: string): number {
   expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
@@ -87,51 +86,45 @@ function StandardCalculatorComponent() {
     }
   };
 
+  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+    const isActive = pathname === href;
+    return (
+      <Link href={href} className={`px-3 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'}`}>
+        {children}
+      </Link>
+    );
+  };
+
   return (
-    <div className="flex h-full">
-      <Sidebar>
-        <SidebarContent>
-            <SidebarHeader>
-                <h2 className="text-xl font-semibold">ViGha Calculate</h2>
-            </SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/" isActive={pathname === '/'}>
-                <HomeIcon />
-                Home
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
-                <FileTextIcon />
-                7/12 ViGha
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/calculator" isActive={pathname === '/calculator'}>
-                <CalculatorIcon />
-                Calculator
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <div className="container mx-auto max-w-4xl p-4 sm:p-6 flex flex-col h-screen bg-background">
-        <header className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-             <SidebarTrigger />
-             <div className="bg-primary p-2 rounded-lg hidden sm:block">
-              <AppLogo className="h-8 w-8 text-primary-foreground" />
+      <div className="flex flex-col h-screen bg-background">
+        <header className="border-b">
+            <div className="container mx-auto px-4 sm:px-6">
+                <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center gap-6">
+                        <Link href="/" className="flex items-center gap-2">
+                            <AppLogo className="h-8 w-8 text-primary" />
+                            <span className="font-bold text-lg text-primary hidden sm:block">ViGha Calculate</span>
+                        </Link>
+                        <nav className="hidden md:flex items-center gap-4">
+                            <NavLink href="/">Home</NavLink>
+                            <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                            <NavLink href="/calculator">Calculator</NavLink>
+                        </nav>
+                    </div>
+                    <div className="flex items-center gap-1">
+                        <LanguageToggle />
+                        <ThemeToggle />
+                    </div>
+                </div>
+                 <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
+                    <NavLink href="/">Home</NavLink>
+                    <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                    <NavLink href="/calculator">Calculator</NavLink>
+                </nav>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">Calculator</h1>
-          </div>
-          <div className="flex items-center gap-1">
-            <LanguageToggle />
-            <ThemeToggle />
-          </div>
         </header>
 
-        <main className="flex flex-1 justify-center items-center">
+        <main className="flex flex-1 justify-center items-center p-4">
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right">
@@ -154,7 +147,6 @@ function StandardCalculatorComponent() {
             </Card>
         </main>
       </div>
-    </div>
   );
 }
 
