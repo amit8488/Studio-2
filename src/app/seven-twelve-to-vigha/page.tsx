@@ -11,7 +11,6 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { convertArea, type ConversionResult, type ConversionInput, UNITS } from '@/lib/conversion';
 import { Button } from '@/components/ui/button';
 import { translations } from '@/lib/translations';
-import { AppLogo } from '@/components/app-logo';
 import Link from 'next/link';
 
 const formatNumber = (num: number) => {
@@ -140,7 +139,6 @@ function SevenTwelveToVighaComponent() {
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-6">
                         <Link href="/" className="flex items-center gap-2">
-                            <AppLogo className="h-8 w-8 text-primary" />
                             <span className="font-bold text-lg text-primary hidden sm:block">ViGha Calculate</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
