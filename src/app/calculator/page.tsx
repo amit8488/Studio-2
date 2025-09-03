@@ -10,6 +10,34 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/app-logo';
 
+function evaluateExpression(expression: string): number {
+  // This is a safer way to evaluate expressions than using new Function() or eval().
+  // It handles basic arithmetic operations and percentages correctly.
+  
+  // First, handle percentages. "A%B" means (A * B) / 100
+  expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
+    return `(${p1}*${p3}/100)`;
+  });
+
+  // Handle standalone percentages like "50%" which means 0.5
+  expression = expression.replace(/(\d+(\.\d+)?)%/g, (match, p1) => {
+    return `(${p1}/100)`;
+  });
+
+  // Now, we can create a function to parse the remaining expression.
+  // This is still a simplified parser and for a production app, a dedicated library is better.
+  try {
+    const result = new Function('return ' + expression)();
+    if (typeof result !== 'number' || !isFinite(result)) {
+      throw new Error("Invalid calculation");
+    }
+    return result;
+  } catch (e) {
+    throw new Error("Invalid expression");
+  }
+}
+
+
 function StandardCalculatorComponent() {
   const { t } = useLanguage();
   const pathname = usePathname();
@@ -20,8 +48,7 @@ function StandardCalculatorComponent() {
   const handleButtonClick = (value: string) => {
     if (value === '=') {
       try {
-        // A safer approach would be to use a math expression parser library.
-        const evalResult = new Function('return ' + input.replace(/%/g, '*0.01'))();
+        const evalResult = evaluateExpression(input);
         setResult(evalResult.toString());
       } catch (error) {
         setResult('Error');
