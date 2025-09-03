@@ -20,9 +20,8 @@ function StandardCalculatorComponent() {
   const handleButtonClick = (value: string) => {
     if (value === '=') {
       try {
-        // Avoid using eval in production. This is for demonstration.
         // A safer approach would be to use a math expression parser library.
-        const evalResult = new Function('return ' + input)();
+        const evalResult = new Function('return ' + input.replace(/%/g, '/100'))();
         setResult(evalResult.toString());
       } catch (error) {
         setResult('Error');
@@ -32,6 +31,13 @@ function StandardCalculatorComponent() {
       setResult('');
     } else if (value === 'DEL') {
       setInput(input.slice(0, -1));
+    } else if (value === '%') {
+      try {
+        const evalResult = new Function('return ' + input)();
+        setInput((evalResult / 100).toString());
+      } catch (error) {
+        setResult('Error');
+      }
     }
     else {
       setInput(input + value);
