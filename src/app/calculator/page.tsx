@@ -12,21 +12,14 @@ import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/app-logo';
 
 function evaluateExpression(expression: string): number {
-  // This is a safer way to evaluate expressions than using new Function() or eval().
-  // It handles basic arithmetic operations and percentages correctly.
-  
-  // First, handle percentages. "A%B" means (A * B) / 100
   expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
-    return `(${p1}/100*${p3})`;
+    return `(${p3} / 100 * ${p1})`;
   });
 
-  // Handle standalone percentages like "50%" which means 0.5
   expression = expression.replace(/(\d+(\.\d+)?)%/g, (match, p1) => {
     return `(${p1}/100)`;
   });
 
-  // Now, we can create a function to parse the remaining expression.
-  // This is still a simplified parser and for a production app, a dedicated library is better.
   try {
     const result = new Function('return ' + expression)();
     if (typeof result !== 'number' || !isFinite(result)) {
@@ -94,15 +87,50 @@ function StandardCalculatorComponent() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
-        <header className="flex items-center justify-between p-4 sm:p-6">
-            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
-            <div className="flex items-center gap-1">
-                <LanguageToggle />
-                <ThemeToggle />
+    <div className="flex h-full">
+      <Sidebar>
+        <SidebarContent>
+            <SidebarHeader>
+                <h2 className="text-xl font-semibold">ViGha Calculate</h2>
+            </SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/" isActive={pathname === '/'}>
+                <HomeIcon />
+                Home
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
+                <FileTextIcon />
+                7/12 ViGha
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/calculator" isActive={pathname === '/calculator'}>
+                <CalculatorIcon />
+                Calculator
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarContent>
+      </Sidebar>
+      <div className="container mx-auto max-w-4xl p-4 sm:p-6 flex flex-col h-screen bg-background">
+        <header className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+             <SidebarTrigger />
+             <div className="bg-primary p-2 rounded-lg hidden sm:block">
+              <AppLogo className="h-8 w-8 text-primary-foreground" />
             </div>
+            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
+          </div>
+          <div className="flex items-center gap-1">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
         </header>
-        <main className="flex flex-1 justify-center items-center p-4">
+
+        <main className="flex flex-1 justify-center items-center">
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right">
@@ -124,6 +152,7 @@ function StandardCalculatorComponent() {
                 </CardContent>
             </Card>
         </main>
+      </div>
     </div>
   );
 }
@@ -135,4 +164,3 @@ export default function StandardCalculatorPage() {
         </LanguageProvider>
     )
 }
-
