@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { HomeIcon, FileTextIcon } from 'lucide-react';
+import { HomeIcon, FileTextIcon, Calculator } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -38,16 +38,20 @@ function SevenTwelveToVighaComponent() {
       </Sidebar>
       <div className="container mx-auto max-w-4xl p-4 sm:p-6">
         <header className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <SidebarTrigger />
-            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">7/12 થી વિઘા</h1>
-          </div>
-          <div className="flex items-center gap-1">
-            <LanguageToggle />
-            <ThemeToggle />
-          </div>
+            <div className="flex items-center gap-3">
+                <SidebarTrigger />
+                <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
+                    <Calculator className="h-8 w-8 text-primary" />
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">{t('appName')}</h1>
+            </div>
+            <div className="flex items-center gap-1">
+                <LanguageToggle />
+                <ThemeToggle />
+            </div>
         </header>
-        <main>
+        <main className="flex flex-col items-center text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 થી વિઘા</h2>
           <p>This page is under construction.</p>
         </main>
       </div>
