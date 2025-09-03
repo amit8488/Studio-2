@@ -90,13 +90,13 @@ function SevenTwelveToVighaComponent() {
           sourcePage: 'seven-twelve',
           sevenTwelveInput: { hectare, are, sqm }
         };
-        const historyWithoutCurrent = history.filter(item => !(item.sourcePage === 'seven-twelve' && item.input.value === totalSqm));
+        const historyWithoutCurrent = history.filter(item => !(item.sourcePage === 'seven-twelve' && JSON.stringify(item.sevenTwelveInput) === JSON.stringify({ hectare, are, sqm })));
         const newHistory = [currentConversion, ...historyWithoutCurrent];
         updateHistory(newHistory);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, totalSqm, hectare, are, sqm]);
+  }, [results, totalSqm, hectare, are, sqm, history, updateHistory]);
 
   const clearHistory = () => {
     const newHistory = history.filter(item => item.sourcePage !== 'seven-twelve');
@@ -140,7 +140,13 @@ function SevenTwelveToVighaComponent() {
             <SidebarMenuItem>
               <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
                 <FileTextIcon />
-                7/12 થી વિઘા
+                7/12 ViGha
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/" isActive={pathname === '/calculator'}>
+                <FileTextIcon />
+                Calculator
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -162,7 +168,7 @@ function SevenTwelveToVighaComponent() {
         </header>
         <main className="grid md:grid-cols-3 gap-8">
             <div className="md:col-span-2 flex flex-col items-center text-center">
-                <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 થી વિઘા</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 ViGha</h2>
                 <Card className="w-full max-w-lg shadow-lg">
                     <CardContent className="p-6">
                         <div className="grid grid-cols-3 gap-4 text-center">

@@ -87,14 +87,14 @@ function CalculatorComponent() {
           sourcePage: 'home'
         };
         
-        const historyWithoutCurrent = history.filter(item => !(item.input.value === value && item.input.unit === inputUnit && item.sourcePage === 'home'));
+        const historyWithoutCurrent = history.filter(item => !(item.sourcePage === 'home' && item.input.unit === inputUnit && item.input.value === value));
         const newHistory = [currentConversion, ...historyWithoutCurrent];
         updateHistory(newHistory);
 
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, inputValue, inputUnit]);
+  }, [results, inputValue, inputUnit, history, updateHistory]);
 
   const clearHistory = () => {
     const newHistory = history.filter(item => item.sourcePage !== 'home');
@@ -137,7 +137,13 @@ function CalculatorComponent() {
             <SidebarMenuItem>
               <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
                 <FileTextIcon />
-                7/12 થી વિઘા
+                7/12 ViGha
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/" isActive={pathname === '/calculator'}>
+                <FileTextIcon />
+                Calculator
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
