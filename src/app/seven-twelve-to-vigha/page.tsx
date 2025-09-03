@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FileTextIcon, Calculator, History, Trash2 } from 'lucide-react';
+import { HomeIcon, FileTextIcon, History, Trash2 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -11,6 +11,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { convertArea, type ConversionResult, type ConversionInput, UNITS } from '@/lib/conversion';
 import { Button } from '@/components/ui/button';
 import { translations } from '@/lib/translations';
+import { AppLogo } from '@/components/app-logo';
 
 const formatNumber = (num: number) => {
     if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -49,12 +50,10 @@ function SevenTwelveToVighaComponent() {
     }
   }, []);
 
-  const updateHistory = useCallback((item: HistoryItem) => {
-    setHistory(prevHistory => {
-      const newHistory = [item, ...prevHistory].slice(0, 10);
-      localStorage.setItem('conversionHistory', JSON.stringify(newHistory));
-      return newHistory;
-    });
+  const updateHistory = useCallback((newItems: HistoryItem[]) => {
+    const updatedHistory = [...newItems].slice(0, 10);
+    setHistory(updatedHistory);
+    localStorage.setItem('conversionHistory', JSON.stringify(updatedHistory));
   }, []);
 
 
@@ -91,18 +90,17 @@ function SevenTwelveToVighaComponent() {
           sourcePage: 'seven-twelve',
           sevenTwelveInput: { hectare, are, sqm }
         };
-        // To prevent duplicate entries when component re-renders
-        if (history.length === 0 || history[0].input.value !== totalSqm || history[0].sourcePage !== 'seven-twelve') {
-            updateHistory(currentConversion);
-        }
+        const historyWithoutCurrent = history.filter(item => !(item.sourcePage === 'seven-twelve' && item.input.value === totalSqm));
+        const newHistory = [currentConversion, ...historyWithoutCurrent];
+        updateHistory(newHistory);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, totalSqm, hectare, are, sqm, history, updateHistory]);
+  }, [results, totalSqm, hectare, are, sqm]);
 
   const clearHistory = () => {
-    setHistory([]);
-    localStorage.removeItem('conversionHistory');
+    const newHistory = history.filter(item => item.sourcePage !== 'seven-twelve');
+    updateHistory(newHistory);
   };
 
   const ResultCard = ({ title, value }: { title: string; value: number }) => (
@@ -152,8 +150,8 @@ function SevenTwelveToVighaComponent() {
         <header className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
                 <SidebarTrigger />
-                <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
-                    <Calculator className="h-8 w-8 text-primary" />
+                <div className="bg-primary p-2 rounded-lg hidden sm:block">
+                    <AppLogo className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
             </div>
@@ -219,7 +217,7 @@ function SevenTwelveToVighaComponent() {
                             <History />
                             {t('conversionHistory')}
                         </CardTitle>
-                        {history.length > 0 && (
+                        {history.filter(item => item.sourcePage === 'seven-twelve').length > 0 && (
                             <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
                             <Trash2 className="h-4 w-4" />
                             </Button>

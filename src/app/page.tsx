@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { Calculator, History, Trash2, HomeIcon, FileTextIcon } from 'lucide-react';
+import { History, Trash2, HomeIcon, FileTextIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { translations } from '@/lib/translations';
 import { Sidebar, SidebarTrigger, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader } from '@/components/ui/sidebar';
+import { AppLogo } from '@/components/app-logo';
 
 type HistoryItem = {
   id: string;
@@ -32,7 +33,7 @@ const formatNumber = (num: number) => {
 };
 
 function CalculatorComponent() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const pathname = usePathname();
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
@@ -50,12 +51,10 @@ function CalculatorComponent() {
     }
   }, []);
 
-  const updateHistory = useCallback((item: HistoryItem) => {
-    setHistory(prevHistory => {
-      const newHistory = [item, ...prevHistory].slice(0, 10);
-      localStorage.setItem('conversionHistory', JSON.stringify(newHistory));
-      return newHistory;
-    });
+  const updateHistory = useCallback((newItems: HistoryItem[]) => {
+    const updatedHistory = [...newItems].slice(0, 10);
+    setHistory(updatedHistory);
+    localStorage.setItem('conversionHistory', JSON.stringify(updatedHistory));
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,17 +86,19 @@ function CalculatorComponent() {
           result: results,
           sourcePage: 'home'
         };
-        if (history.length === 0 || history[0].input.value !== value || history[0].input.unit !== inputUnit || history[0].sourcePage !== 'home') {
-          updateHistory(currentConversion);
-        }
+        
+        const historyWithoutCurrent = history.filter(item => !(item.input.value === value && item.input.unit === inputUnit && item.sourcePage === 'home'));
+        const newHistory = [currentConversion, ...historyWithoutCurrent];
+        updateHistory(newHistory);
+
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, inputValue, inputUnit, history, updateHistory]);
+  }, [results, inputValue, inputUnit]);
 
   const clearHistory = () => {
-    setHistory([]);
-    localStorage.removeItem('conversionHistory');
+    const newHistory = history.filter(item => item.sourcePage !== 'home');
+    updateHistory(newHistory);
   };
 
   const ResultCard = ({ title, value }: { title: string; value: number }) => (
@@ -146,8 +147,8 @@ function CalculatorComponent() {
         <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
              <SidebarTrigger />
-            <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
-              <Calculator className="h-8 w-8 text-primary" />
+             <div className="bg-primary p-2 rounded-lg hidden sm:block">
+              <AppLogo className="h-8 w-8 text-primary-foreground" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
           </div>
@@ -210,7 +211,7 @@ function CalculatorComponent() {
                             <History />
                             {t('conversionHistory')}
                         </CardTitle>
-                        {history.length > 0 && (
+                        {history.filter(item => item.sourcePage === 'home').length > 0 && (
                             <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
                             <Trash2 className="h-4 w-4" />
                             </Button>
