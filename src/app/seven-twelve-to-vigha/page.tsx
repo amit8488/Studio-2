@@ -14,7 +14,7 @@ function SevenTwelveToVighaComponent() {
       <Sidebar>
         <SidebarContent>
             <SidebarHeader>
-                <h2 className="text-xl font-semibold">{t('appName')}</h2>
+                <h2 className="text-xl font-semibold">ViGha Calculate</h2>
             </SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -43,7 +43,7 @@ function SevenTwelveToVighaComponent() {
                 <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
                     <Calculator className="h-8 w-8 text-primary" />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">{t('appName')}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
             </div>
             <div className="flex items-center gap-1">
                 <LanguageToggle />
