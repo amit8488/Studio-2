@@ -94,73 +94,36 @@ function StandardCalculatorComponent() {
   };
 
   return (
-    <div className="flex h-full bg-background">
-      <Sidebar>
-        <SidebarContent>
-            <SidebarHeader>
-                <h2 className="text-xl font-semibold">ViGha Calculate</h2>
-            </SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/" isActive={pathname === '/'}>
-                <HomeIcon />
-                Home
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/seven-twelve-to-vigha" isActive={pathname === '/seven-twelve-to-vigha'}>
-                <FileTextIcon />
-                7/12 ViGha
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/calculator" isActive={pathname === '/calculator'}>
-                <CalculatorIcon />
-                Calculator
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <div className="p-4 sm:p-6 flex flex-col h-full">
-            <header className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                    <SidebarTrigger />
-                    <div className="bg-primary p-2 rounded-lg hidden sm:block">
-                        <AppLogo className="h-8 w-8 text-primary-foreground" />
+    <div className="flex flex-col h-screen bg-background">
+        <header className="flex items-center justify-between p-4 sm:p-6">
+            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
+            <div className="flex items-center gap-1">
+                <LanguageToggle />
+                <ThemeToggle />
+            </div>
+        </header>
+        <main className="flex flex-1 justify-center items-center p-4">
+            <Card className="w-full max-w-sm shadow-lg">
+                <CardContent className="p-4">
+                    <div className="bg-muted rounded-lg p-4 mb-4 text-right">
+                        <div className="text-muted-foreground text-xl h-7 break-all">{input || '0'}</div>
+                        <div className="text-foreground font-bold text-4xl h-12 break-all">{result}</div>
                     </div>
-                    <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
-                </div>
-                <div className="flex items-center gap-1">
-                    <LanguageToggle />
-                    <ThemeToggle />
-                </div>
-            </header>
-            <main className="flex flex-1 justify-center items-center">
-                <Card className="w-full max-w-sm shadow-lg">
-                    <CardContent className="p-4">
-                        <div className="bg-muted rounded-lg p-4 mb-4 text-right">
-                            <div className="text-muted-foreground text-xl h-7 break-all">{input || '0'}</div>
-                            <div className="text-foreground font-bold text-4xl h-12 break-all">{result}</div>
-                        </div>
-                        <div className="grid grid-cols-4 gap-2">
-                            {buttons.map((btn) => (
-                                <Button 
-                                    key={btn}
-                                    onClick={() => handleButtonClick(btn)}
-                                    className={`h-16 text-2xl font-bold ${getButtonClass(btn)}`}
-                                    variant="outline"
-                                >
-                                    {renderButtonContent(btn)}
-                                </Button>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            </main>
-        </div>
-      </SidebarInset>
+                    <div className="grid grid-cols-4 gap-2">
+                        {buttons.map((btn) => (
+                            <Button 
+                                key={btn}
+                                onClick={() => handleButtonClick(btn)}
+                                className={`h-16 text-2xl font-bold ${getButtonClass(btn)}`}
+                                variant="outline"
+                            >
+                                {renderButtonContent(btn)}
+                            </Button>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+        </main>
     </div>
   );
 }
