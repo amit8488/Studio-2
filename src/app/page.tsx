@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { History, Trash2, HomeIcon, FileTextIcon } from 'lucide-react';
+import { History, Trash2, HomeIcon, FileTextIcon, CalculatorIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -141,8 +141,8 @@ function CalculatorComponent() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/" isActive={pathname === '/calculator'}>
-                <FileTextIcon />
+              <SidebarMenuButton href="/calculator" isActive={pathname === '/calculator'}>
+                <CalculatorIcon />
                 Calculator
               </SidebarMenuButton>
             </SidebarMenuItem>

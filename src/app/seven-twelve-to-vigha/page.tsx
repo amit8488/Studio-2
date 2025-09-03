@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FileTextIcon, History, Trash2 } from 'lucide-react';
+import { HomeIcon, FileTextIcon, History, Trash2, CalculatorIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -144,8 +144,8 @@ function SevenTwelveToVighaComponent() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/" isActive={pathname === '/calculator'}>
-                <FileTextIcon />
+              <SidebarMenuButton href="/calculator" isActive={pathname === '/calculator'}>
+                <CalculatorIcon />
                 Calculator
               </SidebarMenuButton>
             </SidebarMenuItem>
