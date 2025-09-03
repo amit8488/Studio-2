@@ -210,7 +210,7 @@ function CalculatorComponent() {
                         <div className="space-y-2">
                         {history.map((item) => (
                             <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                            <p className="font-semibold">{item.input.value} {t(item.input.unit as keyof typeof translations.en)}</p>
+                            <p className="font-semibold">{isNaN(item.input.value) ? `from 7/12` : `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`}</p>
                             <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
                             </div>
                         ))}
