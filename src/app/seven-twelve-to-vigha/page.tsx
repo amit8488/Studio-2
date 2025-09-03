@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { convertArea, type ConversionResult, type ConversionInput, UNITS } from '@/lib/conversion';
 import { Button } from '@/components/ui/button';
+import { translations } from '@/lib/translations';
 
 const formatNumber = (num: number) => {
     if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -23,9 +24,10 @@ type HistoryItem = {
     id: string;
     input: ConversionInput;
     result: ConversionResult;
+    sourcePage: 'home' | 'seven-twelve';
+    sevenTwelveInput?: { hectare: string; are: string; sqm: string };
 };
   
-
 function SevenTwelveToVighaComponent() {
   const { t } = useLanguage();
   const pathname = usePathname();
@@ -82,25 +84,21 @@ function SevenTwelveToVighaComponent() {
   useEffect(() => {
     if (results && totalSqm > 0) {
       const timer = setTimeout(() => {
-        const currentConversion = {
+        const currentConversion: HistoryItem = {
           id: new Date().toISOString(),
           input: { value: totalSqm, unit: UNITS.SQM },
           result: results,
+          sourcePage: 'seven-twelve',
+          sevenTwelveInput: { hectare, are, sqm }
         };
         // To prevent duplicate entries when component re-renders
-        if (history.length === 0 || history[0].input.value !== totalSqm) {
-           const inputDisplayValue = `${hectare || 0} ${t('hectareLabel')} ${are || 0} ${t('areLabel')} ${sqm || 0} ${t('sqmLabel')}`;
-
-            updateHistory({
-                id: new Date().toISOString(),
-                input: { value: parseFloat(inputDisplayValue), unit: 'sqm' },
-                result: results
-            });
+        if (history.length === 0 || history[0].input.value !== totalSqm || history[0].sourcePage !== 'seven-twelve') {
+            updateHistory(currentConversion);
         }
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, totalSqm, hectare, are, sqm, history, updateHistory, t]);
+  }, [results, totalSqm, hectare, are, sqm, history, updateHistory]);
 
   const clearHistory = () => {
     setHistory([]);
@@ -117,6 +115,15 @@ function SevenTwelveToVighaComponent() {
       </CardContent>
     </Card>
   );
+
+  const renderHistoryItemTitle = (item: HistoryItem) => {
+    if (item.sourcePage === 'seven-twelve' && item.sevenTwelveInput) {
+        const { hectare, are, sqm } = item.sevenTwelveInput;
+        return `${hectare || 0} ${t('hectareLabel')} ${are || 0} ${t('areLabel')} ${sqm || 0} ${t('sqmLabel')}`;
+    }
+    return `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`;
+  };
+
 
   return (
     <div className="flex h-full">
@@ -223,7 +230,7 @@ function SevenTwelveToVighaComponent() {
                         <div className="space-y-2">
                         {history.map((item) => (
                             <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                            <p className="font-semibold">{isNaN(item.input.value) ? `from 7/12` : `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`}</p>
+                            <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
                             <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
                             </div>
                         ))}

@@ -19,6 +19,8 @@ type HistoryItem = {
   id: string;
   input: ConversionInput;
   result: ConversionResult;
+  sourcePage: 'home' | 'seven-twelve';
+  sevenTwelveInput?: { hectare: string; are: string; sqm: string };
 };
 
 const formatNumber = (num: number) => {
@@ -79,12 +81,13 @@ function CalculatorComponent() {
     const value = parseFloat(inputValue);
     if (results && value > 0) {
       const timer = setTimeout(() => {
-        const currentConversion = {
+        const currentConversion: HistoryItem = {
           id: new Date().toISOString(),
           input: { value, unit: inputUnit },
           result: results,
+          sourcePage: 'home'
         };
-        if (history.length === 0 || history[0].input.value !== value || history[0].input.unit !== inputUnit) {
+        if (history.length === 0 || history[0].input.value !== value || history[0].input.unit !== inputUnit || history[0].sourcePage !== 'home') {
           updateHistory(currentConversion);
         }
       }, 1000);
@@ -107,6 +110,14 @@ function CalculatorComponent() {
       </CardContent>
     </Card>
   );
+  
+  const renderHistoryItemTitle = (item: HistoryItem) => {
+    if (item.sourcePage === 'seven-twelve' && item.sevenTwelveInput) {
+        const { hectare, are, sqm } = item.sevenTwelveInput;
+        return `${hectare || 0} ${t('hectareLabel')} ${are || 0} ${t('areLabel')} ${sqm || 0} ${t('sqmLabel')}`;
+    }
+    return `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`;
+  };
 
   return (
     <div className="flex h-full">
@@ -210,7 +221,7 @@ function CalculatorComponent() {
                         <div className="space-y-2">
                         {history.map((item) => (
                             <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                            <p className="font-semibold">{isNaN(item.input.value) ? `from 7/12` : `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`}</p>
+                            <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
                             <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
                             </div>
                         ))}
