@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Calculator, History, Trash2 } from 'lucide-react';
+import { Calculator, History, Trash2, Menu } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -11,8 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { translations } from '@/lib/translations';
+import { Sidebar, SidebarContent, SidebarHeader, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 type HistoryItem = {
   id: string;
@@ -107,94 +107,104 @@ function CalculatorComponent() {
   );
 
   return (
-    <div className="container mx-auto max-w-4xl p-4 sm:p-6">
-      <header className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="bg-primary/10 p-2 rounded-lg">
-            <Calculator className="h-8 w-8 text-primary" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">{t('appName')}</h1>
-        </div>
-        <div className="flex items-center gap-1">
-          <LanguageToggle />
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <main className="space-y-8">
-        <Card className="w-full shadow-lg">
-          <CardContent className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-              <div className="md:col-span-2">
-                <label htmlFor="area-input" className="block text-sm font-medium text-foreground mb-1">{t('enterArea')}</label>
-                <Input
-                  id="area-input"
-                  type="text"
-                  inputMode="decimal"
-                  placeholder="e.g. 1.25"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  className="text-lg h-12"
-                />
-              </div>
-              <div>
-                <label htmlFor="unit-select" className="block text-sm font-medium text-foreground mb-1">{t('selectUnit')}</label>
-                <Select value={inputUnit} onValueChange={handleUnitChange}>
-                  <SelectTrigger id="unit-select" className="text-lg h-12">
-                    <SelectValue placeholder={t('selectUnit')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value={UNITS.HECTARE}>{t('hectare')}</SelectItem>
-                    <SelectItem value={UNITS.ARE}>{t('are')}</SelectItem>
-                    <SelectItem value={UNITS.SQM}>{t('sqm')}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {results && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 animate-in fade-in duration-500">
-                <ResultCard title={t('vigha')} value={results.vigha} />
-                <ResultCard title={t('guntha')} value={results.guntha} />
-                <ResultCard title={t('acre')} value={results.acre} />
-                <ResultCard title={t('sqft')} value={results.sqft} />
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <RegionalStandards areaValue={inputValue} areaUnit={t(inputUnit as keyof typeof translations.en)} />
-
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="history">
-            <AccordionTrigger className="text-lg font-semibold text-primary hover:no-underline">
-              <div className="flex items-center gap-2">
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader className="flex items-center justify-between">
+            <div className='flex items-center gap-2'>
                 <History />
-                {t('conversionHistory')}
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              {history.length > 0 ? (
-                <div className="space-y-2 relative">
-                  <Button variant="outline" size="sm" onClick={clearHistory} className="absolute -top-1 right-0">
-                    <Trash2 className="mr-2 h-4 w-4" />
-                    {t('clear')}
-                  </Button>
-                  {history.map((item) => (
-                    <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                      <p className="font-semibold">{t('enterArea')}: {item.input.value} {t(item.input.unit as keyof typeof translations.en)}</p>
-                      <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
-                    </div>
-                  ))}
+                <h2 className="text-lg font-semibold">{t('conversionHistory')}</h2>
+            </div>
+          {history.length > 0 && (
+            <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          )}
+        </SidebarHeader>
+        <SidebarContent className="p-2">
+          {history.length > 0 ? (
+            <div className="space-y-2">
+              {history.map((item) => (
+                <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
+                  <p className="font-semibold">{t('enterArea')}: {item.input.value} {t(item.input.unit as keyof typeof translations.en)}</p>
+                  <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
                 </div>
-              ) : (
-                <p className="text-muted-foreground text-center p-4">{t('noHistory')}</p>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-center p-4">{t('noHistory')}</p>
+          )}
+        </SidebarContent>
+      </Sidebar>
+      <div className="container mx-auto max-w-4xl p-4 sm:p-6">
+        <header className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <SidebarTrigger className="md:hidden"><Menu /></SidebarTrigger>
+            <div className="bg-primary/10 p-2 rounded-lg hidden sm:block">
+              <Calculator className="h-8 w-8 text-primary" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">{t('appName')}</h1>
+          </div>
+          <div className="flex items-center gap-1">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
+        </header>
+
+        <main className="space-y-8">
+          <Card className="w-full shadow-lg">
+            <CardContent className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                <div className="md:col-span-2">
+                  <label htmlFor="area-input" className="block text-sm font-medium text-foreground mb-1">{t('enterArea')}</label>
+                  <Input
+                    id="area-input"
+                    type="text"
+                    inputMode="decimal"
+                    placeholder="e.g. 1.25"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    className="text-lg h-12"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="unit-select" className="block text-sm font-medium text-foreground mb-1">{t('selectUnit')}</label>
+                  <Select value={inputUnit} onValueChange={handleUnitChange}>
+                    <SelectTrigger id="unit-select" className="text-lg h-12">
+                      <SelectValue placeholder={t('selectUnit')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={UNITS.HECTARE}>{t('hectare')}</SelectItem>
+                      <SelectItem value={UNITS.ARE}>{t('are')}</SelectItem>
+                      <SelectItem value={UNITS.SQM}>{t('sqm')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {results && (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 animate-in fade-in duration-500">
+                  <ResultCard title={t('vigha')} value={results.vigha} />
+                  <ResultCard title={t('guntha')} value={results.guntha} />
+                  <ResultCard title={t('acre')} value={results.acre} />
+                  <ResultCard title={t('sqft')} value={results.sqft} />
+                </div>
               )}
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </main>
-    </div>
+            </CardContent>
+          </Card>
+
+          <RegionalStandards areaValue={inputValue} areaUnit={t(inputUnit as keyof typeof translations.en)} />
+
+            <div className="flex items-center gap-2 text-lg font-semibold text-primary hover:no-underline md:hidden">
+                <SidebarTrigger>
+                    <div className="flex items-center gap-2">
+                        <History />
+                        {t('conversionHistory')}
+                    </div>
+                </SidebarTrigger>
+            </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }
 
