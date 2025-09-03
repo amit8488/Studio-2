@@ -1,6 +1,7 @@
+
 'use client';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FileTextIcon, CalculatorIcon } from 'lucide-react';
+import { HomeIcon, FileTextIcon, CalculatorIcon, DivideIcon, PercentIcon, XIcon, PlusIcon, MinusIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -16,7 +17,7 @@ function evaluateExpression(expression: string): number {
   
   // First, handle percentages. "A%B" means (A * B) / 100
   expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
-    return `(${p1}*${p3}/100)`;
+    return `(${p1}/100*${p3})`;
   });
 
   // Handle standalone percentages like "50%" which means 0.5
@@ -81,6 +82,17 @@ function StandardCalculatorComponent() {
     return 'bg-primary/10 text-primary hover:bg-primary/20';
   }
 
+  const renderButtonContent = (btn: string) => {
+    switch (btn) {
+      case '/': return <DivideIcon className="h-8 w-8" />;
+      case '*': return <XIcon className="h-6 w-6" />;
+      case '%': return <PercentIcon className="h-6 w-6" />;
+      case '+': return <PlusIcon className="h-8 w-8" />;
+      case '-': return <MinusIcon className="h-8 w-8" />;
+      default: return btn;
+    }
+  };
+
   return (
     <div className="flex h-full bg-background">
       <Sidebar>
@@ -140,7 +152,7 @@ function StandardCalculatorComponent() {
                                     className={`h-16 text-2xl font-bold ${getButtonClass(btn)}`}
                                     variant="outline"
                                 >
-                                    {btn}
+                                    {renderButtonContent(btn)}
                                 </Button>
                             ))}
                         </div>
@@ -160,3 +172,4 @@ export default function StandardCalculatorPage() {
         </LanguageProvider>
     )
 }
+
