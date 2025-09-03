@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { HomeIcon, FileTextIcon, CalculatorIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
-import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { Card, CardContent } from '@/components/ui/card';
@@ -57,7 +57,7 @@ function StandardCalculatorComponent() {
   }
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full bg-background">
       <Sidebar>
         <SidebarContent>
             <SidebarHeader>
@@ -85,43 +85,45 @@ function StandardCalculatorComponent() {
           </SidebarMenu>
         </SidebarContent>
       </Sidebar>
-      <div className="container mx-auto max-w-4xl p-4 sm:p-6">
-        <header className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-                <SidebarTrigger />
-                <div className="bg-primary p-2 rounded-lg hidden sm:block">
-                    <AppLogo className="h-8 w-8 text-primary-foreground" />
+      <SidebarInset>
+        <div className="p-4 sm:p-6 flex flex-col h-full">
+            <header className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                    <SidebarTrigger />
+                    <div className="bg-primary p-2 rounded-lg hidden sm:block">
+                        <AppLogo className="h-8 w-8 text-primary-foreground" />
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold font-headline text-primary">ViGha Calculate</h1>
-            </div>
-            <div className="flex items-center gap-1">
-                <LanguageToggle />
-                <ThemeToggle />
-            </div>
-        </header>
-        <main className="flex justify-center">
-            <Card className="w-full max-w-sm shadow-lg">
-                <CardContent className="p-4">
-                    <div className="bg-muted rounded-lg p-4 mb-4 text-right">
-                        <div className="text-muted-foreground text-xl h-7">{input || '0'}</div>
-                        <div className="text-foreground font-bold text-4xl h-12">{result}</div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                        {buttons.map((btn) => (
-                            <Button 
-                                key={btn}
-                                onClick={() => handleButtonClick(btn)}
-                                className={`h-16 text-2xl font-bold ${getButtonClass(btn)}`}
-                                variant="outline"
-                            >
-                                {btn}
-                            </Button>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-        </main>
-      </div>
+                <div className="flex items-center gap-1">
+                    <LanguageToggle />
+                    <ThemeToggle />
+                </div>
+            </header>
+            <main className="flex flex-1 justify-center items-center">
+                <Card className="w-full max-w-sm shadow-lg">
+                    <CardContent className="p-4">
+                        <div className="bg-muted rounded-lg p-4 mb-4 text-right">
+                            <div className="text-muted-foreground text-xl h-7 break-all">{input || '0'}</div>
+                            <div className="text-foreground font-bold text-4xl h-12 break-all">{result}</div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-2">
+                            {buttons.map((btn) => (
+                                <Button 
+                                    key={btn}
+                                    onClick={() => handleButtonClick(btn)}
+                                    className={`h-16 text-2xl font-bold ${getButtonClass(btn)}`}
+                                    variant="outline"
+                                >
+                                    {btn}
+                                </Button>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            </main>
+        </div>
+      </SidebarInset>
     </div>
   );
 }
