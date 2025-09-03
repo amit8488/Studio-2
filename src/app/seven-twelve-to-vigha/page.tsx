@@ -30,7 +30,10 @@ function SevenTwelveToVighaComponent() {
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
+      const integerPart = value.split('.')[0];
+      if (integerPart.length <= 3) {
         setter(value);
+      }
     }
   };
 
