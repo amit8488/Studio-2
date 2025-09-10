@@ -7,7 +7,14 @@ export const metadata: Metadata = {
     default: 'ViGha Calculate',
     template: '%s | ViGha Calculate',
   },
-  description: 'A modern land area conversion calculator with regional standards.',
+  description: 'A modern land area conversion calculator with regional standards, supporting Hectare, Are, and Square Meter to Vigha, Guntha, and Acre conversions.',
+  keywords: ['land converter', 'vigha calculator', 'guntha calculator', 'hectare to vigha', 'gujarat land measurement'],
+  authors: [{ name: 'ViGha Calculate Team' }],
+  openGraph: {
+    title: 'ViGha Calculate',
+    description: 'A modern land area conversion calculator with regional standards.',
+    type: 'website',
+  }
 };
 
 export default function RootLayout({
