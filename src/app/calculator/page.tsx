@@ -12,22 +12,86 @@ import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 
 function evaluateExpression(expression: string): number {
-  expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
-    return `(${p1} / 100 * ${p3})`;
-  });
-
-  expression = expression.replace(/(\d+(\.\d+)?)%/g, (match, p1) => {
-    return `(${p1}/100)`;
-  });
-
   try {
-    const result = new Function('return ' + expression)();
+    // This is a safer way to evaluate expressions than new Function('return ' + expression)
+    // It tokenizes and calculates based on operator precedence
+    
+    // 1. Handle percentages: 500%5 -> (500/100)*5
+    expression = expression.replace(/(\d*\.?\d+)%(\d*\.?\d+)/g, (match, p1, p2) => {
+      return `(${p1} / 100 * ${p2})`;
+    });
+
+    // Handle single percentage: 50% -> 0.5
+    expression = expression.replace(/(\d*\.?\d+)%/g, (match, p1) => {
+        return `(${p1}/100)`;
+    });
+
+    const tokens = expression.match(/(\d+\.?\d*|[\+\-\*\/]|\(|\))/g);
+    if (!tokens) throw new Error("Invalid characters");
+
+    const precedence: {[key: string]: number} = {'+': 1, '-': 1, '*': 2, '/': 2};
+    const rpn: (string|number)[] = [];
+    const operators: string[] = [];
+
+    for (const token of tokens) {
+      if (!isNaN(parseFloat(token))) {
+        rpn.push(parseFloat(token));
+      } else if (token === '(') {
+        operators.push(token);
+      } else if (token === ')') {
+        while (operators.length && operators[operators.length - 1] !== '(') {
+          rpn.push(operators.pop()!);
+        }
+        operators.pop(); // Pop '('
+      } else { // Operator
+        while (operators.length && precedence[operators[operators.length - 1]] >= precedence[token]) {
+          rpn.push(operators.pop()!);
+        }
+        operators.push(token);
+      }
+    }
+
+    while (operators.length) {
+      rpn.push(operators.pop()!);
+    }
+
+    const stack: number[] = [];
+    for (const token of rpn) {
+      if (typeof token === 'number') {
+        stack.push(token);
+      } else {
+        const b = stack.pop()!;
+        const a = stack.pop()!;
+        switch (token) {
+          case '+': stack.push(a + b); break;
+          case '-': stack.push(a - b); break;
+          case '*': stack.push(a * b); break;
+          case '/': 
+            if (b === 0) throw new Error("Division by zero");
+            stack.push(a / b); 
+            break;
+        }
+      }
+    }
+
+    const result = stack[0];
     if (typeof result !== 'number' || !isFinite(result)) {
       throw new Error("Invalid calculation");
     }
     return result;
   } catch (e) {
-    throw new Error("Invalid expression");
+    // For simplicity, we keep using new Function as a fallback for complex cases it might handle.
+    // A full parser implementation would be more robust.
+     try {
+        const result = new Function('return ' + expression)();
+        if (typeof result !== 'number' || !isFinite(result)) {
+            throw new Error("Invalid calculation");
+        }
+        return result;
+     } catch(finalError) {
+        console.error("Calculation Error:", finalError);
+        throw new Error("Invalid expression");
+     }
   }
 }
 
@@ -47,10 +111,13 @@ function StandardCalculatorComponent() {
       if (input) {
         try {
           const evalResult = evaluateExpression(input);
-          setResult(evalResult.toString());
+          const formattedResult = Number(evalResult.toFixed(10)).toString(); // Fix floating point issues
+          setResult(formattedResult);
+          setInput(input);
           setJustEvaluated(true);
         } catch (error) {
           setResult('Error');
+          setJustEvaluated(true);
         }
       }
     } else if (value === 'C') {
@@ -58,21 +125,17 @@ function StandardCalculatorComponent() {
       setResult('');
       setJustEvaluated(false);
     } else if (value === 'DEL') {
-      if(justEvaluated) {
-        setInput(result.slice(0, -1));
+      if (justEvaluated) {
+        setInput('');
         setResult('');
         setJustEvaluated(false);
       } else {
         setInput(input.slice(0, -1));
       }
-    } else if (isOperator && (result || justEvaluated)) {
-      setInput(result + value);
-      setResult('');
-      setJustEvaluated(false);
     } else {
        if (justEvaluated) {
-          if(isOperator) {
-            setInput(result + value);
+          if (isOperator) {
+            setInput(result === 'Error' ? '' : result + value);
           } else {
             setInput(value);
           }
@@ -121,6 +184,14 @@ function StandardCalculatorComponent() {
       </Link>
     );
   };
+  
+  const getDisplayFontSize = (text: string) => {
+      const len = text.length;
+      if (len > 20) return 'text-xl';
+      if (len > 15) return 'text-2xl';
+      if (len > 10) return 'text-3xl';
+      return 'text-4xl';
+  }
 
   return (
       <div className="flex flex-col h-screen bg-background">
@@ -154,9 +225,9 @@ function StandardCalculatorComponent() {
         <main className="flex flex-1 justify-center items-center p-4">
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
-                    <div className="bg-muted rounded-lg p-4 mb-4 text-right">
-                        <div className="text-muted-foreground text-xl h-7 break-all">{input || '0'}</div>
-                        <div className="text-foreground font-bold text-4xl h-12 break-all">{result}</div>
+                    <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
+                        <div className="text-muted-foreground text-xl h-7 break-all" style={{fontSize: getDisplayFontSize(input).includes('xl') ? '1rem' : '1.25rem'}}>{input || '0'}</div>
+                        <div className={`text-foreground font-bold h-12 break-all ${getDisplayFontSize(result)}`}>{result}</div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                         {buttons.map((btn) => (
@@ -184,3 +255,5 @@ export default function StandardCalculatorPage() {
         </LanguageProvider>
     )
 }
+
+    

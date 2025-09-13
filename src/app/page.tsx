@@ -98,20 +98,32 @@ function CalculatorComponent() {
   }, [results, inputValue, inputUnit, history, updateHistory]);
 
   const clearHistory = () => {
-    const newHistory = history.filter(item => item.sourcePage !== 'home' && item.sourcePage !== 'seven-twelve');
+    const homeHistory = history.filter(item => item.sourcePage === 'home');
+    const newHistory = history.filter(item => !homeHistory.includes(item));
     updateHistory(newHistory);
   };
 
-  const ResultCard = ({ title, value }: { title: string; value: number }) => (
-    <Card className="text-center shadow-md bg-card">
-      <CardHeader className="p-4">
-        <CardTitle className="text-base font-medium text-muted-foreground">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-4 pt-0">
-        <p className="text-3xl lg:text-4xl font-bold text-primary">{formatNumber(value)}</p>
-      </CardContent>
-    </Card>
-  );
+  const ResultCard = ({ title, value }: { title: string; value: number }) => {
+    const formattedValue = formatNumber(value);
+    const valueLength = formattedValue.length;
+    let fontSize = 'text-3xl lg:text-4xl';
+    if (valueLength > 12) {
+        fontSize = 'text-xl lg:text-2xl';
+    } else if (valueLength > 9) {
+        fontSize = 'text-2xl lg:text-3xl';
+    }
+
+    return (
+        <Card className="text-center shadow-md bg-card">
+          <CardHeader className="p-4">
+            <CardTitle className="text-base font-medium text-muted-foreground">{title}</CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0">
+            <p className={`font-bold text-primary break-all ${fontSize}`}>{formattedValue}</p>
+          </CardContent>
+        </Card>
+      );
+  }
   
   const renderHistoryItemTitle = (item: HistoryItem) => {
     if (item.sourcePage === 'seven-twelve' && item.sevenTwelveInput) {
@@ -137,7 +149,7 @@ function CalculatorComponent() {
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-6">
                         <Link href="/" className="flex items-center gap-2">
-                            <AppLogo className="h-8 w-8 text-primary" />
+                            <AppLogo className="h-8 w-8" />
                             <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
@@ -196,7 +208,7 @@ function CalculatorComponent() {
                         <ResultCard title={t('vigha')} value={results.vigha} />
                         <ResultCard title={t('guntha')} value={results.guntha} />
                         <ResultCard title={t('acre')} value={results.acre} />
-                        <ResultCard title={t('sqft')} value={results.sqft} />
+                        <ResultCard title={t('sqm')} value={results.sqm} />
                         </div>
                     )}
                     </CardContent>
@@ -212,16 +224,16 @@ function CalculatorComponent() {
                             <History />
                             {t('conversionHistory')}
                         </CardTitle>
-                        {history.length > 0 && (
+                        {history.filter(h => h.sourcePage === 'home').length > 0 && (
                             <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
                             <Trash2 className="h-4 w-4" />
                             </Button>
                         )}
                     </CardHeader>
                     <CardContent>
-                    {history.length > 0 ? (
+                    {history.filter(h => h.sourcePage === 'home').length > 0 ? (
                         <div className="space-y-2 max-h-96 overflow-y-auto">
-                        {history.map((item) => (
+                        {history.filter(h => h.sourcePage === 'home').map((item) => (
                             <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
                             <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
                             <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
@@ -248,3 +260,5 @@ export default function Home() {
     </LanguageProvider>
   );
 }
+
+    
