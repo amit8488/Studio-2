@@ -1,7 +1,7 @@
 
 'use client';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FileTextIcon, CalculatorIcon, DivideIcon, PercentIcon, XIcon, PlusIcon, MinusIcon } from 'lucide-react';
+import { DivideIcon, PercentIcon, XIcon, PlusIcon, MinusIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -13,7 +13,7 @@ import { AppLogo } from '@/components/app-logo';
 
 function evaluateExpression(expression: string): number {
   expression = expression.replace(/(\d+(\.\d+)?)%(\d+(\.\d+)?)/g, (match, p1, _, p3) => {
-    return `(${p3} / 100 * ${p1})`;
+    return `(${p1} / 100 * ${p3})`;
   });
 
   expression = expression.replace(/(\d+(\.\d+)?)%/g, (match, p1) => {
@@ -38,22 +38,49 @@ function StandardCalculatorComponent() {
 
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
+  const [justEvaluated, setJustEvaluated] = useState(false);
 
   const handleButtonClick = (value: string) => {
+    const isOperator = ['/', '*', '-', '+'].includes(value);
+
     if (value === '=') {
-      try {
-        const evalResult = evaluateExpression(input);
-        setResult(evalResult.toString());
-      } catch (error) {
-        setResult('Error');
+      if (input) {
+        try {
+          const evalResult = evaluateExpression(input);
+          setResult(evalResult.toString());
+          setJustEvaluated(true);
+        } catch (error) {
+          setResult('Error');
+        }
       }
     } else if (value === 'C') {
       setInput('');
       setResult('');
+      setJustEvaluated(false);
     } else if (value === 'DEL') {
-      setInput(input.slice(0, -1));
+      if(justEvaluated) {
+        setInput(result.slice(0, -1));
+        setResult('');
+        setJustEvaluated(false);
+      } else {
+        setInput(input.slice(0, -1));
+      }
+    } else if (isOperator && (result || justEvaluated)) {
+      setInput(result + value);
+      setResult('');
+      setJustEvaluated(false);
     } else {
-      setInput(input + value);
+       if (justEvaluated) {
+          if(isOperator) {
+            setInput(result + value);
+          } else {
+            setInput(value);
+          }
+          setResult('');
+          setJustEvaluated(false);
+       } else {
+         setInput(input + value);
+       }
     }
   };
   
@@ -102,7 +129,7 @@ function StandardCalculatorComponent() {
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center gap-6">
                         <Link href="/" className="flex items-center gap-2">
-                            <AppLogo className="h-8 w-8 text-primary" />
+                            <AppLogo className="h-8 w-8" />
                             <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
