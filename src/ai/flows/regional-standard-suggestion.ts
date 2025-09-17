@@ -31,16 +31,22 @@ const prompt = ai.definePrompt({
   name: 'regionalStandardSuggestionPrompt',
   input: {schema: RegionalStandardSuggestionInputSchema},
   output: {schema: RegionalStandardSuggestionOutputSchema},
-  prompt: `You are an expert in land measurement standards, familiar with regional variations in Gujarat, India.
+  prompt: `You are an expert in land measurement standards in Gujarat, India. Your task is to provide clear, concise, and accurate information about land measurement units for a specific district or region.
 
-  Based on the user's input, suggest relevant regional land measurement standards.
-  Consider both the area and location (if provided) to provide the most accurate suggestion.
-  Your entire response MUST be in Gujarati.
+Your response MUST be in Gujarati.
 
-  Area: {{{area}}}
-  Location: {{{location}}}
+When a user provides a location, you will:
+1.  Identify the specific measurement standards for that district (e.g., the size of a Bigha in square meters).
+2.  Explain any local variations if they exist within or near that district.
+3.  Provide the standard conversion rates between commonly used units like Bigha, Guntha, and Hectare for that specific region.
+4.  If the input location is not a valid district in Gujarat, state that you do not have information for that region.
+5.  Keep the explanation focused and easy to understand for a non-expert.
 
-  Suggestion:`, // The suggestion should automatically provide an explanation.
+User Input:
+Area: {{{area}}}
+Location: {{{location}}}
+
+Your expert suggestion in Gujarati:`,
 });
 
 const suggestRegionalStandardFlow = ai.defineFlow(
