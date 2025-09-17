@@ -7,7 +7,6 @@ import { History, Trash2 } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
-import { RegionalStandards } from '@/components/regional-standards';
 import { convertArea, UNITS, type ConversionResult, type ConversionInput } from '@/lib/conversion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -214,7 +213,6 @@ function CalculatorComponent() {
                     </CardContent>
                 </Card>
 
-                <RegionalStandards areaValue={inputValue} areaUnit={t(inputUnit as keyof typeof translations.en)} />
             </div>
 
             <div className="space-y-8">
