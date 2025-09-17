@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { translations } from '@/lib/translations';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
+import { useToast } from "@/hooks/use-toast";
 
 type HistoryItem = {
   id: string;
@@ -38,6 +39,7 @@ function CalculatorComponent() {
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     try {
@@ -49,6 +51,11 @@ function CalculatorComponent() {
       console.error("Failed to parse history from localStorage", error);
       setHistory([]);
     }
+    
+    toast({
+      title: t('welcomeTitle'),
+      description: t('welcomeMessage'),
+    });
   }, []);
 
   const updateHistory = useCallback((newItems: HistoryItem[]) => {
@@ -258,5 +265,3 @@ export default function Home() {
     </LanguageProvider>
   );
 }
-
-    
