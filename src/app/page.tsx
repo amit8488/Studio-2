@@ -51,11 +51,6 @@ function CalculatorComponent() {
       console.error("Failed to parse history from localStorage", error);
       setHistory([]);
     }
-    
-    toast({
-      title: t('welcomeTitle'),
-      description: t('welcomeMessage'),
-    });
   }, []);
 
   const updateHistory = useCallback((newItems: HistoryItem[]) => {

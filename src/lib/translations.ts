@@ -22,8 +22,6 @@ export const translations = {
     hectareLabel: 'Hec.',
     areLabel: 'Are',
     sqmLabel: 'Sq.M.',
-    welcomeTitle: 'Welcome!',
-    welcomeMessage: 'Welcome to ViGha Calculate.',
   },
   gu: {
     appName: 'વિઘા કેલ્ક્યુલેટ',
@@ -48,7 +46,5 @@ export const translations = {
     hectareLabel: 'હેક.',
     areLabel: 'એર..',
     sqmLabel: 'ચો.મી.',
-    welcomeTitle: 'આપનું સ્વાગત છે!',
-    welcomeMessage: 'વિઘા કેલ્ક્યુલેટરમાં આપનું સ્વાગત છે.',
   },
 };
