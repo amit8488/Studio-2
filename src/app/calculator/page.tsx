@@ -1,7 +1,7 @@
 
 'use client';
 import { usePathname } from 'next/navigation';
-import { DivideIcon, PercentIcon, XIcon, PlusIcon, MinusIcon } from 'lucide-react';
+import { DivideIcon, PercentIcon, XIcon, PlusIcon, MinusIcon, BackspaceIcon } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -172,6 +172,7 @@ function StandardCalculatorComponent() {
       case '%': return <PercentIcon className="h-6 w-6" />;
       case '+': return <PlusIcon className="h-8 w-8" />;
       case '-': return <MinusIcon className="h-8 w-8" />;
+      case 'DEL': return <BackspaceIcon className="h-8 w-8" />;
       default: return btn;
     }
   };
