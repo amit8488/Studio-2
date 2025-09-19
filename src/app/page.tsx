@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { History, Trash2 } from 'lucide-react';
+import { History, Trash2, Download } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -263,6 +263,12 @@ function CalculatorComponent() {
                     </div>
                 </CardContent>
             </Card>
+        </div>
+        <div className="mt-8 flex justify-center">
+            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold">
+                <Download className="mr-2 h-5 w-5" />
+                Digital RoR Download
+            </Button>
         </div>
       </main>
     </div>
