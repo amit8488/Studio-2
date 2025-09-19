@@ -219,56 +219,55 @@ function CalculatorComponent() {
             </div>
 
             <div className="space-y-8">
-                <Card className="shadow-lg">
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="flex items-center gap-2 text-xl">
-                            <History />
-                            {t('conversionHistory')}
-                        </CardTitle>
-                        {history.filter(h => h.sourcePage === 'home').length > 0 && (
-                            <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
-                            <Trash2 className="h-4 w-4" />
-                            </Button>
-                        )}
-                    </CardHeader>
-                    <CardContent>
-                    {history.filter(h => h.sourcePage === 'home').length > 0 ? (
-                        <div className="space-y-2 max-h-96 overflow-y-auto">
-                        {history.filter(h => h.sourcePage === 'home').map((item) => (
-                            <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
-                            <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
-                            <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
-                            </div>
-                        ))}
+                 <Card className="shadow-lg">
+                    <CardContent className="p-4">
+                        <div className="aspect-[4/1] relative">
+                            <Image
+                                src="https://i.ibb.co/v4cmczR/01.jpg"
+                                alt="Advertisement"
+                                fill
+                                className="rounded-md object-cover"
+                                data-ai-hint="advertisement banner"
+                            />
                         </div>
-                    ) : (
-                        <p className="text-muted-foreground text-center p-4">{t('noHistory')}</p>
-                    )}
                     </CardContent>
                 </Card>
+                <div className="flex justify-center">
+                    <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold">
+                        <Download className="mr-2 h-5 w-5" />
+                        Digital RoR Download
+                    </Button>
+                </div>
             </div>
-
         </div>
         <div className="mt-8">
             <Card className="shadow-lg">
-                <CardContent className="p-4">
-                    <div className="aspect-[4/1] relative">
-                        <Image
-                            src="https://i.ibb.co/v4cmczR/01.jpg"
-                            alt="Advertisement"
-                            fill
-                            className="rounded-md object-cover"
-                            data-ai-hint="advertisement banner"
-                        />
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle className="flex items-center gap-2 text-xl">
+                        <History />
+                        {t('conversionHistory')}
+                    </CardTitle>
+                    {history.filter(h => h.sourcePage === 'home').length > 0 && (
+                        <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
+                        <Trash2 className="h-4 w-4" />
+                        </Button>
+                    )}
+                </CardHeader>
+                <CardContent>
+                {history.filter(h => h.sourcePage === 'home').length > 0 ? (
+                    <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {history.filter(h => h.sourcePage === 'home').map((item) => (
+                        <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
+                        <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
+                        <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
+                        </div>
+                    ))}
                     </div>
+                ) : (
+                    <p className="text-muted-foreground text-center p-4">{t('noHistory')}</p>
+                )}
                 </CardContent>
             </Card>
-        </div>
-        <div className="mt-8 flex justify-center">
-            <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold">
-                <Download className="mr-2 h-5 w-5" />
-                Digital RoR Download
-            </Button>
         </div>
       </main>
     </div>
@@ -282,5 +281,3 @@ export default function Home() {
     </LanguageProvider>
   );
 }
-
-    
