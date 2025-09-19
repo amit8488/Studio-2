@@ -231,6 +231,14 @@ function CalculatorComponent() {
                         </div>
                     </CardContent>
                 </Card>
+                <div className="flex justify-center">
+                  <Button size="lg" className="w-full max-w-sm" asChild>
+                    <Link href="https://anyror.gujarat.gov.in/emilkat/General.aspx" target="_blank" rel="noopener noreferrer">
+                      <Download className="mr-2 h-4 w-4" />
+                      {t('digitalRoR')}
+                    </Link>
+                  </Button>
+                </div>
             </div>
         </div>
         <div className="mt-8">
