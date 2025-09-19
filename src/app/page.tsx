@@ -220,7 +220,7 @@ function CalculatorComponent() {
             <div className="space-y-8">
                  <Card className="shadow-lg">
                     <CardContent className="p-4">
-                        <div className="aspect-[4/1] relative">
+                        <div className="aspect-[16/9] relative">
                             <Image
                                 src="https://i.ibb.co/v4cmczR2/01.jpg"
                                 alt="Advertisement"
