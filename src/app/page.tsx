@@ -215,7 +215,6 @@ function CalculatorComponent() {
                     )}
                     </CardContent>
                 </Card>
-
             </div>
 
             <div className="space-y-8">
@@ -223,7 +222,7 @@ function CalculatorComponent() {
                     <CardContent className="p-4">
                         <div className="aspect-[4/1] relative">
                             <Image
-                                src="https://i.ibb.co/v4cmczR/01.jpg"
+                                src="https://i.ibb.co/v4cmczR2/01.jpg"
                                 alt="Advertisement"
                                 fill
                                 className="rounded-md object-cover"
@@ -235,7 +234,7 @@ function CalculatorComponent() {
                 <div className="flex justify-center">
                     <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg font-bold">
                         <Download className="mr-2 h-5 w-5" />
-                        Digital RoR Download
+                        {t('digitalRoR')}
                     </Button>
                 </div>
             </div>
@@ -281,3 +280,5 @@ export default function Home() {
     </LanguageProvider>
   );
 }
+
+    

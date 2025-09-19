@@ -1,3 +1,4 @@
+
 export const translations = {
   en: {
     appName: 'ViGha Calculate',
@@ -33,8 +34,10 @@ export const translations = {
     conversionHistory: 'રૂપાંતરણ ઇતિહાસ',
     noHistory: 'હજી સુધી કોઈ રૂપાંતરણ નથી.',
     hectareLabel: 'હેક.',
-    areLabel: 'એર..',
+    areLabel: 'એર.',
     sqmLabel: 'ચો.મી.',
     digitalRoR: 'ડિજિટલ RoR ડાઉનલોડ કરો',
   },
 };
+
+    
