@@ -16,6 +16,7 @@ import { translations } from '@/lib/translations';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { useToast } from "@/hooks/use-toast";
+import Image from 'next/image';
 
 type HistoryItem = {
   id: string;
@@ -172,8 +173,8 @@ function CalculatorComponent() {
             </div>
         </header>
       <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="md:col-span-1 space-y-8">
                 <Card className="w-full shadow-lg">
                     <CardContent className="p-6 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
@@ -205,7 +206,7 @@ function CalculatorComponent() {
                     </div>
 
                     {results && (
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 animate-in fade-in duration-500">
+                        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 pt-4 animate-in fade-in duration-500">
                         <ResultCard title={t('vigha')} value={results.vigha} />
                         <ResultCard title={t('guntha')} value={results.guntha} />
                         <ResultCard title={t('acre')} value={results.acre} />
@@ -247,6 +248,21 @@ function CalculatorComponent() {
                 </Card>
             </div>
 
+        </div>
+        <div className="mt-8">
+            <Card className="shadow-lg">
+                <CardContent className="p-4">
+                    <div className="aspect-[4/1] relative">
+                        <Image
+                            src="https://picsum.photos/seed/advert/1200/300"
+                            alt="Advertisement"
+                            fill
+                            className="rounded-md object-cover"
+                            data-ai-hint="advertisement banner"
+                        />
+                    </div>
+                </CardContent>
+            </Card>
         </div>
       </main>
     </div>
