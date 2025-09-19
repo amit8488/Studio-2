@@ -176,7 +176,7 @@ function SevenTwelveToVighaComponent() {
         <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6">
             <div className="grid md:grid-cols-3 gap-8">
                 <div className="md:col-span-2 flex flex-col items-center text-center">
-                    <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 ViGha</h2>
+                    <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12/8અ નકલ</h2>
                     <Card className="w-full max-w-lg shadow-lg">
                         <CardContent className="p-6">
                             <div className="grid grid-cols-3 gap-4 text-center">
@@ -266,5 +266,3 @@ export default function SevenTwelveToVighaPage() {
         </LanguageProvider>
     )
 }
-
-    
