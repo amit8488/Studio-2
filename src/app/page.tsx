@@ -254,7 +254,7 @@ function CalculatorComponent() {
                 <CardContent className="p-4">
                     <div className="aspect-[4/1] relative">
                         <Image
-                            src="https://picsum.photos/seed/advert/1200/300"
+                            src="https://i.ibb.co/v4cmczR/01.jpg"
                             alt="Advertisement"
                             fill
                             className="rounded-md object-cover"
@@ -282,3 +282,5 @@ export default function Home() {
     </LanguageProvider>
   );
 }
+
+    
