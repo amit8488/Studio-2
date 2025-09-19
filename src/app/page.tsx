@@ -218,19 +218,6 @@ function CalculatorComponent() {
             </div>
 
             <div className="space-y-8">
-                 <Card className="shadow-lg">
-                    <CardContent className="p-4">
-                        <div className="aspect-[16/9] relative">
-                            <Image
-                                src="https://i.ibb.co/v4cmczR2/01.jpg"
-                                alt="Advertisement"
-                                fill
-                                className="rounded-md object-cover"
-                                data-ai-hint="advertisement banner"
-                            />
-                        </div>
-                    </CardContent>
-                </Card>
                 <div className="flex justify-center">
                   <Button size="lg" className="w-full max-w-sm" asChild>
                     <Link href="https://anyror.gujarat.gov.in/emilkat/General.aspx" target="_blank" rel="noopener noreferrer">
