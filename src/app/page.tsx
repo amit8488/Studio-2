@@ -220,7 +220,7 @@ function CalculatorComponent() {
             <div className="space-y-8">
                 <div className="flex justify-center">
                   <Button size="lg" className="w-full max-w-sm" asChild>
-                    <Link href="https://anyror.gujarat.gov.in/emilkat/General.aspx" target="_blank" rel="noopener noreferrer">
+                    <Link href="https://anyror.gujarat.gov.in/home.aspx" target="_blank" rel="noopener noreferrer">
                       <Download className="mr-2 h-4 w-4" />
                       {t('digitalRoR')}
                     </Link>
