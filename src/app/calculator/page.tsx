@@ -224,7 +224,7 @@ function StandardCalculatorComponent() {
                             <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
-                            <NavLink href="/">Home</NavLink>
+                            <NavLink href="/" isBold={true}>Home</NavLink>
                             <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                             <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                         </nav>
@@ -235,7 +235,7 @@ function StandardCalculatorComponent() {
                     </div>
                 </div>
                  <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
-                    <NavLink href="/">Home</NavLink>
+                    <NavLink href="/" isBold={true}>Home</NavLink>
                     <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                     <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                 </nav>
@@ -246,7 +246,7 @@ function StandardCalculatorComponent() {
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
-                        <div className="text-foreground font-bold text-xl h-7 break-all" style={{fontSize: getDisplayFontSize(input).includes('xl') ? '1rem' : '1.25rem'}}>{input || '0'}</div>
+                        <div className={`text-foreground font-bold h-7 break-all ${getDisplayFontSize(input)}`}>{input || '0'}</div>
                         <div className={`text-foreground font-bold h-12 break-all ${getDisplayFontSize(result)}`}>{result}</div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">

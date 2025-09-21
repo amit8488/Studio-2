@@ -156,7 +156,7 @@ function SevenTwelveToVighaComponent() {
                             <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
-                            <NavLink href="/">Home</NavLink>
+                            <NavLink href="/" isBold={true}>Home</NavLink>
                             <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                             <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                         </nav>
@@ -167,7 +167,7 @@ function SevenTwelveToVighaComponent() {
                     </div>
                 </div>
                  <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
-                    <NavLink href="/">Home</NavLink>
+                    <NavLink href="/" isBold={true}>Home</NavLink>
                     <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                     <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                 </nav>
