@@ -207,10 +207,17 @@ function StandardCalculatorComponent() {
   
   const getDisplayFontSize = (text: string) => {
       const len = text.length;
-      if (len > 20) return 'text-xl';
       if (len > 15) return 'text-2xl';
       if (len > 10) return 'text-3xl';
       return 'text-4xl';
+  }
+  
+  const getInputFontSize = (text: string) => {
+      const len = text.length;
+      if (len > 20) return 'text-lg';
+      if (len > 15) return 'text-xl';
+      if (len > 10) return 'text-2xl';
+      return 'text-3xl';
   }
 
   return (
@@ -246,7 +253,7 @@ function StandardCalculatorComponent() {
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
-                        <div className={`text-foreground h-7 break-all ${getDisplayFontSize(input)}`}>{input || '0'}</div>
+                        <div className={`text-muted-foreground h-7 break-all ${getInputFontSize(input)}`}>{input || '0'}</div>
                         <div className={`text-foreground font-bold h-12 break-all ${getDisplayFontSize(result)}`}>{result}</div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
@@ -275,3 +282,5 @@ export default function StandardCalculatorPage() {
         </LanguageProvider>
     )
 }
+
+    
