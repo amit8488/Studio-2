@@ -17,25 +17,23 @@ export function LanguageToggle() {
   };
 
   const getSpanClass = (lang: 'en' | 'gu') => {
-    if (!isMounted) return '';
+    if (!isMounted) return 'opacity-0'; 
     const isActive = language === lang;
-    return `transition-all duration-300 ease-in-out ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`;
+    return `transition-all duration-300 ease-in-out ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`;
   }
 
   if (!isMounted) {
     return (
-        <Button variant="ghost" className="font-bold text-lg w-12 relative" aria-label="Toggle Language">
-            <span>{language === 'en' ? 'ગુ' : 'EN'}</span>
-        </Button>
+        <Button variant="ghost" size="icon" className="font-bold text-lg w-12" aria-label="Toggle Language" />
     );
   }
 
   return (
-    <Button variant="ghost" onClick={toggleLanguage} className="font-bold text-lg w-12 relative overflow-hidden" aria-label="Toggle Language">
-      <span className={`absolute ${getSpanClass('gu')} ${language === 'en' ? '' : 'rotate-0'} ${language === 'gu' ? '-rotate-90' : ''}`}>
+    <Button variant="ghost" size="icon" onClick={toggleLanguage} className="font-bold text-lg w-12 relative overflow-hidden" aria-label="Toggle Language">
+      <span className={`absolute inset-0 flex items-center justify-center ${getSpanClass('gu')}`}>
         ગુ
       </span>
-      <span className={`absolute ${getSpanClass('en')} ${language === 'gu' ? '' : 'rotate-0'} ${language === 'en' ? 'rotate-90' : ''}`}>
+      <span className={`absolute inset-0 flex items-center justify-center ${getSpanClass('en')}`}>
         EN
       </span>
     </Button>
