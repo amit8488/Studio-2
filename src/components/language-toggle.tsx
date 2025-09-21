@@ -16,7 +16,15 @@ export function LanguageToggle() {
     setLanguage(language === 'en' ? 'gu' : 'en');
   };
 
-  const transitionClasses = hasMounted ? 'transition-all duration-300 ease-in-out' : '';
+  const transitionClasses = 'transition-all duration-300 ease-in-out';
+
+  if (!hasMounted) {
+    return (
+        <Button variant="ghost" className="font-bold text-lg w-12 relative" aria-label="Toggle Language">
+            <span>{language === 'en' ? 'ગુ' : 'EN'}</span>
+        </Button>
+    );
+  }
 
   return (
     <Button variant="ghost" onClick={toggleLanguage} className="font-bold text-lg w-12 relative overflow-hidden" aria-label="Toggle Language">
