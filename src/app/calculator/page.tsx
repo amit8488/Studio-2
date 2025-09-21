@@ -196,10 +196,10 @@ function StandardCalculatorComponent() {
     }
   };
 
-  const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+  const NavLink = ({ href, children, isBold = false }: { href: string; children: React.ReactNode, isBold?: boolean }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={`px-3 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'}`}>
+      <Link href={href} className={`px-3 py-2 text-sm rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'} ${isBold ? 'font-bold' : 'font-medium'}`}>
         {children}
       </Link>
     );
@@ -225,7 +225,7 @@ function StandardCalculatorComponent() {
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
                             <NavLink href="/">Home</NavLink>
-                            <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                            <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                             <NavLink href="/calculator">Calculator</NavLink>
                         </nav>
                     </div>
@@ -236,7 +236,7 @@ function StandardCalculatorComponent() {
                 </div>
                  <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
                     <NavLink href="/">Home</NavLink>
-                    <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                    <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                     <NavLink href="/calculator">Calculator</NavLink>
                 </nav>
             </div>
@@ -246,7 +246,7 @@ function StandardCalculatorComponent() {
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
-                        <div className="text-foreground text-xl h-7 break-all" style={{fontSize: getDisplayFontSize(input).includes('xl') ? '1rem' : '1.25rem'}}>{input || '0'}</div>
+                        <div className="text-foreground font-bold text-xl h-7 break-all" style={{fontSize: getDisplayFontSize(input).includes('xl') ? '1rem' : '1.25rem'}}>{input || '0'}</div>
                         <div className={`text-foreground font-bold h-12 break-all ${getDisplayFontSize(result)}`}>{result}</div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">

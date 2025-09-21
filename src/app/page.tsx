@@ -135,10 +135,10 @@ function CalculatorComponent() {
     return `${item.input.value} ${t(item.input.unit as keyof typeof translations.en)}`;
   };
   
-    const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+  const NavLink = ({ href, children, isBold = false }: { href: string; children: React.ReactNode, isBold?: boolean }) => {
     const isActive = pathname === href;
     return (
-      <Link href={href} className={`px-3 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'}`}>
+      <Link href={href} className={`px-3 py-2 text-sm rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'} ${isBold ? 'font-bold' : 'font-medium'}`}>
         {children}
       </Link>
     );
@@ -156,7 +156,7 @@ function CalculatorComponent() {
                         </Link>
                         <nav className="hidden md:flex items-center gap-4">
                             <NavLink href="/">Home</NavLink>
-                            <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                            <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                             <NavLink href="/calculator">Calculator</NavLink>
                         </nav>
                     </div>
@@ -167,7 +167,7 @@ function CalculatorComponent() {
                 </div>
                  <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
                     <NavLink href="/">Home</NavLink>
-                    <NavLink href="/seven-twelve-to-vigha">7/12 ViGha</NavLink>
+                    <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
                     <NavLink href="/calculator">Calculator</NavLink>
                 </nav>
             </div>
