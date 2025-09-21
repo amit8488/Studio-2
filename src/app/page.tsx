@@ -172,7 +172,7 @@ function CalculatorComponent() {
                 </nav>
             </div>
         </header>
-      <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6">
+      <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6 animate-in fade-in duration-500">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="md:col-span-1 space-y-8">
                 <Card className="w-full shadow-lg">

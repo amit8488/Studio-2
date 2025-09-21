@@ -173,7 +173,7 @@ function SevenTwelveToVighaComponent() {
                 </nav>
             </div>
         </header>
-        <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6">
+        <main className="flex-grow container mx-auto max-w-4xl p-4 sm:p-6 animate-in fade-in duration-500">
             <div className="grid md:grid-cols-3 gap-8">
                 <div className="md:col-span-2 flex flex-col items-center text-center">
                     <h2 className="text-2xl sm:text-3xl font-bold font-headline text-primary mb-8">7/12 to ViGha Converter</h2>

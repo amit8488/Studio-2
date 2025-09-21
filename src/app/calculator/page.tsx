@@ -242,7 +242,7 @@ function StandardCalculatorComponent() {
             </div>
         </header>
 
-        <main className="flex flex-1 justify-center items-center p-4">
+        <main className="flex flex-1 justify-center items-center p-4 animate-in fade-in duration-500">
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
