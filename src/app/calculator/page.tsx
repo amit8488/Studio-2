@@ -246,7 +246,7 @@ function StandardCalculatorComponent() {
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
-                        <div className={`text-foreground font-bold h-7 break-all ${getDisplayFontSize(input)}`}>{input || '0'}</div>
+                        <div className={`text-foreground h-7 break-all ${getDisplayFontSize(input)}`}>{input || '0'}</div>
                         <div className={`text-foreground font-bold h-12 break-all ${getDisplayFontSize(result)}`}>{result}</div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
