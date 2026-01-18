@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, firebaseConfig } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -19,8 +20,11 @@ export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
 
+  const isConfigPlaceholder = firebaseConfig.apiKey === 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isConfigPlaceholder) return;
     setIsLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -67,6 +71,17 @@ export default function SignupPage() {
             <CardDescription>Create an account to get started.</CardDescription>
           </CardHeader>
           <CardContent>
+            {isConfigPlaceholder && (
+              <Alert variant="destructive" className="mb-4 text-left">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Action Required</AlertTitle>
+                <AlertDescription>
+                  Your Firebase configuration is missing. Please update{' '}
+                  <code className="font-mono text-xs bg-destructive-foreground/20 p-1 rounded">src/lib/firebase.ts</code>{' '}
+                  with your project&apos;s credentials from the Firebase Console.
+                </AlertDescription>
+              </Alert>
+            )}
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -77,6 +92,7 @@ export default function SignupPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  disabled={isConfigPlaceholder || isLoading}
                 />
               </div>
               <div className="space-y-2">
@@ -87,9 +103,10 @@ export default function SignupPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={isConfigPlaceholder || isLoading}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isConfigPlaceholder || isLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign Up
               </Button>

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, firebaseConfig } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -27,8 +28,11 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
+  const isConfigPlaceholder = firebaseConfig.apiKey === 'AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isConfigPlaceholder) return;
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -67,6 +71,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
+    if (isConfigPlaceholder) return;
     setIsGoogleLoading(true);
     try {
         const provider = new GoogleAuthProvider();
@@ -111,6 +116,17 @@ export default function LoginPage() {
             <CardDescription>Enter your credentials or use Google to sign in.</CardDescription>
           </CardHeader>
           <CardContent>
+            {isConfigPlaceholder && (
+              <Alert variant="destructive" className="mb-4 text-left">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Action Required</AlertTitle>
+                <AlertDescription>
+                  Your Firebase configuration is missing. Please update{' '}
+                  <code className="font-mono text-xs bg-destructive-foreground/20 p-1 rounded">src/lib/firebase.ts</code>{' '}
+                  with your project&apos;s credentials from the Firebase Console.
+                </AlertDescription>
+              </Alert>
+            )}
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -121,7 +137,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled={isGoogleLoading}
+                  disabled={isConfigPlaceholder || isGoogleLoading || isLoading}
                 />
               </div>
               <div className="space-y-2">
@@ -132,10 +148,10 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  disabled={isGoogleLoading}
+                  disabled={isConfigPlaceholder || isGoogleLoading || isLoading}
                 />
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading || isGoogleLoading}>
+              <Button type="submit" className="w-full" disabled={isConfigPlaceholder || isLoading || isGoogleLoading}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Log In
               </Button>
@@ -150,7 +166,7 @@ export default function LoginPage() {
                 </span>
               </div>
             </div>
-            <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleGoogleSignIn} disabled={isLoading || isGoogleLoading}>
+            <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleGoogleSignIn} disabled={isConfigPlaceholder || isLoading || isGoogleLoading}>
                 {isGoogleLoading ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (

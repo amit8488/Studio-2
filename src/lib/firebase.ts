@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 
 // IMPORTANT: Replace with your actual Firebase project configuration
 // You can find these values in your Firebase project settings.
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
   authDomain: "your-project-id.firebaseapp.com",
   projectId: "your-project-id",
