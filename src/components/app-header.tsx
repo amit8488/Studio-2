@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { LogIn, LogOut, User as UserIcon } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { LogIn, LogOut, User as UserIcon, ArrowLeft } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 
 import { AppLogo } from '@/components/app-logo';
@@ -35,28 +35,39 @@ const NavLink = ({ href, children, isBold = false }: { href: string; children: R
 export function AppHeader() {
     const { user, loading } = useAuth();
     const { toast } = useToast();
+    const pathname = usePathname();
+    const router = useRouter();
 
     const handleLogout = async () => {
         await signOut(auth);
         toast({ title: 'Logged out successfully.' });
     };
 
+    const showBackButton = pathname !== '/';
+
     return (
         <header className="border-b">
             <div className="container mx-auto px-4 sm:px-6">
-                <div className="flex items-center justify-between h-16">
-                    <div className="flex items-center gap-6">
+                <div className="relative flex items-center h-16">
+                    <div className="flex items-center gap-4">
+                        {showBackButton && (
+                            <Button variant="ghost" size="icon" onClick={() => router.back()} aria-label="Go back">
+                                <ArrowLeft className="h-6 w-6" />
+                            </Button>
+                        )}
                         <Link href="/" className="flex items-center gap-2">
                             <AppLogo className="h-8 w-8" />
                             <span className="font-bold text-lg text-primary hidden sm:block">Calculator</span>
                         </Link>
-                        <nav className="hidden md:flex items-center gap-4">
-                            <NavLink href="/" isBold={true}>Home</NavLink>
-                            <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
-                            <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
-                        </nav>
                     </div>
-                    <div className="flex items-center gap-2">
+
+                    <nav className="hidden md:flex items-center gap-4 absolute left-1/2 -translate-x-1/2">
+                        <NavLink href="/" isBold={true}>Home</NavLink>
+                        <NavLink href="/seven-twelve-to-vigha" isBold={true}>7/12 ViGha</NavLink>
+                        <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
+                    </nav>
+
+                    <div className="flex items-center gap-2 ml-auto">
                         <LanguageToggle />
                         <ThemeToggle />
                         {!loading && (
