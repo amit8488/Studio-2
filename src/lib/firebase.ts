@@ -4,12 +4,13 @@ import { getAuth } from 'firebase/auth';
 // IMPORTANT: Replace with your actual Firebase project configuration
 // You can find these values in your Firebase project settings.
 export const firebaseConfig = {
-  apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  authDomain: "your-project-id.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project-id.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:1234567890abcdef123456",
+  apiKey: "AIzaSyCCuv7JPPVbPJZxQVz4EBwP5MJ-pLR4GfY",
+  authDomain: "vigha-calculate.firebaseapp.com",
+  projectId: "vigha-calculate",
+  storageBucket: "vigha-calculate.appspot.com",
+  messagingSenderId: "731017751410",
+  appId: "1:731017751410:web:a1866fb14d0fe5e6e3cbeb",
+  measurementId: ""
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
