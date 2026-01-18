@@ -57,6 +57,8 @@ export function AppHeader() {
                         </nav>
                     </div>
                     <div className="flex items-center gap-2">
+                        <LanguageToggle />
+                        <ThemeToggle />
                         {!loading && (
                           user ? (
                               <DropdownMenu>
@@ -95,8 +97,6 @@ export function AppHeader() {
                               </Button>
                           )
                         )}
-                        <LanguageToggle />
-                        <ThemeToggle />
                     </div>
                 </div>
                  <nav className="md:hidden flex items-center justify-center gap-2 pb-2">
