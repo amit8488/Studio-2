@@ -1,9 +1,8 @@
-
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { History, Trash2, Download } from 'lucide-react';
+import { History, Trash2, Download, LogIn } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -160,7 +159,13 @@ function CalculatorComponent() {
                             <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                         </nav>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
+                        <Button asChild>
+                            <Link href="/login">
+                                <LogIn className="h-4 w-4 mr-2" />
+                                Log In
+                            </Link>
+                        </Button>
                         <LanguageToggle />
                         <ThemeToggle />
                     </div>

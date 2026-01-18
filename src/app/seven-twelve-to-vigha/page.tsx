@@ -1,7 +1,6 @@
-
 'use client';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FileTextIcon, History, Trash2, CalculatorIcon } from 'lucide-react';
+import { HomeIcon, FileTextIcon, History, Trash2, CalculatorIcon, LogIn } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -161,7 +160,13 @@ function SevenTwelveToVighaComponent() {
                             <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                         </nav>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
+                        <Button asChild>
+                            <Link href="/login">
+                                <LogIn className="h-4 w-4 mr-2" />
+                                Log In
+                            </Link>
+                        </Button>
                         <LanguageToggle />
                         <ThemeToggle />
                     </div>

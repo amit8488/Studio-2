@@ -1,7 +1,6 @@
-
 'use client';
 import { usePathname } from 'next/navigation';
-import { Divide, Percent, X, Plus, Minus } from 'lucide-react';
+import { Divide, Percent, X, Plus, Minus, LogIn } from 'lucide-react';
 import { LanguageProvider, useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
@@ -236,7 +235,13 @@ function StandardCalculatorComponent() {
                             <NavLink href="/calculator" isBold={true}>Calculator</NavLink>
                         </nav>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
+                        <Button asChild>
+                            <Link href="/login">
+                                <LogIn className="h-4 w-4 mr-2" />
+                                Log In
+                            </Link>
+                        </Button>
                         <LanguageToggle />
                         <ThemeToggle />
                     </div>
@@ -253,8 +258,8 @@ function StandardCalculatorComponent() {
             <Card className="w-full max-w-sm shadow-lg">
                 <CardContent className="p-4">
                     <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
-                        <div className={`text-muted-foreground h-7 break-all ${getInputFontSize(input)}`}>{input || '0'}</div>
-                        <div className={`text-foreground font-bold h-12 break-all ${getDisplayFontSize(result)}`}>{result}</div>
+                        <div className={`text-muted-foreground h-10 flex items-center justify-end break-all ${getInputFontSize(input)}`}>{input || '0'}</div>
+                        <div className={`text-foreground font-bold h-12 flex items-center justify-end break-all ${getDisplayFontSize(result)}`}>{result}</div>
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                         {buttons.map((btn) => (
@@ -282,5 +287,3 @@ export default function StandardCalculatorPage() {
         </LanguageProvider>
     )
 }
-
-    
