@@ -12,6 +12,8 @@ import { translations } from '@/lib/translations';
 import Link from 'next/link';
 import { AppHeader } from '@/components/app-header';
 import { useHistory, type HistoryItem } from '@/hooks/use-history';
+import { useAuth } from '@/contexts/auth-context';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 
 const formatNumber = (num: number) => {
@@ -27,6 +29,23 @@ function CalculatorComponent() {
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
   const { history, addHistory, clearHistory } = useHistory('home');
+  const { user, loading: authLoading } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  useEffect(() => {
+    // Show login prompt on first visit this session if not logged in
+    if (!authLoading && !user) {
+      const modalShown = sessionStorage.getItem('loginModalShown');
+      if (!modalShown) {
+        // Use a timeout to avoid being too intrusive immediately on load
+        const timer = setTimeout(() => {
+            setShowLoginModal(true);
+            sessionStorage.setItem('loginModalShown', 'true');
+        }, 1500); // 1.5 second delay
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [user, authLoading]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -188,6 +207,26 @@ function CalculatorComponent() {
             </Card>
         </div>
       </main>
+      <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
+        <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+                <DialogTitle>Welcome to ViGha Calculate!</DialogTitle>
+                <DialogDescription>
+                    Log in to save your conversion history and access it from any device.
+                </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+                <Button variant="outline" onClick={() => setShowLoginModal(false)}>
+                    Maybe Later
+                </Button>
+                <Button asChild onClick={() => setShowLoginModal(false)}>
+                    <Link href="/login">
+                        Log In
+                    </Link>
+                </Button>
+            </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
