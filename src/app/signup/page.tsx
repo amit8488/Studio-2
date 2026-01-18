@@ -27,10 +27,25 @@ export default function SignupPage() {
       toast({ title: 'Success', description: 'Account created successfully! Please log in.' });
       router.push('/login');
     } catch (error: any) {
+      let description = "An unexpected error occurred. Please try again.";
+      switch(error.code) {
+        case 'auth/email-already-in-use':
+          description = "This email is already registered. Please try logging in.";
+          break;
+        case 'auth/invalid-email':
+          description = "The email address is not valid.";
+          break;
+        case 'auth/weak-password':
+          description = "The password is too weak. Please use at least 6 characters.";
+          break;
+        default:
+          console.error("Firebase Auth Error:", error);
+          description = "Could not create account. Please ensure you have enabled Email/Password sign-in in your Firebase project and that your project configuration is correct.";
+      }
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: error.message,
+        title: 'Sign Up Failed',
+        description: description,
       });
     } finally {
         setIsLoading(false);

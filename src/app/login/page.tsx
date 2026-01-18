@@ -27,10 +27,28 @@ export default function LoginPage() {
       toast({ title: 'Success', description: 'Logged in successfully!' });
       router.push('/');
     } catch (error: any) {
+        let description = "An unexpected error occurred. Please try again.";
+  
+        switch(error.code) {
+          case 'auth/invalid-email':
+            description = "The email address is not valid.";
+            break;
+          case 'auth/user-disabled':
+            description = "This user account has been disabled.";
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+          case 'auth/invalid-credential':
+            description = "Invalid email or password. Please check your credentials and try again.";
+            break;
+          default:
+            console.error("Firebase Auth Error:", error);
+            description = "Could not log in. Please ensure you have enabled Email/Password sign-in in your Firebase project and that your project configuration is correct.";
+        }
       toast({
         variant: 'destructive',
-        title: 'Error',
-        description: error.message,
+        title: 'Login Failed',
+        description: description,
       });
     } finally {
       setIsLoading(false);
