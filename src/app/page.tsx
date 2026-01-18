@@ -11,15 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { translations } from '@/lib/translations';
 import Link from 'next/link';
 import { AppHeader } from '@/components/app-header';
+import { useHistory, type HistoryItem } from '@/hooks/use-history';
 
-
-type HistoryItem = {
-  id: string;
-  input: ConversionInput;
-  result: ConversionResult;
-  sourcePage: 'home' | 'seven-twelve';
-  sevenTwelveInput?: { hectare: string; are: string; sqm: string };
-};
 
 const formatNumber = (num: number) => {
   if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -33,25 +26,7 @@ function CalculatorComponent() {
   const { t } = useLanguage();
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-
-  useEffect(() => {
-    try {
-      const storedHistory = localStorage.getItem('conversionHistory');
-      if (storedHistory) {
-        setHistory(JSON.parse(storedHistory));
-      }
-    } catch (error) {
-      console.error("Failed to parse history from localStorage", error);
-      setHistory([]);
-    }
-  }, []);
-
-  const updateHistory = useCallback((newItems: HistoryItem[]) => {
-    const updatedHistory = [...newItems].slice(0, 10);
-    setHistory(updatedHistory);
-    localStorage.setItem('conversionHistory', JSON.stringify(updatedHistory));
-  }, []);
+  const { history, addHistory, clearHistory } = useHistory('home');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -76,27 +51,23 @@ function CalculatorComponent() {
     const value = parseFloat(inputValue);
     if (results && value > 0) {
       const timer = setTimeout(() => {
-        const currentConversion: HistoryItem = {
-          id: new Date().toISOString(),
+        const currentInput = { value, unit: inputUnit };
+
+        // Prevent adding if it's the same as the most recent entry
+        if (history[0] && history[0].input.value === currentInput.value && history[0].input.unit === currentInput.unit) {
+          return;
+        }
+
+        addHistory({
           input: { value, unit: inputUnit },
           result: results,
-          sourcePage: 'home'
-        };
-        
-        const historyWithoutCurrent = history.filter(item => !(item.sourcePage === 'home' && item.input.unit === inputUnit && item.input.value === value));
-        const newHistory = [currentConversion, ...historyWithoutCurrent];
-        updateHistory(newHistory);
-
+          sourcePage: 'home',
+        });
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, inputValue, inputUnit, history, updateHistory]);
+  }, [results, inputValue, inputUnit, addHistory, history]);
 
-  const clearHistory = () => {
-    const homeHistory = history.filter(item => item.sourcePage === 'home');
-    const newHistory = history.filter(item => !homeHistory.includes(item));
-    updateHistory(newHistory);
-  };
 
   const ResultCard = ({ title, value }: { title: string; value: number }) => {
     const formattedValue = formatNumber(value);
@@ -194,16 +165,16 @@ function CalculatorComponent() {
                         <History />
                         {t('conversionHistory')}
                     </CardTitle>
-                    {history.filter(h => h.sourcePage === 'home').length > 0 && (
+                    {history.length > 0 && (
                         <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
                         <Trash2 className="h-4 w-4" />
                         </Button>
                     )}
                 </CardHeader>
                 <CardContent>
-                {history.filter(h => h.sourcePage === 'home').length > 0 ? (
+                {history.length > 0 ? (
                     <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {history.filter(h => h.sourcePage === 'home').map((item) => (
+                    {history.map((item) => (
                         <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
                         <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
                         <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>

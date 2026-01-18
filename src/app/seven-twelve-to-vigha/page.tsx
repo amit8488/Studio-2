@@ -8,6 +8,7 @@ import { convertArea, type ConversionResult, type ConversionInput, UNITS } from 
 import { Button } from '@/components/ui/button';
 import { translations } from '@/lib/translations';
 import { AppHeader } from '@/components/app-header';
+import { useHistory, type HistoryItem } from '@/hooks/use-history';
 
 const formatNumber = (num: number) => {
     if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -17,40 +18,13 @@ const formatNumber = (num: number) => {
     });
   };
 
-type HistoryItem = {
-    id: string;
-    input: ConversionInput;
-    result: ConversionResult;
-    sourcePage: 'home' | 'seven-twelve';
-    sevenTwelveInput?: { hectare: string; are: string; sqm: string };
-};
-  
 function SevenTwelveToVighaComponent() {
   const { t } = useLanguage();
 
   const [hectare, setHectare] = useState('');
   const [are, setAre] = useState('');
   const [sqm, setSqm] = useState('');
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-
-  useEffect(() => {
-    try {
-      const storedHistory = localStorage.getItem('conversionHistory');
-      if (storedHistory) {
-        setHistory(JSON.parse(storedHistory));
-      }
-    } catch (error) {
-      console.error("Failed to parse history from localStorage", error);
-      setHistory([]);
-    }
-  }, []);
-
-  const updateHistory = useCallback((newItems: HistoryItem[]) => {
-    const updatedHistory = [...newItems].slice(0, 10);
-    setHistory(updatedHistory);
-    localStorage.setItem('conversionHistory', JSON.stringify(updatedHistory));
-  }, []);
-
+  const { history, addHistory, clearHistory } = useHistory('seven-twelve');
 
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -78,26 +52,28 @@ function SevenTwelveToVighaComponent() {
   useEffect(() => {
     if (results && totalSqm > 0) {
       const timer = setTimeout(() => {
-        const currentConversion: HistoryItem = {
-          id: new Date().toISOString(),
-          input: { value: totalSqm, unit: UNITS.SQM },
-          result: results,
-          sourcePage: 'seven-twelve',
-          sevenTwelveInput: { hectare, are, sqm }
-        };
-        const historyWithoutCurrent = history.filter(item => !(item.sourcePage === 'seven-twelve' && JSON.stringify(item.sevenTwelveInput) === JSON.stringify({ hectare, are, sqm })));
-        const newHistory = [currentConversion, ...historyWithoutCurrent];
-        updateHistory(newHistory);
+        const sevenTwelveInput = { hectare, are, sqm };
+        
+        // Prevent adding if it's the same as the most recent entry
+        if (history[0] && history[0].sevenTwelveInput && 
+            history[0].sevenTwelveInput.hectare === hectare &&
+            history[0].sevenTwelveInput.are === are &&
+            history[0].sevenTwelveInput.sqm === sqm
+        ) {
+          return;
+        }
+
+        addHistory({
+            input: { value: totalSqm, unit: UNITS.SQM },
+            result: results,
+            sourcePage: 'seven-twelve',
+            sevenTwelveInput,
+        });
+
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [results, totalSqm, hectare, are, sqm, history, updateHistory]);
-
-  const clearHistory = () => {
-    const sevenTwelveHistory = history.filter(item => item.sourcePage === 'seven-twelve');
-    const newHistory = history.filter(item => !sevenTwelveHistory.includes(item));
-    updateHistory(newHistory);
-  };
+  }, [results, totalSqm, hectare, are, sqm, addHistory, history]);
 
   const ResultCard = ({ title, value }: { title: string; value: number }) => {
     const formattedValue = formatNumber(value);
@@ -190,16 +166,16 @@ function SevenTwelveToVighaComponent() {
                                 <History />
                                 {t('conversionHistory')}
                             </CardTitle>
-                            {history.filter(h => h.sourcePage === 'seven-twelve').length > 0 && (
+                            {history.length > 0 && (
                                 <Button variant="ghost" size="icon" onClick={clearHistory} className="h-8 w-8">
                                 <Trash2 className="h-4 w-4" />
                                 </Button>
                             )}
                         </CardHeader>
                         <CardContent>
-                        {history.filter(h => h.sourcePage === 'seven-twelve').length > 0 ? (
+                        {history.length > 0 ? (
                             <div className="space-y-2 max-h-96 overflow-y-auto">
-                            {history.filter(h => h.sourcePage === 'seven-twelve').map((item) => (
+                            {history.map((item) => (
                                 <div key={item.id} className="p-3 bg-muted/50 rounded-lg text-sm">
                                 <p className="font-semibold">{renderHistoryItemTitle(item)}</p>
                                 <p className="text-muted-foreground">{t('vigha')}: {formatNumber(item.result.vigha)}, {t('guntha')}: {formatNumber(item.result.guntha)}</p>
