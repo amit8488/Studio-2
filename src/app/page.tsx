@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
-import { History, Trash2, Download, LogIn } from 'lucide-react';
-import { LanguageProvider, useLanguage } from '@/contexts/language-context';
+import { History, Trash2, Download, LogIn, LogOut, User as UserIcon } from 'lucide-react';
+import { useLanguage } from '@/contexts/language-context';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { convertArea, UNITS, type ConversionResult, type ConversionInput } from '@/lib/conversion';
@@ -16,6 +16,12 @@ import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { useToast } from "@/hooks/use-toast";
 import Image from 'next/image';
+import { useAuth } from '@/contexts/auth-context';
+import { auth } from '@/lib/firebase';
+import { signOut } from 'firebase/auth';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 
 type HistoryItem = {
   id: string;
@@ -35,6 +41,7 @@ const formatNumber = (num: number) => {
 
 function CalculatorComponent() {
   const { t } = useLanguage();
+  const { user, loading } = useAuth();
   const pathname = usePathname();
   const [inputValue, setInputValue] = useState('');
   const [inputUnit, setInputUnit] = useState<ConversionInput['unit']>(UNITS.HECTARE);
@@ -103,6 +110,11 @@ function CalculatorComponent() {
     const newHistory = history.filter(item => !homeHistory.includes(item));
     updateHistory(newHistory);
   };
+  
+  const handleLogout = async () => {
+    await signOut(auth);
+    toast({ title: 'Logged out successfully.' });
+  };
 
   const ResultCard = ({ title, value }: { title: string; value: number }) => {
     const formattedValue = formatNumber(value);
@@ -160,12 +172,44 @@ function CalculatorComponent() {
                         </nav>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Button asChild>
-                            <Link href="/login">
-                                <LogIn className="h-4 w-4 mr-2" />
-                                Log In
-                            </Link>
-                        </Button>
+                        {!loading && (
+                          user ? (
+                              <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                      <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                          <Avatar className="h-8 w-8">
+                                              <AvatarImage src={user.photoURL || undefined} alt={user.displayName || user.email || 'User'} />
+                                              <AvatarFallback>
+                                                  <UserIcon className="h-4 w-4" />
+                                              </AvatarFallback>
+                                          </Avatar>
+                                      </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                                      <DropdownMenuLabel className="font-normal">
+                                          <div className="flex flex-col space-y-1">
+                                              <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
+                                              <p className="text-xs leading-none text-muted-foreground">
+                                                  {user.email}
+                                              </p>
+                                          </div>
+                                      </DropdownMenuLabel>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem onClick={handleLogout}>
+                                          <LogOut className="mr-2 h-4 w-4" />
+                                          <span>Log out</span>
+                                      </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                              </DropdownMenu>
+                          ) : (
+                              <Button asChild>
+                                  <Link href="/login">
+                                      <LogIn className="h-4 w-4 mr-2" />
+                                      Log In
+                                  </Link>
+                              </Button>
+                          )
+                        )}
                         <LanguageToggle />
                         <ThemeToggle />
                     </div>
@@ -269,8 +313,6 @@ function CalculatorComponent() {
 
 export default function Home() {
   return (
-    <LanguageProvider>
       <CalculatorComponent />
-    </LanguageProvider>
   );
 }
