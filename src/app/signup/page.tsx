@@ -29,6 +29,9 @@ export default function SignupPage() {
     } catch (error: any) {
       let description = "An unexpected error occurred. Please try again.";
       switch(error.code) {
+        case 'auth/api-key-not-valid':
+          description = "Your Firebase API key is not valid. Please check your Firebase configuration in src/lib/firebase.ts.";
+          break;
         case 'auth/email-already-in-use':
           description = "This email is already registered. Please try logging in.";
           break;

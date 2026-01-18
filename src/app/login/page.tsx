@@ -38,6 +38,9 @@ export default function LoginPage() {
         let description = "An unexpected error occurred. Please try again.";
   
         switch(error.code) {
+          case 'auth/api-key-not-valid':
+            description = "Your Firebase API key is not valid. Please check your Firebase configuration in src/lib/firebase.ts.";
+            break;
           case 'auth/invalid-email':
             description = "The email address is not valid.";
             break;
@@ -73,6 +76,9 @@ export default function LoginPage() {
     } catch (error: any) {
         let description = "An unexpected error occurred during Google Sign-In.";
         switch (error.code) {
+            case 'auth/api-key-not-valid':
+                description = "Your Firebase API key is not valid. Please check your Firebase configuration in src/lib/firebase.ts.";
+                break;
             case 'auth/popup-closed-by-user':
                 description = 'The sign-in popup was closed before completion. Please try again.';
                 break;
