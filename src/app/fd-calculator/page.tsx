@@ -2,8 +2,8 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Calculator, IndianRupee, ChevronDown } from 'lucide-react';
+import { format, addYears, addMonths, addDays } from 'date-fns';
+import { Calendar as CalendarIcon, Calculator, IndianRupee, Clock } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -35,7 +35,7 @@ export default function FDCalculatorPage() {
   const [days, setDays] = useState([0]);
   const [totalDays, setTotalDays] = useState([365]);
 
-  const [result, setResult] = useState<{ maturity: number; interest: number } | null>(null);
+  const [result, setResult] = useState<{ maturity: number; interest: number; maturityDate: Date } | null>(null);
 
   // Auto-calculate interest rate adjustment for senior citizens
   const effectiveRate = useMemo(() => {
@@ -46,12 +46,24 @@ export default function FDCalculatorPage() {
   const calculateFD = () => {
     const p = parseFloat(principal);
     const r = effectiveRate;
+    const baseDate = fdDate || new Date();
     
     let t_years = 0;
+    let maturityDate = baseDate;
+
     if (tenureType === 'ymd') {
-      t_years = years[0] + (months[0] / 12) + (days[0] / 365);
+      const y = years[0];
+      const m = months[0];
+      const d = days[0];
+      t_years = y + (m / 12) + (d / 365);
+      
+      maturityDate = addYears(baseDate, y);
+      maturityDate = addMonths(maturityDate, m);
+      maturityDate = addDays(maturityDate, d);
     } else {
-      t_years = totalDays[0] / 365;
+      const d = totalDays[0];
+      t_years = d / 365;
+      maturityDate = addDays(baseDate, d);
     }
 
     if (p > 0 && r > 0 && t_years > 0) {
@@ -59,14 +71,14 @@ export default function FDCalculatorPage() {
       const n = 4; // quarterly
       const maturity = p * Math.pow(1 + (r / 100) / n, n * t_years);
       const interest = maturity - p;
-      setResult({ maturity, interest });
+      setResult({ maturity, interest, maturityDate });
     }
   };
 
   // Run calculation on input changes for instant feedback
   useEffect(() => {
     calculateFD();
-  }, [principal, effectiveRate, tenureType, years, months, days, totalDays]);
+  }, [principal, effectiveRate, tenureType, years, months, days, totalDays, fdDate]);
 
   const formatCurrency = (val: number) => {
     return val.toLocaleString('en-IN', {
@@ -288,14 +300,14 @@ export default function FDCalculatorPage() {
         </Card>
 
         {result && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-in slide-in-from-bottom-4 duration-500 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-in slide-in-from-bottom-4 duration-500 mb-10">
             <Card className="bg-primary/5 border-primary/20 shadow-sm">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{t('totalInterest')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-bold text-primary flex items-center">
-                  <IndianRupee className="h-6 w-6 mr-1" />
+                <p className="text-2xl sm:text-3xl font-bold text-primary flex items-center">
+                  <IndianRupee className="h-5 w-5 mr-1" />
                   {formatCurrency(result.interest).replace('₹', '')}
                 </p>
               </CardContent>
@@ -305,9 +317,20 @@ export default function FDCalculatorPage() {
                 <CardTitle className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{t('maturityAmount')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-bold text-accent flex items-center">
-                  <IndianRupee className="h-6 w-6 mr-1" />
+                <p className="text-2xl sm:text-3xl font-bold text-accent flex items-center">
+                  <IndianRupee className="h-5 w-5 mr-1" />
                   {formatCurrency(result.maturity).replace('₹', '')}
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="bg-orange-500/5 border-orange-500/20 shadow-sm md:col-span-2 lg:col-span-1">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold text-muted-foreground uppercase tracking-wider">{t('maturityDate')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl sm:text-3xl font-bold text-orange-600 flex items-center">
+                  <CalendarIcon className="h-5 w-5 mr-2" />
+                  {format(result.maturityDate, "dd MMM yyyy")}
                 </p>
               </CardContent>
             </Card>
