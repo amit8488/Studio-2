@@ -141,7 +141,7 @@ export default function FDCalculatorPage() {
 
               <div className="space-y-3">
                 <Label className="text-muted-foreground font-semibold">{t('dateOfFd')}:</Label>
-                <Popover>
+                <PopOver>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -162,7 +162,7 @@ export default function FDCalculatorPage() {
                       initialFocus
                     />
                   </PopoverContent>
-                </Popover>
+                </PopOver>
               </div>
             </div>
 
@@ -299,20 +299,20 @@ export default function FDCalculatorPage() {
                           <Input
                             type="number"
                             value={totalDays[0].toString()}
-                            onChange={handleInputChange(setTotalDays, 3650)}
+                            onChange={handleInputChange(setTotalDays, 999)}
                             className="w-24 h-8 text-center font-bold bg-orange-50 dark:bg-orange-950 border-orange-200 rounded-full text-orange-700 dark:text-orange-400 focus-visible:ring-orange-500"
                           />
                         </div>
                         <Slider
                           value={totalDays}
                           onValueChange={setTotalDays}
-                          max={3650}
+                          max={999}
                           step={1}
                           className="py-4"
                         />
                         <div className="flex justify-between text-[10px] text-muted-foreground">
                           <span>1</span>
-                          <span>3650</span>
+                          <span>999</span>
                         </div>
                       </div>
                     </div>
