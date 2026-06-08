@@ -71,6 +71,8 @@ export default function FDCalculatorPage() {
       const maturity = p * Math.pow(1 + (r / 100) / n, n * t_years);
       const interest = maturity - p;
       setResult({ maturity, interest, maturityDate });
+    } else {
+      setResult(null);
     }
   };
 
