@@ -88,6 +88,12 @@ export default function FDCalculatorPage() {
     });
   };
 
+  const handleInputChange = (setter: (val: number[]) => void, max: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = parseInt(e.target.value);
+    if (isNaN(val)) val = 0;
+    setter([Math.min(max, Math.max(0, val))]);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <AppHeader />
@@ -215,7 +221,12 @@ export default function FDCalculatorPage() {
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
                           <Label className="font-medium text-muted-foreground">{t('year')}:</Label>
-                          <span className="bg-orange-50 dark:bg-orange-950 px-6 py-1 rounded-full text-orange-700 dark:text-orange-400 font-bold border border-orange-200">{years[0]}</span>
+                          <Input
+                            type="number"
+                            value={years[0]}
+                            onChange={handleInputChange(setYears, 10)}
+                            className="w-16 h-8 text-center font-bold bg-orange-50 dark:bg-orange-950 border-orange-200 rounded-full text-orange-700 dark:text-orange-400 focus-visible:ring-orange-500"
+                          />
                         </div>
                         <Slider
                           value={years}
@@ -234,7 +245,12 @@ export default function FDCalculatorPage() {
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
                           <Label className="font-medium text-muted-foreground">{t('month')}:</Label>
-                          <span className="bg-orange-50 dark:bg-orange-950 px-6 py-1 rounded-full text-orange-700 dark:text-orange-400 font-bold border border-orange-200">{months[0]}</span>
+                          <Input
+                            type="number"
+                            value={months[0]}
+                            onChange={handleInputChange(setMonths, 11)}
+                            className="w-16 h-8 text-center font-bold bg-orange-50 dark:bg-orange-950 border-orange-200 rounded-full text-orange-700 dark:text-orange-400 focus-visible:ring-orange-500"
+                          />
                         </div>
                         <Slider
                           value={months}
@@ -253,7 +269,12 @@ export default function FDCalculatorPage() {
                       <div className="space-y-4">
                         <div className="flex justify-between items-center">
                           <Label className="font-medium text-muted-foreground">{t('day')}:</Label>
-                          <span className="bg-orange-50 dark:bg-orange-950 px-6 py-1 rounded-full text-orange-700 dark:text-orange-400 font-bold border border-orange-200">{days[0]}</span>
+                          <Input
+                            type="number"
+                            value={days[0]}
+                            onChange={handleInputChange(setDays, 29)}
+                            className="w-16 h-8 text-center font-bold bg-orange-50 dark:bg-orange-950 border-orange-200 rounded-full text-orange-700 dark:text-orange-400 focus-visible:ring-orange-500"
+                          />
                         </div>
                         <Slider
                           value={days}
@@ -273,7 +294,12 @@ export default function FDCalculatorPage() {
                        <div className="space-y-4">
                         <div className="flex justify-between items-center">
                           <Label className="font-medium text-muted-foreground">{t('day')}:</Label>
-                          <span className="bg-orange-50 dark:bg-orange-950 px-6 py-1 rounded-full text-orange-700 dark:text-orange-400 font-bold border border-orange-200">{totalDays[0]}</span>
+                          <Input
+                            type="number"
+                            value={totalDays[0]}
+                            onChange={handleInputChange(setTotalDays, 3650)}
+                            className="w-24 h-8 text-center font-bold bg-orange-50 dark:bg-orange-950 border-orange-200 rounded-full text-orange-700 dark:text-orange-400 focus-visible:ring-orange-500"
+                          />
                         </div>
                         <Slider
                           value={totalDays}
