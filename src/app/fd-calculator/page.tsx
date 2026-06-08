@@ -141,7 +141,7 @@ export default function FDCalculatorPage() {
 
               <div className="space-y-3">
                 <Label className="text-muted-foreground font-semibold">{t('dateOfFd')}:</Label>
-                <PopOver>
+                <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -162,7 +162,7 @@ export default function FDCalculatorPage() {
                       initialFocus
                     />
                   </PopoverContent>
-                </PopOver>
+                </Popover>
               </div>
             </div>
 
