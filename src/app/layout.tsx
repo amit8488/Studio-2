@@ -1,8 +1,10 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from '@/contexts/auth-context';
 import { LanguageProvider } from '@/contexts/language-context';
+import { BottomNav } from '@/components/bottom-nav';
 
 export const metadata: Metadata = {
   title: {
@@ -29,12 +31,15 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased pb-28 md:pb-0">
         <AuthProvider>
           <LanguageProvider>
-            {children}
+            <div className="min-h-screen flex flex-col">
+              {children}
+            </div>
+            <BottomNav />
           </LanguageProvider>
         </AuthProvider>
         <Toaster />

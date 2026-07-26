@@ -1,132 +1,49 @@
+
 'use client';
-import { Divide, Percent, X, Plus, Minus } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+
+import { Divide, Percent, X, Plus, Minus, Delete, Calculator as CalcIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AppHeader } from '@/components/app-header';
-
+import { cn } from '@/lib/utils';
 
 function evaluateExpression(expression: string): number {
   try {
-    // This is a safer way to evaluate expressions than new Function('return ' + expression)
-    // It tokenizes and calculates based on operator precedence
-    
-    // 1. Handle percentages: 500%5 -> (500/100)*5
-    expression = expression.replace(/(\d*\.?\d+)%(\d*\.?\d+)/g, (match, p1, p2) => {
-      return `(${p1} / 100 * ${p2})`;
-    });
-
-    // Handle single percentage: 50% -> 0.5
-    expression = expression.replace(/(\d*\.?\d+)%/g, (match, p1) => {
-        return `(${p1}/100)`;
-    });
-
+    expression = expression.replace(/(\d*\.?\d+)%(\d*\.?\d+)/g, (match, p1, p2) => `(${p1} / 100 * ${p2})`);
+    expression = expression.replace(/(\d*\.?\d+)%/g, (match, p1) => `(${p1}/100)`);
     const tokens = expression.match(/(\d+\.?\d*|[\+\-\*\/]|\(|\))/g);
-    if (!tokens) throw new Error("Invalid characters");
-
-    const precedence: {[key: string]: number} = {'+': 1, '-': 1, '*': 2, '/': 2};
-    const rpn: (string|number)[] = [];
-    const operators: string[] = [];
-
-    for (const token of tokens) {
-      if (!isNaN(parseFloat(token))) {
-        rpn.push(parseFloat(token));
-      } else if (token === '(') {
-        operators.push(token);
-      } else if (token === ')') {
-        while (operators.length && operators[operators.length - 1] !== '(') {
-          rpn.push(operators.pop()!);
-        }
-        operators.pop(); // Pop '('
-      } else { // Operator
-        while (operators.length && precedence[operators[operators.length - 1]] >= precedence[token]) {
-          rpn.push(operators.pop()!);
-        }
-        operators.push(token);
-      }
-    }
-
-    while (operators.length) {
-      rpn.push(operators.pop()!);
-    }
-
-    const stack: number[] = [];
-    for (const token of rpn) {
-      if (typeof token === 'number') {
-        stack.push(token);
-      } else {
-        const b = stack.pop()!;
-        const a = stack.pop()!;
-        switch (token) {
-          case '+': stack.push(a + b); break;
-          case '-': stack.push(a - b); break;
-          case '*': stack.push(a * b); break;
-          case '/': 
-            if (b === 0) throw new Error("Division by zero");
-            stack.push(a / b); 
-            break;
-        }
-      }
-    }
-
-    const result = stack[0];
-    if (typeof result !== 'number' || !isFinite(result)) {
-      throw new Error("Invalid calculation");
-    }
+    if (!tokens) throw new Error("Invalid");
+    const result = new Function('return ' + expression)();
+    if (typeof result !== 'number' || !isFinite(result)) throw new Error("Invalid");
     return result;
   } catch (e) {
-    // For simplicity, we keep using new Function as a fallback for complex cases it might handle.
-    // A full parser implementation would be more robust.
-     try {
-        const result = new Function('return ' + expression)();
-        if (typeof result !== 'number' || !isFinite(result)) {
-            throw new Error("Invalid calculation");
-        }
-        return result;
-     } catch(finalError) {
-        console.error("Calculation Error:", finalError);
-        throw new Error("Invalid expression");
-     }
+    throw new Error("Invalid");
   }
 }
 
 const BackspaceIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-      <line x1="18" y1="9" x2="12" y2="15"></line>
-      <line x1="12" y1="9" x2="18" y2="15"></line>
-    </svg>
-  );
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+    <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
+    <line x1="18" y1="9" x2="12" y2="15" /><line x1="12" y1="9" x2="18" y2="15" />
+  </svg>
+);
 
-
-function StandardCalculatorComponent() {
+export default function StandardCalculatorPage() {
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
   const [justEvaluated, setJustEvaluated] = useState(false);
 
   const handleButtonClick = (value: string) => {
     const isOperator = ['/', '*', '-', '+'].includes(value);
-
     if (value === '=') {
       if (input) {
         try {
           const evalResult = evaluateExpression(input);
-          const formattedResult = Number(evalResult.toFixed(10)).toString(); // Fix floating point issues
-          setResult(formattedResult);
-          setInput(input);
+          setResult(Number(evalResult.toFixed(10)).toString());
           setJustEvaluated(true);
-        } catch (error) {
+        } catch {
           setResult('Error');
           setJustEvaluated(true);
         }
@@ -144,96 +61,100 @@ function StandardCalculatorComponent() {
         setInput(input.slice(0, -1));
       }
     } else {
-       if (justEvaluated) {
-          if (isOperator) {
-            setInput(result === 'Error' ? '' : result + value);
-          } else {
-            setInput(value);
-          }
-          setResult('');
-          setJustEvaluated(false);
-       } else {
-         setInput(input + value);
-       }
+      if (justEvaluated) {
+        setInput(isOperator ? (result === 'Error' ? '' : result + value) : value);
+        setResult('');
+        setJustEvaluated(false);
+      } else {
+        setInput(input + value);
+      }
     }
   };
-  
+
   const buttons = [
     'C', 'DEL', '%', '/',
     '7', '8', '9', '*',
     '4', '5', '6', '-',
     '1', '2', '3', '+',
-    '00', '0', '.', '=',
+    '0', '00', '.', '='
   ];
-  
-  const getButtonClass = (btn: string) => {
-    if (['/', '*', '-', '+', '='].includes(btn)) {
-      return 'bg-accent text-accent-foreground hover:bg-accent/90';
-    }
-    if (['C', 'DEL'].includes(btn)) {
-        return 'bg-destructive/80 text-destructive-foreground hover:bg-destructive/90'
-    }
-    return 'bg-primary/10 text-primary hover:bg-primary/20';
-  }
 
-  const renderButtonContent = (btn: string) => {
+  const renderIcon = (btn: string) => {
     switch (btn) {
-      case '/': return <Divide className="h-8 w-8" />;
+      case '/': return <Divide className="h-6 w-6" />;
       case '*': return <X className="h-6 w-6" />;
-      case '%': return <Percent className="h-6 w-6" />;
-      case '+': return <Plus className="h-8 w-8" />;
-      case '-': return <Minus className="h-8 w-8" />;
-      case 'DEL': return <BackspaceIcon className="h-8 w-8" />;
+      case '+': return <Plus className="h-6 w-6" />;
+      case '-': return <Minus className="h-6 w-6" />;
+      case 'DEL': return <BackspaceIcon className="h-6 w-6" />;
       default: return btn;
     }
   };
-  
-  const getDisplayFontSize = (text: string) => {
-      const len = text.length;
-      if (len > 15) return 'text-2xl';
-      if (len > 10) return 'text-3xl';
-      return 'text-4xl';
-  }
-  
-  const getInputFontSize = (text: string) => {
-    const len = text.length;
-    if (len > 30) return 'text-base';
-    if (len > 20) return 'text-lg';
-    if (len > 15) return 'text-xl';
-    return 'text-2xl';
-  }
 
   return (
-      <div className="flex flex-col h-screen bg-background">
-        <AppHeader />
-        <main className="flex flex-1 justify-center items-center p-4 animate-in fade-in duration-500">
-            <Card className="w-full max-w-sm shadow-lg">
-                <CardContent className="p-4">
-                    <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
-                        <div className={`text-muted-foreground h-10 flex items-center justify-end break-all ${getInputFontSize(input)}`}>{input || '0'}</div>
-                        <div className={`text-foreground font-bold h-12 flex items-center justify-end break-all ${getDisplayFontSize(result)}`}>{result}</div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2">
-                        {buttons.map((btn) => (
-                            <Button 
-                                key={btn}
-                                onClick={() => handleButtonClick(btn)}
-                                className={`h-16 text-2xl font-bold ${getButtonClass(btn)}`}
-                                variant="outline"
-                            >
-                                {renderButtonContent(btn)}
-                            </Button>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
-        </main>
-      </div>
-  );
-}
+    <div className="flex flex-col min-h-screen bg-background pb-28 sm:pb-8">
+      <AppHeader />
+      <main className="flex-grow flex flex-col items-center justify-center p-4">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-sm space-y-6"
+        >
+          <div className="flex items-center gap-3 px-4">
+            <div className="p-2 bg-primary/10 rounded-2xl text-primary">
+              <CalcIcon className="h-6 w-6" />
+            </div>
+            <h1 className="text-xl font-bold tracking-tight">Standard Calculator</h1>
+          </div>
 
-export default function StandardCalculatorPage() {
-    return (
-            <StandardCalculatorComponent />
-    )
+          <Card className="rounded-[3rem] glass-card border-none shadow-2xl overflow-hidden">
+            <CardContent className="p-6 space-y-6">
+              <div className="h-40 flex flex-col justify-end items-end px-4 py-6 bg-muted/30 rounded-[2rem] text-right overflow-hidden border border-white/50">
+                <AnimatePresence>
+                  <motion.div 
+                    key={input}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-muted-foreground text-xl font-medium break-all"
+                  >
+                    {input || '0'}
+                  </motion.div>
+                </AnimatePresence>
+                <AnimatePresence>
+                  <motion.div 
+                    key={result}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-primary text-5xl font-black break-all pt-2"
+                  >
+                    {result}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <div className="grid grid-cols-4 gap-3">
+                {buttons.map((btn, idx) => (
+                  <motion.div key={idx} whileTap={{ scale: 0.92 }}>
+                    <Button 
+                      onClick={() => handleButtonClick(btn)}
+                      className={cn(
+                        "w-full h-16 rounded-[1.5rem] text-xl font-bold transition-all shadow-sm",
+                        ['/', '*', '-', '+', '='].includes(btn) 
+                          ? "bg-primary text-white hover:bg-primary/90 shadow-primary/20" 
+                          : btn === 'C' || btn === 'DEL'
+                            ? "bg-destructive/10 text-destructive hover:bg-destructive/20"
+                            : "bg-white dark:bg-slate-800 text-foreground hover:bg-muted"
+                      )}
+                      variant="ghost"
+                    >
+                      {renderIcon(btn)}
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </main>
+    </div>
+  );
 }
