@@ -12,7 +12,8 @@ import {
   Info, 
   User as UserIcon, 
   Landmark, 
-  Download 
+  Download,
+  Share2 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -178,9 +179,12 @@ export default function FDCalculatorPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="m3-input-container">
+                    <div className="space-y-4">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1">
+                        {t('fdType')}
+                      </Label>
                       <Select value={fdType} onValueChange={setFdType}>
-                        <SelectTrigger className="m3-input font-bold border-none">
+                        <SelectTrigger className="m3-input font-bold border-none h-16">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="rounded-2xl">
@@ -188,13 +192,15 @@ export default function FDCalculatorPage() {
                           <SelectItem value="payout">{t('payout')}</SelectItem>
                         </SelectContent>
                       </Select>
-                      <span className="m3-label -top-0 text-[10px] font-black uppercase tracking-widest text-primary translate-y-2">{t('fdType')}</span>
                     </div>
 
-                    <div className="m3-input-container">
+                    <div className="space-y-4">
+                      <Label className="text-[10px] font-black uppercase tracking-widest text-primary ml-1">
+                        {t('dateOfFd')}
+                      </Label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant="ghost" className="m3-input font-bold flex items-center justify-start border-none">
+                          <Button variant="ghost" className="m3-input font-bold flex items-center justify-start border-none h-16 w-full">
                             <CalendarIcon className="mr-2 h-4 w-4 text-primary" />
                             {fdDate ? format(fdDate, "PPP") : "Select Date"}
                           </Button>
@@ -203,7 +209,6 @@ export default function FDCalculatorPage() {
                           <Calendar mode="single" selected={fdDate} onSelect={setFdDate} initialFocus />
                         </PopoverContent>
                       </Popover>
-                      <span className="m3-label -top-0 text-[10px] font-black uppercase tracking-widest text-primary translate-y-2">{t('dateOfFd')}</span>
                     </div>
                   </div>
                 </div>
@@ -287,7 +292,7 @@ export default function FDCalculatorPage() {
                                   type="number"
                                   value={state[0].toString()}
                                   onChange={handleInputChange(setter, max)}
-                                  className="w-20 h-9 text-center font-black rounded-xl bg-primary/10 border-none text-primary"
+                                  className="w-24 h-8 text-center font-bold bg-primary/5 border-none rounded-full text-primary focus-visible:ring-primary/20"
                                 />
                               </div>
                               <Slider value={state} onValueChange={setter} max={max} step={1} className="py-2" />
@@ -302,7 +307,7 @@ export default function FDCalculatorPage() {
                               type="number"
                               value={totalDays[0].toString()}
                               onChange={handleInputChange(setTotalDays, 999)}
-                              className="w-24 h-9 text-center font-black rounded-xl bg-primary/10 border-none text-primary"
+                              className="w-24 h-8 text-center font-bold bg-primary/5 border-none rounded-full text-primary focus-visible:ring-primary/20"
                             />
                           </div>
                           <Slider value={totalDays} onValueChange={setTotalDays} max={999} step={1} className="py-2" />
@@ -332,14 +337,14 @@ export default function FDCalculatorPage() {
                     <p className="text-sm font-bold uppercase tracking-[0.2em] opacity-80 mb-2">{t('maturityAmount')}</p>
                     <h3 className="text-5xl font-black tracking-tight flex items-center justify-center gap-1">
                       <IndianRupee className="h-8 w-8" strokeWidth={3} />
-                      {formatNumber(result.maturity).replace('₹', '')}
+                      {formatNumber(result.maturity)}
                     </h3>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 pt-6">
                     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20">
                       <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">{t('totalInterest')}</p>
-                      <p className="text-xl font-black">₹{formatNumber(result.interest).replace('₹', '')}</p>
+                      <p className="text-xl font-black">₹{formatNumber(result.interest)}</p>
                     </div>
                     <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20">
                       <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">{t('maturityDate')}</p>
@@ -357,7 +362,7 @@ export default function FDCalculatorPage() {
                   <Download className="h-4 w-4" /> PDF
                 </Button>
                 <Button variant="outline" className="h-14 rounded-2xl font-bold gap-2">
-                  Share
+                  <Share2 className="h-4 w-4" /> Share
                 </Button>
               </div>
 
