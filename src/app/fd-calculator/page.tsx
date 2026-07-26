@@ -3,10 +3,21 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { format, addYears, addMonths, addDays } from 'date-fns';
-import { Calendar as CalendarIcon, Calculator, IndianRupee, Clock, ArrowRight, TrendingUp, Info } from 'lucide-react';
+import { 
+  Calendar as CalendarIcon, 
+  Calculator, 
+  IndianRupee, 
+  Clock, 
+  ArrowRight, 
+  TrendingUp, 
+  Info, 
+  User as UserIcon, 
+  Landmark, 
+  Download 
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -18,6 +29,14 @@ import { Slider } from '@/components/ui/slider';
 import { AppHeader } from '@/components/app-header';
 import { useLanguage } from '@/contexts/language-context';
 import { cn } from '@/lib/utils';
+
+const formatNumber = (num: number) => {
+  if (isNaN(num) || !isFinite(num)) return '0.00';
+  return num.toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};
 
 export default function FDCalculatorPage() {
   const { t } = useLanguage();
