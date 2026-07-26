@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
@@ -180,7 +179,6 @@ export default function FDCalculatorPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="m3-input-container">
-                      <span className="m3-label">{t('fdType')}</span>
                       <Select value={fdType} onValueChange={setFdType}>
                         <SelectTrigger className="m3-input font-bold border-none">
                           <SelectValue />
@@ -190,10 +188,10 @@ export default function FDCalculatorPage() {
                           <SelectItem value="payout">{t('payout')}</SelectItem>
                         </SelectContent>
                       </Select>
+                      <span className="m3-label -top-0 text-[10px] font-black uppercase tracking-widest text-primary translate-y-2">{t('fdType')}</span>
                     </div>
 
                     <div className="m3-input-container">
-                      <span className="m3-label">{t('dateOfFd')}</span>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button variant="ghost" className="m3-input font-bold flex items-center justify-start border-none">
@@ -205,6 +203,7 @@ export default function FDCalculatorPage() {
                           <Calendar mode="single" selected={fdDate} onSelect={setFdDate} initialFocus />
                         </PopoverContent>
                       </Popover>
+                      <span className="m3-label -top-0 text-[10px] font-black uppercase tracking-widest text-primary translate-y-2">{t('dateOfFd')}</span>
                     </div>
                   </div>
                 </div>
@@ -226,34 +225,32 @@ export default function FDCalculatorPage() {
               <Card className="rounded-[2.5rem] glass-card border-none p-8">
                 <div className="space-y-8">
                   <div className="m3-input-container">
+                    <Input
+                      type="number"
+                      placeholder=" "
+                      value={principal}
+                      onChange={(e) => setPrincipal(e.target.value)}
+                      className="peer m3-input has-icon pl-20 text-xl font-black border-none"
+                    />
+                    <IndianRupee className="m3-icon" />
                     <span className="m3-label left-16">{t('principalAmount')}</span>
-                    <div className="relative">
-                      <IndianRupee className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-                      <Input
-                        type="number"
-                        value={principal}
-                        onChange={(e) => setPrincipal(e.target.value)}
-                        className="m3-input pl-20 text-xl font-black border-none"
-                      />
-                    </div>
                   </div>
 
                   <div className="m3-input-container">
+                    <Input
+                      type="number"
+                      placeholder=" "
+                      value={interestRate}
+                      onChange={(e) => setInterestRate(e.target.value)}
+                      className="peer m3-input has-icon pl-20 text-xl font-black border-none"
+                    />
+                    <TrendingUp className="m3-icon" />
                     <span className="m3-label left-16">{t('interestRate')}</span>
-                    <div className="relative">
-                      <TrendingUp className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-                      <Input
-                        type="number"
-                        value={interestRate}
-                        onChange={(e) => setInterestRate(e.target.value)}
-                        className="m3-input pl-20 text-xl font-black border-none"
-                      />
-                      {customerType === 'senior' && (
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg">
-                          +0.5% BONUS
-                        </div>
-                      )}
-                    </div>
+                    {customerType === 'senior' && (
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg z-20">
+                        +0.5% BONUS
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-6">

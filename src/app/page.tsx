@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
@@ -130,18 +129,17 @@ function CalculatorComponent() {
 
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
                 <div className="md:col-span-8 m3-input-container">
-                  <span className="m3-label">{t('enterArea')}</span>
                   <Input
                     type="text"
                     inputMode="decimal"
-                    placeholder="e.g. 1.25"
+                    placeholder=" "
                     value={inputValue}
                     onChange={handleInputChange}
-                    className="m3-input text-lg font-bold"
+                    className="peer m3-input text-lg font-bold"
                   />
+                  <span className="m3-label">{t('enterArea')}</span>
                 </div>
                 <div className="md:col-span-4 m3-input-container">
-                  <span className="m3-label">{t('selectUnit')}</span>
                   <Select value={inputUnit} onValueChange={(u) => setInputUnit(u as any)}>
                     <SelectTrigger className="m3-input font-bold">
                       <SelectValue />
@@ -152,6 +150,7 @@ function CalculatorComponent() {
                       <SelectItem value={UNITS.SQM}>{t('sqm')}</SelectItem>
                     </SelectContent>
                   </Select>
+                  <span className="m3-label -top-0 text-[10px] font-black uppercase tracking-widest text-primary translate-y-2">{t('selectUnit')}</span>
                 </div>
               </div>
 

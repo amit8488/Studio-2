@@ -89,32 +89,30 @@ export default function SignupPage() {
           <CardContent className="space-y-6 pt-6">
             <form onSubmit={handleSignup} className="space-y-6">
               <div className="m3-input-container">
-                <span className="m3-label left-16">Username / Email</span>
-                <div className="relative">
-                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-                  <Input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="m3-input pl-16 border-none font-medium"
-                    disabled={isLoading}
-                  />
-                </div>
+                <Input
+                  type="email"
+                  required
+                  placeholder="Username or Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="peer m3-input has-icon"
+                  disabled={isLoading}
+                />
+                <Mail className="m3-icon" />
+                <span className="m3-label">Username or Email</span>
               </div>
               <div className="m3-input-container">
-                <span className="m3-label left-16">Password</span>
-                <div className="relative">
-                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-                  <Input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="m3-input pl-16 border-none font-medium"
-                    disabled={isLoading}
-                  />
-                </div>
+                <Input
+                  type="password"
+                  required
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="peer m3-input has-icon"
+                  disabled={isLoading}
+                />
+                <Lock className="m3-icon" />
+                <span className="m3-label">Password</span>
               </div>
               <Button type="submit" className="w-full h-16 rounded-2xl text-lg font-black shadow-xl shadow-primary/20" disabled={isLoading}>
                 {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <UserPlus className="mr-2 h-5 w-5" />}
