@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,7 +7,6 @@ import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
@@ -96,11 +94,10 @@ export default function LoginPage() {
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="email"
-                    placeholder="name@example.com"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="m3-input pl-12 border-none font-medium"
+                    className="m3-input pl-14 border-none font-medium"
                     disabled={isLoading || isGoogleLoading}
                   />
                 </div>
@@ -114,7 +111,7 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="m3-input pl-12 border-none font-medium"
+                    className="m3-input pl-14 border-none font-medium"
                     disabled={isLoading || isGoogleLoading}
                   />
                 </div>

@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -6,12 +7,12 @@ import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Mail, Lock, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
+import { motion } from 'framer-motion';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -37,9 +38,6 @@ export default function SignupPage() {
     } catch (error: any) {
       let description = "An unexpected error occurred. Please try again.";
       switch(error.code) {
-        case 'auth/api-key-not-valid':
-          description = "Your Firebase API key is not valid. Please check your Firebase configuration in src/lib/firebase.ts.";
-          break;
         case 'auth/email-already-in-use':
           description = "This email is already registered. Please try logging in.";
           break;
@@ -51,7 +49,7 @@ export default function SignupPage() {
           break;
         default:
           console.error("Firebase Auth Error:", error);
-          description = "Could not create account. Please ensure you have enabled Email/Password sign-in in your Firebase project and that your project configuration is correct.";
+          description = "Could not create account. Please ensure your project configuration is correct.";
       }
       toast({
         variant: 'destructive',
@@ -63,66 +61,74 @@ export default function SignupPage() {
     }
   };
   
-  if (loading || user) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin" />
-      </div>
-    );
-  }
+  if (loading || user) return <div className="flex h-screen items-center justify-center"><Loader2 className="h-10 w-10 animate-spin text-primary" /></div>;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <div className="w-full max-w-md p-4">
-        <Link href="/" className="flex items-center justify-center gap-2 mb-8">
-            <AppLogo className="h-10 w-10" />
-        </Link>
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle>Sign Up</CardTitle>
-            <CardDescription>Create an account to get started.</CardDescription>
+    <div className="flex items-center justify-center min-h-screen bg-background p-4 hero-gradient relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -mr-48 -mt-48 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full -ml-48 -mb-48 blur-3xl" />
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md relative z-10"
+      >
+        <div className="flex justify-center mb-10">
+          <div className="bg-white/20 backdrop-blur-xl p-4 rounded-[2.5rem] shadow-2xl border border-white/30">
+            <AppLogo className="h-12 w-12 text-white" />
+          </div>
+        </div>
+
+        <Card className="rounded-[3rem] shadow-2xl border-none glass-card p-4">
+          <CardHeader className="text-center pt-8">
+            <CardTitle className="text-3xl font-black">Create Account</CardTitle>
+            <CardDescription className="text-base pt-2">Join us to start managing your calculations</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSignup} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
-                />
+          <CardContent className="space-y-6 pt-6">
+            <form onSubmit={handleSignup} className="space-y-6">
+              <div className="m3-input-container">
+                <span className="m3-label">Email Address</span>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="m3-input pl-14 border-none font-medium"
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                />
+              <div className="m3-input-container">
+                <span className="m3-label">Password</span>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="m3-input pl-14 border-none font-medium"
+                    disabled={isLoading}
+                  />
+                </div>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="submit" className="w-full h-16 rounded-2xl text-lg font-black shadow-xl shadow-primary/20" disabled={isLoading}>
+                {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <UserPlus className="mr-2 h-5 w-5" />}
                 Sign Up
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <p className="text-sm text-muted-foreground">
-              Already have an account?{' '}
-              <Link href="/login" className="text-primary hover:underline">
-                Log in
-              </Link>
+          <CardFooter className="flex justify-center pb-8 pt-4">
+            <p className="text-sm text-muted-foreground font-medium">
+              Already have an account? <Link href="/login" className="text-primary font-black hover:underline">Log in</Link>
             </p>
           </CardFooter>
         </Card>
-      </div>
+      </motion.div>
     </div>
   );
 }
