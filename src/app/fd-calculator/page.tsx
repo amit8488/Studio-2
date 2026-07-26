@@ -233,7 +233,7 @@ export default function FDCalculatorPage() {
                         type="number"
                         value={principal}
                         onChange={(e) => setPrincipal(e.target.value)}
-                        className="m3-input pl-16 text-xl font-black border-none"
+                        className="m3-input pl-20 text-xl font-black border-none"
                       />
                     </div>
                   </div>
@@ -246,7 +246,7 @@ export default function FDCalculatorPage() {
                         type="number"
                         value={interestRate}
                         onChange={(e) => setInterestRate(e.target.value)}
-                        className="m3-input pl-16 text-xl font-black border-none"
+                        className="m3-input pl-20 text-xl font-black border-none"
                       />
                       {customerType === 'senior' && (
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg">
