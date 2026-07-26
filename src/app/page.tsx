@@ -102,14 +102,10 @@ export default function Home() {
   );
 
   return (
-    <motion.div 
-      initial="initial"
-      animate="animate"
-      className="flex flex-col min-h-screen bg-background"
-    >
+    <div className="flex flex-col min-h-screen bg-background relative">
       <AppHeader />
       
-      <section className="hero-gradient px-6 pt-12 md:pt-16 pb-28 md:pb-36 text-white rounded-b-[3rem] md:rounded-b-[4rem] shadow-2xl relative overflow-hidden">
+      <section className="hero-gradient px-6 pt-24 md:pt-32 pb-28 md:pb-40 text-white rounded-b-[3rem] md:rounded-b-[4rem] shadow-2xl relative overflow-hidden -mt-20 md:-mt-24">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <circle cx="20" cy="20" r="40" fill="currentColor" />
@@ -120,6 +116,8 @@ export default function Home() {
         <div className="page-container relative z-10">
           <motion.div
             variants={fadeInUp}
+            initial="initial"
+            animate="animate"
             className="text-center space-y-4 md:space-y-6"
           >
             <h1 className="tracking-tighter">
@@ -134,8 +132,12 @@ export default function Home() {
         </div>
       </section>
 
-      <main className="page-container -mt-16 md:-mt-20 pb-32 space-y-8 md:space-y-12 relative z-20">
-        <motion.div variants={fadeInUp}>
+      <main className="page-container -mt-16 md:-mt-24 pb-32 space-y-8 md:space-y-12 relative z-20">
+        <motion.div 
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+        >
           <Card className="card-rounded premium-shadow border-none glass-card overflow-hidden">
             <CardContent className="p-6 md:p-12 space-y-8 md:space-y-10">
               <div className="flex items-center gap-4 text-primary">
@@ -216,7 +218,12 @@ export default function Home() {
           </Card>
         </motion.div>
 
-        <motion.section variants={fadeInUp} className="space-y-6">
+        <motion.section 
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+          className="space-y-6"
+        >
           <div className="flex items-center justify-between px-2">
             <h3 className="flex items-center gap-3">
               <LayoutGrid className="h-5 w-5 md:h-6 md:w-6 text-primary" />
@@ -242,7 +249,11 @@ export default function Home() {
           </motion.div>
         </motion.section>
 
-        <motion.div variants={fadeInUp}>
+        <motion.div 
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+        >
           <Card className="card-rounded premium-shadow border-none glass-card">
             <CardHeader className="flex flex-row items-center justify-between p-6 md:p-10 pb-4">
               <CardTitle className="flex items-center gap-4 text-xl md:text-2xl font-black">
@@ -337,6 +348,6 @@ export default function Home() {
             </div>
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </div>
   );
 }
