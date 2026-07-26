@@ -98,7 +98,9 @@ export default function FDCalculatorPage() {
   }, [principal, effectiveRate, tenureType, years, months, days, totalDays, fdDate]);
 
   const handleInputChange = (setter: (val: number[]) => void, max: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = parseInt(e.target.value, 10);
+    let valStr = e.target.value.replace(/^0+/, '');
+    if (valStr === '') valStr = '0';
+    let val = parseInt(valStr, 10);
     if (isNaN(val)) val = 0;
     setter([Math.min(max, Math.max(0, val))]);
   };
@@ -226,12 +228,12 @@ export default function FDCalculatorPage() {
                   <div className="m3-input-container">
                     <span className="m3-label">{t('principalAmount')}</span>
                     <div className="relative">
-                      <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      <IndianRupee className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                       <Input
                         type="number"
                         value={principal}
                         onChange={(e) => setPrincipal(e.target.value)}
-                        className="m3-input pl-12 text-xl font-black border-none"
+                        className="m3-input pl-16 text-xl font-black border-none"
                       />
                     </div>
                   </div>
@@ -239,12 +241,12 @@ export default function FDCalculatorPage() {
                   <div className="m3-input-container">
                     <span className="m3-label">{t('interestRate')}</span>
                     <div className="relative">
-                      <TrendingUp className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      <TrendingUp className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                       <Input
                         type="number"
                         value={interestRate}
                         onChange={(e) => setInterestRate(e.target.value)}
-                        className="m3-input pl-12 text-xl font-black border-none"
+                        className="m3-input pl-16 text-xl font-black border-none"
                       />
                       {customerType === 'senior' && (
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg">
@@ -288,7 +290,7 @@ export default function FDCalculatorPage() {
                                   type="number"
                                   value={state[0].toString()}
                                   onChange={handleInputChange(setter, max)}
-                                  className="w-16 h-8 text-center font-black rounded-xl bg-primary/10 border-none text-primary"
+                                  className="w-20 h-9 text-center font-black rounded-xl bg-primary/10 border-none text-primary"
                                 />
                               </div>
                               <Slider value={state} onValueChange={setter} max={max} step={1} className="py-2" />
@@ -303,7 +305,7 @@ export default function FDCalculatorPage() {
                               type="number"
                               value={totalDays[0].toString()}
                               onChange={handleInputChange(setTotalDays, 999)}
-                              className="w-20 h-8 text-center font-black rounded-xl bg-primary/10 border-none text-primary"
+                              className="w-24 h-9 text-center font-black rounded-xl bg-primary/10 border-none text-primary"
                             />
                           </div>
                           <Slider value={totalDays} onValueChange={setTotalDays} max={999} step={1} className="py-2" />

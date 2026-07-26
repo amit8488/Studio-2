@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -91,13 +92,13 @@ export default function SignupPage() {
               <div className="m3-input-container">
                 <span className="m3-label">Email Address</span>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                   <Input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="m3-input pl-14 border-none font-medium"
+                    className="m3-input pl-16 border-none font-medium"
                     disabled={isLoading}
                   />
                 </div>
@@ -105,13 +106,13 @@ export default function SignupPage() {
               <div className="m3-input-container">
                 <span className="m3-label">Password</span>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                  <Lock className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                   <Input
                     type="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="m3-input pl-14 border-none font-medium"
+                    className="m3-input pl-16 border-none font-medium"
                     disabled={isLoading}
                   />
                 </div>
