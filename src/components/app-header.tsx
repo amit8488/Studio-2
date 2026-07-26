@@ -19,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { LanguageToggle } from '@/components/language-toggle';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { useAuth } from '@/contexts/auth-context';
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
@@ -60,7 +59,7 @@ export function AppHeader() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300 ease-in-out",
         isScrolled 
-          ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] py-2" 
+          ? "bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] py-2" 
           : "bg-transparent py-4"
       )}
     >
@@ -77,7 +76,7 @@ export function AppHeader() {
             <div className="flex flex-col -space-y-1">
               <span className={cn(
                 "font-black text-lg md:text-xl tracking-tight uppercase transition-colors",
-                isScrolled ? "text-slate-900 dark:text-slate-50" : (isDarkHero ? "text-white" : "text-slate-900 dark:text-slate-50")
+                isScrolled ? "text-slate-900" : (isDarkHero ? "text-white" : "text-slate-900")
               )}>
                 {t('appName')}
               </span>
@@ -114,7 +113,7 @@ export function AppHeader() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-2 md:gap-4"
         >
-          <div className="hidden xl:flex items-center bg-black/5 dark:bg-white/5 rounded-2xl px-5 py-2.5 backdrop-blur-md border border-white/10 group focus-within:bg-white dark:focus-within:bg-slate-900 transition-all duration-300">
+          <div className="hidden xl:flex items-center bg-black/5 rounded-2xl px-5 py-2.5 backdrop-blur-md border border-white/10 group focus-within:bg-white transition-all duration-300">
             <Search className={cn(
               "h-4 w-4 mr-3 transition-colors",
               isScrolled ? "text-slate-400" : (isDarkHero ? "text-white/60" : "text-slate-400")
@@ -124,14 +123,13 @@ export function AppHeader() {
               placeholder="Search tools..." 
               className={cn(
                 "bg-transparent border-none outline-none text-sm w-32 focus:w-48 transition-all duration-500 font-bold placeholder:font-medium",
-                isScrolled ? "text-slate-900 dark:text-slate-50" : (isDarkHero ? "text-white placeholder:text-white/60" : "text-slate-900 dark:text-slate-50")
+                isScrolled ? "text-slate-900" : (isDarkHero ? "text-white placeholder:text-white/60" : "text-slate-900")
               )}
             />
           </div>
 
-          <div className="flex items-center gap-1 p-1 bg-black/5 dark:bg-white/5 rounded-full border border-white/10">
+          <div className="flex items-center gap-1 p-1 bg-black/5 rounded-full border border-white/10">
             <LanguageToggle />
-            <ThemeToggle />
           </div>
 
           <Button 
@@ -165,7 +163,7 @@ export function AppHeader() {
                              {user.displayName?.charAt(0) || user.email?.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex flex-col">
-                          <p className="text-base font-black leading-tight text-slate-900 dark:text-slate-50">{user.displayName || 'Account'}</p>
+                          <p className="text-base font-black leading-tight text-slate-900">{user.displayName || 'Account'}</p>
                           <p className="text-[11px] text-muted-foreground truncate max-w-[140px] font-bold">
                             {user.email}
                           </p>

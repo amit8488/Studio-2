@@ -25,28 +25,6 @@
     --ring: 175 77% 26%;
     --radius: 1.5rem;
   }
-
-  .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 10%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 175 77% 40%;
-    --primary-foreground: 222 47% 6%;
-    --secondary: 174 80% 50%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 142 70% 55%;
-    --accent-foreground: 222 47% 6%;
-    --destructive: 0 63% 40%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 15%;
-    --input: 217 33% 15%;
-    --ring: 175 77% 40%;
-  }
 }
 
 @layer base {
@@ -63,7 +41,7 @@
 }
 
 .glass-card {
-  @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/20 dark:border-slate-800/20 shadow-2xl;
+  @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-2xl;
 }
 
 .hero-gradient {
@@ -71,7 +49,7 @@
 }
 
 .floating-nav {
-  @apply fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-slate-800/20 rounded-[2.25rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-50 flex items-center justify-around px-4 md:hidden;
+  @apply fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-20 bg-white/80 backdrop-blur-2xl border border-white/20 rounded-[2.25rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-50 flex items-center justify-around px-4 md:hidden;
 }
 
 .m3-input-container {
@@ -79,8 +57,8 @@
 }
 
 .m3-input {
-  @apply w-full h-[64px] md:h-[72px] px-6 pt-9 pb-2 rounded-[20px] md:rounded-[22px] bg-slate-100/50 dark:bg-slate-800/40 border-2 border-transparent transition-all duration-300 outline-none text-[16px] md:text-[17px] font-semibold text-slate-900 dark:text-slate-100;
-  @apply focus:bg-white dark:focus:bg-slate-900 focus:border-primary/50 focus:shadow-[0_0_0_8px_rgba(15,118,110,0.05)];
+  @apply w-full h-[64px] md:h-[72px] px-6 pt-9 pb-2 rounded-[20px] md:rounded-[22px] bg-slate-100/50 border-2 border-transparent transition-all duration-300 outline-none text-[16px] md:text-[17px] font-semibold text-slate-900;
+  @apply focus:bg-white focus:border-primary/50 focus:shadow-[0_0_0_8px_rgba(15,118,110,0.05)];
 }
 
 .m3-input.has-icon {
@@ -124,7 +102,7 @@
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+  @apply bg-slate-300 rounded-full;
 }
 
 .page-container {
