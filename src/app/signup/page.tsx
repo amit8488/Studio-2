@@ -71,13 +71,13 @@ export default function SignupPage() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-10">
           <motion.div 
             initial={{ y: -20 }}
             animate={{ y: 0 }}
-            className="bg-white/25 backdrop-blur-3xl p-5 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-white/40"
+            className="bg-white p-2 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.15)] border-4 border-primary/20"
           >
-            <AppLogo className="h-14 w-14 text-white" />
+            <AppLogo className="h-[72px] w-[72px]" />
           </motion.div>
         </div>
 
@@ -95,11 +95,11 @@ export default function SignupPage() {
                   placeholder=" "
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="peer m3-input has-icon border-none font-medium"
+                  className="peer m3-input pl-16 border-none font-medium"
                   disabled={isLoading}
                 />
                 <Mail className="m3-icon" />
-                <span className="m3-label">Username / Email</span>
+                <span className="m3-label left-16">Username / Email</span>
               </div>
               <div className="m3-input-container">
                 <Input
@@ -108,11 +108,11 @@ export default function SignupPage() {
                   placeholder=" "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="peer m3-input has-icon border-none font-medium"
+                  className="peer m3-input pl-16 border-none font-medium"
                   disabled={isLoading}
                 />
                 <Lock className="m3-icon" />
-                <span className="m3-label">Password</span>
+                <span className="m3-label left-16">Password</span>
               </div>
               <Button type="submit" className="w-full h-20 rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/20 group hover:scale-[1.02] active:scale-[0.98] transition-all" disabled={isLoading}>
                 {isLoading ? <Loader2 className="mr-3 h-6 w-6 animate-spin" /> : <UserPlus className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />}

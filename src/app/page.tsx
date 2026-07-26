@@ -16,6 +16,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { AppLogo } from '@/components/app-logo';
 
 const formatNumber = (num: number) => {
   if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -317,14 +318,14 @@ export default function Home() {
 
       <Dialog open={showLoginModal} onOpenChange={setShowLoginModal}>
         <DialogContent className="sm:max-w-md card-rounded border-none shadow-[0_50px_100px_rgba(0,0,0,0.3)] glass-card p-0 overflow-hidden">
-            <div className="hero-gradient p-10 text-white text-center">
+            <div className="hero-gradient p-10 text-white text-center flex flex-col items-center">
                 <motion.div 
                   initial={{ scale: 0, rotate: -45 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: "spring", damping: 15 }}
-                  className="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-white/30"
+                  className="w-24 h-24 bg-white p-2 rounded-[2rem] flex items-center justify-center mb-6 border-4 border-white/30 shadow-2xl"
                 >
-                  <ShieldCheck className="h-10 w-10" />
+                  <AppLogo className="h-20 w-20" />
                 </motion.div>
                 <DialogTitle className="text-3xl font-black">Personalize Experience</DialogTitle>
                 <DialogDescription className="text-white/80 text-lg mt-2">

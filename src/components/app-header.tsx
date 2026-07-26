@@ -44,14 +44,14 @@ export function AppHeader() {
           className="flex items-center gap-4"
         >
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="p-3 bg-primary/10 rounded-2xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg shadow-primary/5">
-              <AppLogo className="h-8 w-8 text-primary" />
+            <div className="p-1 bg-white dark:bg-slate-900 rounded-full group-hover:scale-105 transition-all duration-500 shadow-lg shadow-primary/5 border-2 border-primary/10">
+              <AppLogo className="h-10 w-10" />
             </div>
             <div className="hidden sm:flex flex-col -space-y-1">
               <span className="font-black text-xl tracking-tight text-slate-900 dark:text-slate-50 uppercase">
                 {t('appName')}
               </span>
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Premium Land Utility</span>
+              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Land Utility Partner</span>
             </div>
           </Link>
         </motion.div>
@@ -65,7 +65,7 @@ export function AppHeader() {
             <Search className="h-4 w-4 text-muted-foreground mr-3 group-focus-within:text-primary transition-colors" />
             <input 
               type="text" 
-              placeholder="Quick search tools..." 
+              placeholder="Search tools..." 
               className="bg-transparent border-none outline-none text-sm w-36 focus:w-60 transition-all duration-500 font-medium"
             />
           </div>
