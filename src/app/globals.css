@@ -54,8 +54,12 @@
     @apply border-border outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased selection:bg-primary/20 transition-colors duration-300;
+    @apply bg-background text-foreground font-body antialiased selection:bg-primary/20 transition-colors duration-300 overflow-x-hidden;
+    font-size: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
   }
+  h1 { @apply text-[clamp(2rem,1.5rem+2.5vw,4rem)] font-black leading-tight; }
+  h2 { @apply text-[clamp(1.5rem,1.25rem+1.5vw,2.5rem)] font-black leading-snug; }
+  h3 { @apply text-[clamp(1.25rem,1.1rem+1vw,1.75rem)] font-extrabold; }
 }
 
 .glass-card {
@@ -67,7 +71,7 @@
 }
 
 .floating-nav {
-  @apply fixed bottom-8 left-1/2 -translate-x-1/2 w-[92%] max-w-md h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-slate-800/20 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-50 flex items-center justify-around px-4;
+  @apply fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-white/20 dark:border-slate-800/20 rounded-[2.25rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-50 flex items-center justify-around px-4 md:hidden;
 }
 
 .m3-input-container {
@@ -75,7 +79,7 @@
 }
 
 .m3-input {
-  @apply w-full h-[72px] px-6 pt-8 pb-2 rounded-[22px] bg-slate-100/50 dark:bg-slate-800/40 border-2 border-transparent transition-all duration-300 outline-none text-[17px] font-semibold text-slate-900 dark:text-slate-100;
+  @apply w-full h-[64px] md:h-[72px] px-6 pt-9 pb-2 rounded-[20px] md:rounded-[22px] bg-slate-100/50 dark:bg-slate-800/40 border-2 border-transparent transition-all duration-300 outline-none text-[16px] md:text-[17px] font-semibold text-slate-900 dark:text-slate-100;
   @apply focus:bg-white dark:focus:bg-slate-900 focus:border-primary/50 focus:shadow-[0_0_0_8px_rgba(15,118,110,0.05)];
 }
 
@@ -84,7 +88,7 @@
 }
 
 .m3-label {
-  @apply absolute left-6 top-1/2 -translate-y-1/2 text-slate-500/60 pointer-events-none transition-all duration-300 text-[16px] font-medium z-10;
+  @apply absolute left-6 top-1/2 -translate-y-1/2 text-slate-500/60 pointer-events-none transition-all duration-300 text-[15px] md:text-[16px] font-medium z-10;
 }
 
 .m3-input.has-icon ~ .m3-label {
@@ -94,7 +98,7 @@
 .peer:focus ~ .m3-label,
 .peer:not(:placeholder-shown) ~ .m3-label,
 .m3-label.active {
-  @apply top-4 text-[11px] font-black uppercase tracking-[0.15em] text-primary translate-y-0;
+  @apply top-2.5 text-[10px] md:text-[11px] font-black uppercase tracking-[0.15em] text-primary translate-y-0;
 }
 
 .m3-icon {
@@ -106,15 +110,11 @@
 }
 
 .premium-shadow {
-  @apply shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] transition-shadow duration-500;
+  @apply shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_-12px_rgba(0,0,0,0.1)] transition-all duration-500;
 }
 
 .card-rounded {
-  @apply rounded-[2.5rem];
-}
-
-.button-rounded {
-  @apply rounded-2xl;
+  @apply rounded-[2rem] md:rounded-[2.5rem];
 }
 
 ::-webkit-scrollbar {
@@ -125,4 +125,8 @@
 }
 ::-webkit-scrollbar-thumb {
   @apply bg-slate-300 dark:bg-slate-700 rounded-full;
+}
+
+.page-container {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
 }

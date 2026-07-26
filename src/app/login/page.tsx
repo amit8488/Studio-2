@@ -136,7 +136,7 @@ export default function LoginPage() {
 
             <Button 
                 variant="outline" 
-                className="w-full h-18 rounded-[1.75rem] font-black text-lg border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all premium-shadow flex items-center justify-center gap-4" 
+                className="w-full h-20 rounded-[1.75rem] font-black text-lg border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all premium-shadow flex items-center justify-center gap-4" 
                 onClick={handleGoogleSignIn} 
                 disabled={isLoading || isGoogleLoading}
             >

@@ -77,12 +77,13 @@ export default function StandardCalculatorPage() {
   ];
 
   const renderIcon = (btn: string) => {
+    const iconClass = "h-6 w-6 md:h-7 md:w-7";
     switch (btn) {
-      case '/': return <Divide className="h-7 w-7" />;
-      case '*': return <X className="h-7 w-7" />;
-      case '+': return <Plus className="h-7 w-7" />;
-      case '-': return <Minus className="h-7 w-7" />;
-      case 'DEL': return <BackspaceIcon className="h-7 w-7" />;
+      case '/': return <Divide className={iconClass} />;
+      case '*': return <X className={iconClass} />;
+      case '+': return <Plus className={iconClass} />;
+      case '-': return <Minus className={iconClass} />;
+      case 'DEL': return <BackspaceIcon className={iconClass} />;
       default: return btn;
     }
   };
@@ -90,39 +91,38 @@ export default function StandardCalculatorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32">
       <AppHeader />
-      <main className="flex-grow flex flex-col items-center justify-center p-6 sm:p-8">
+      <main className="flex-grow flex flex-col items-center justify-center p-4 md:p-8">
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full max-w-md space-y-8"
+          className="w-full max-w-md space-y-6 md:space-y-8"
         >
-          <div className="flex items-center justify-between px-6">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between px-4 md:px-6">
+            <div className="flex items-center gap-3 md:gap-4">
               <motion.div 
                 initial={{ rotate: -20, scale: 0.8 }}
                 animate={{ rotate: 0, scale: 1 }}
-                className="p-3 bg-primary/10 rounded-2xl text-primary"
+                className="p-2.5 md:p-3 bg-primary/10 rounded-xl md:rounded-2xl text-primary"
               >
-                <CalcIcon className="h-7 w-7" strokeWidth={2.5} />
+                <CalcIcon className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} />
               </motion.div>
-              <h1 className="text-2xl font-black tracking-tight">Standard Calc</h1>
+              <h1 className="text-xl md:text-2xl font-black tracking-tight uppercase">Calculator</h1>
             </div>
-            <Button variant="ghost" size="icon" onClick={() => handleButtonClick('C')} className="rounded-2xl text-muted-foreground hover:text-destructive">
-               <Trash2 className="h-5 w-5" />
+            <Button variant="ghost" size="icon" onClick={() => handleButtonClick('C')} className="rounded-xl md:rounded-2xl text-muted-foreground hover:text-destructive">
+               <Trash2 className="h-5 w-5 md:h-6 md:w-6" />
             </Button>
           </div>
 
           <Card className="card-rounded glass-card border-none shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden">
-            <CardContent className="p-8 space-y-8">
-              <div className="h-48 flex flex-col justify-end items-end px-6 py-8 bg-slate-50 dark:bg-slate-900/50 rounded-[2.5rem] text-right overflow-hidden border border-white/40 dark:border-slate-800/40 relative shadow-inner">
+            <CardContent className="p-4 md:p-8 space-y-6 md:space-y-8">
+              <div className="h-32 md:h-48 flex flex-col justify-end items-end px-6 py-6 md:py-8 bg-slate-50 dark:bg-slate-900/50 rounded-[2rem] md:rounded-[2.5rem] text-right overflow-hidden border border-white/40 dark:border-slate-800/40 relative shadow-inner">
                 <AnimatePresence mode="wait">
                   <motion.div 
                     key={input || 'empty'}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="text-muted-foreground text-2xl font-bold break-all opacity-60"
+                    className="text-muted-foreground text-xl md:text-2xl font-bold break-all opacity-60"
                   >
                     {input || '0'}
                   </motion.div>
@@ -132,28 +132,26 @@ export default function StandardCalculatorPage() {
                     key={result || 'no-res'}
                     initial={{ opacity: 0, scale: 0.9, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="text-primary text-6xl font-black break-all pt-2 tracking-tighter"
+                    className="text-primary text-4xl md:text-6xl font-black break-all pt-1 md:pt-2 tracking-tighter"
                   >
                     {result || '0'}
                   </motion.div>
                 </AnimatePresence>
               </div>
 
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-2 md:gap-4">
                 {buttons.map((btn, idx) => (
                   <motion.div 
                     key={idx} 
                     whileTap={{ scale: 0.94 }} 
                     whileHover={{ scale: 1.05 }}
-                    className={cn(idx === buttons.length - 1 ? "" : "")}
                   >
                     <Button 
                       onClick={() => handleButtonClick(btn)}
                       className={cn(
-                        "w-full h-20 rounded-[1.75rem] text-2xl font-black transition-all duration-300",
+                        "w-full h-16 md:h-20 rounded-xl md:rounded-[1.75rem] text-xl md:text-2xl font-black transition-all duration-300",
                         ['/', '*', '-', '+', '='].includes(btn) 
-                          ? "bg-primary text-white hover:bg-primary/90 shadow-2xl shadow-primary/30" 
+                          ? "bg-primary text-white hover:bg-primary/90 shadow-lg md:shadow-2xl shadow-primary/30" 
                           : btn === 'C' || btn === 'DEL'
                             ? "bg-destructive/10 text-destructive hover:bg-destructive/20 border-none"
                             : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm border-none"

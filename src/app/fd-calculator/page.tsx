@@ -106,28 +106,28 @@ export default function FDCalculatorPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background pb-32">
       <AppHeader />
-      <main className="flex-grow container mx-auto max-w-2xl px-6 pt-12">
+      <main className="flex-grow page-container max-w-2xl pt-8 md:pt-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <div className="p-4 bg-primary/10 rounded-[2rem] w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/5">
-            <Landmark className="h-10 w-10 text-primary" />
+          <div className="p-4 bg-primary/10 rounded-[1.75rem] md:rounded-[2rem] w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/5">
+            <Landmark className="h-8 w-8 md:h-10 md:w-10 text-primary" />
           </div>
-          <h2 className="text-4xl font-black text-slate-900 dark:text-slate-50 mb-3 tracking-tight">{t('fdCalculator')}</h2>
-          <p className="text-muted-foreground font-medium text-lg leading-relaxed max-w-sm mx-auto">Optimize your savings with our premium investment tool</p>
+          <h2 className="mb-2 uppercase tracking-tight">{t('fdCalculator')}</h2>
+          <p className="text-muted-foreground font-medium text-base md:text-lg leading-relaxed max-w-sm mx-auto">Optimize your savings with premium investment insights</p>
         </motion.div>
 
-        <div className="flex items-center justify-center gap-3 mb-12">
+        <div className="flex items-center justify-center gap-3 mb-8 md:mb-12">
           {[1, 2, 3].map((s) => (
             <motion.div 
               key={s}
               animate={{
-                width: step === s ? 48 : 12,
+                width: step === s ? 40 : 10,
                 backgroundColor: step === s ? 'hsl(var(--primary))' : 'rgba(100, 116, 139, 0.2)'
               }}
-              className="h-3 rounded-full transition-all duration-500"
+              className="h-2.5 rounded-full transition-all duration-500"
             />
           ))}
         </div>
@@ -136,22 +136,22 @@ export default function FDCalculatorPage() {
           {step === 1 && (
             <motion.div
               key="step1"
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              className="space-y-8"
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6 md:space-y-8"
             >
-              <Card className="card-rounded premium-shadow border-none glass-card p-8 sm:p-12">
-                <div className="space-y-10">
+              <Card className="card-rounded premium-shadow border-none glass-card p-6 md:p-12">
+                <div className="space-y-8 md:space-y-10">
                   <div className="space-y-6">
-                    <Label className="text-xs font-black uppercase tracking-[0.25em] text-primary flex items-center gap-3">
+                    <Label className="text-[10px] md:text-xs font-black uppercase tracking-[0.25em] text-primary flex items-center gap-3">
                       <UserIcon className="h-4 w-4" />
                       {t('customerType')}
                     </Label>
                     <RadioGroup 
                       value={customerType} 
                       onValueChange={(v) => setCustomerType(v as any)}
-                      className="grid grid-cols-2 gap-6"
+                      className="grid grid-cols-2 gap-4 md:gap-6"
                     >
                       {['normal', 'senior'].map((type) => (
                         <motion.label 
@@ -159,7 +159,7 @@ export default function FDCalculatorPage() {
                           whileTap={{ scale: 0.96 }}
                           htmlFor={type} 
                           className={cn(
-                            "flex items-center justify-center p-6 rounded-[2rem] border-2 transition-all cursor-pointer font-black text-lg",
+                            "flex items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-[2rem] border-2 transition-all cursor-pointer font-black text-sm md:text-lg",
                             customerType === type ? "border-primary bg-primary/5 text-primary shadow-xl shadow-primary/5" : "border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 opacity-60"
                           )}
                         >
@@ -170,13 +170,13 @@ export default function FDCalculatorPage() {
                     </RadioGroup>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div className="m3-input-container">
                       <Select value={fdType} onValueChange={setFdType}>
-                        <SelectTrigger className="m3-input font-bold border-none h-[72px] rounded-3xl">
+                        <SelectTrigger className="m3-input font-bold border-none h-[64px] md:h-[72px] rounded-2xl md:rounded-3xl">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="rounded-[2rem] border-none shadow-2xl">
+                        <SelectContent className="rounded-[1.5rem] md:rounded-[2rem] border-none shadow-2xl">
                           <SelectItem value="cumulative">{t('cumulative')}</SelectItem>
                           <SelectItem value="payout">{t('payout')}</SelectItem>
                         </SelectContent>
@@ -187,12 +187,12 @@ export default function FDCalculatorPage() {
                     <div className="m3-input-container">
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant="ghost" className="m3-input font-bold flex items-center justify-start border-none h-[72px] rounded-3xl w-full bg-slate-100/50 dark:bg-slate-800/40">
+                          <Button variant="ghost" className="m3-input font-bold flex items-center justify-start border-none h-[64px] md:h-[72px] rounded-2xl md:rounded-3xl w-full bg-slate-100/50 dark:bg-slate-800/40">
                             <CalendarIcon className="mr-3 h-5 w-5 text-primary opacity-60" />
-                            {fdDate ? format(fdDate, "PPP") : "Select Date"}
+                            {fdDate ? format(fdDate, "dd MMM yyyy") : "Select Date"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 rounded-[2rem] border-none shadow-[0_50px_100px_rgba(0,0,0,0.2)]">
+                        <PopoverContent className="w-auto p-0 rounded-[1.5rem] md:rounded-[2rem] border-none shadow-[0_50px_100px_rgba(0,0,0,0.2)]">
                           <Calendar mode="single" selected={fdDate} onSelect={setFdDate} initialFocus />
                         </PopoverContent>
                       </Popover>
@@ -201,7 +201,7 @@ export default function FDCalculatorPage() {
                   </div>
                 </div>
               </Card>
-              <Button onClick={() => setStep(2)} className="w-full h-20 rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+              <Button onClick={() => setStep(2)} className="w-full h-16 md:h-20 rounded-[1.75rem] md:rounded-[2rem] text-lg md:text-xl font-black shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
                 Continue <ArrowRight className="ml-3 h-6 w-6" />
               </Button>
             </motion.div>
@@ -210,22 +210,22 @@ export default function FDCalculatorPage() {
           {step === 2 && (
             <motion.div
               key="step2"
-              initial={{ opacity: 0, x: 50 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              className="space-y-8"
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6 md:space-y-8"
             >
-              <Card className="card-rounded premium-shadow border-none glass-card p-8 sm:p-12">
-                <div className="space-y-10">
+              <Card className="card-rounded premium-shadow border-none glass-card p-6 md:p-12">
+                <div className="space-y-8 md:space-y-10">
                   <div className="m3-input-container">
                     <Input
                       type="number"
                       placeholder=" "
                       value={principal}
                       onChange={(e) => setPrincipal(e.target.value)}
-                      className="peer m3-input has-icon text-2xl font-black border-none"
+                      className="peer m3-input has-icon text-xl md:text-2xl font-black border-none"
                     />
-                    <IndianRupee className="m3-icon h-6 w-6" />
+                    <IndianRupee className="m3-icon h-5 w-5 md:h-6 md:w-6" />
                     <span className="m3-label">{t('principalAmount')}</span>
                   </div>
 
@@ -235,65 +235,60 @@ export default function FDCalculatorPage() {
                       placeholder=" "
                       value={interestRate}
                       onChange={(e) => setInterestRate(e.target.value)}
-                      className="peer m3-input has-icon text-2xl font-black border-none"
+                      className="peer m3-input has-icon text-xl md:text-2xl font-black border-none"
                     />
-                    <TrendingUp className="m3-icon h-6 w-6" />
+                    <TrendingUp className="m3-icon h-5 w-5 md:h-6 md:w-6" />
                     <span className="m3-label">{t('interestRate')}</span>
                     {customerType === 'senior' && (
-                      <motion.div 
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 bg-accent/20 text-accent text-[11px] font-black px-3 py-1.5 rounded-xl z-20 uppercase tracking-widest"
-                      >
+                      <div className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 bg-accent/15 text-accent text-[9px] md:text-[10px] font-black px-2.5 py-1 rounded-lg z-20 uppercase tracking-widest">
                         +0.5% BONUS
-                      </motion.div>
+                      </div>
                     )}
                   </div>
 
                   <div className="space-y-8">
-                    <Label className="text-xs font-black uppercase tracking-[0.25em] text-primary flex items-center gap-3">
+                    <Label className="text-[10px] md:text-xs font-black uppercase tracking-[0.25em] text-primary flex items-center gap-3">
                       <Clock className="h-4 w-4" />
                       {t('tenure')}
                     </Label>
                     <RadioGroup 
                       value={tenureType} 
                       onValueChange={(v) => setTenureType(v as any)}
-                      className="grid grid-cols-2 gap-6"
+                      className="grid grid-cols-2 gap-4 md:gap-6"
                     >
-                      <Label htmlFor="ymd" className={cn("p-6 rounded-[2rem] border-2 text-center font-black text-lg cursor-pointer transition-all", tenureType === 'ymd' ? "border-primary bg-primary/5 text-primary shadow-xl shadow-primary/5" : "border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 opacity-60")}>
+                      <Label htmlFor="ymd" className={cn("p-4 md:p-6 rounded-2xl md:rounded-[2rem] border-2 text-center font-black text-sm md:text-lg cursor-pointer transition-all", tenureType === 'ymd' ? "border-primary bg-primary/5 text-primary shadow-xl shadow-primary/5" : "border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 opacity-60")}>
                         <RadioGroupItem value="ymd" id="ymd" className="sr-only" />
                         Y / M / D
                       </Label>
-                      <Label htmlFor="days" className={cn("p-6 rounded-[2rem] border-2 text-center font-black text-lg cursor-pointer transition-all", tenureType === 'days' ? "border-primary bg-primary/5 text-primary shadow-xl shadow-primary/5" : "border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 opacity-60")}>
+                      <Label htmlFor="days" className={cn("p-4 md:p-6 rounded-2xl md:rounded-[2rem] border-2 text-center font-black text-sm md:text-lg cursor-pointer transition-all", tenureType === 'days' ? "border-primary bg-primary/5 text-primary shadow-xl shadow-primary/5" : "border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 opacity-60")}>
                         <RadioGroupItem value="days" id="days" className="sr-only" />
                         {t('daysOnly')}
                       </Label>
                     </RadioGroup>
 
-                    <div className="space-y-10 pt-4">
+                    <div className="space-y-8 pt-2">
                       <AnimatePresence mode="wait">
                         {tenureType === 'ymd' ? (
                           <motion.div 
                             key="ymd-inputs"
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="space-y-10"
+                            className="space-y-8"
                           >
                             {['year', 'month', 'day'].map((unit, idx) => {
                               const state = [years, months, days][idx];
                               const setter = [setYears, setMonths, setDays][idx];
                               const max = [10, 11, 29][idx];
                               return (
-                                <div key={unit} className="space-y-5">
-                                  <div className="flex justify-between items-center px-2">
-                                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t(unit as any)}</Label>
-                                    <div className="bg-primary/5 px-6 py-2 rounded-2xl">
+                                <div key={unit} className="space-y-4">
+                                  <div className="flex justify-between items-center px-1">
+                                    <Label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground">{t(unit as any)}</Label>
+                                    <div className="bg-primary/5 px-4 py-1.5 md:px-5 md:py-2 rounded-xl">
                                       <input
                                         type="number"
                                         value={state[0].toString()}
                                         onChange={handleInputChange(setter, max)}
-                                        className="w-16 bg-transparent text-center font-black text-primary border-none focus:outline-none"
+                                        className="w-12 bg-transparent text-center font-black text-primary border-none focus:outline-none text-sm md:text-base"
                                       />
                                     </div>
                                   </div>
@@ -305,19 +300,18 @@ export default function FDCalculatorPage() {
                         ) : (
                           <motion.div 
                             key="days-inputs"
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="space-y-5"
+                            className="space-y-4"
                           >
-                            <div className="flex justify-between items-center px-2">
-                              <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t('day')}</Label>
-                               <div className="bg-primary/5 px-6 py-2 rounded-2xl">
+                            <div className="flex justify-between items-center px-1">
+                              <Label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-muted-foreground">{t('day')}</Label>
+                               <div className="bg-primary/5 px-4 py-1.5 md:px-5 md:py-2 rounded-xl">
                                 <input
                                   type="number"
                                   value={totalDays[0].toString()}
                                   onChange={handleInputChange(setTotalDays, 999)}
-                                  className="w-16 bg-transparent text-center font-black text-primary border-none focus:outline-none"
+                                  className="w-14 bg-transparent text-center font-black text-primary border-none focus:outline-none text-sm md:text-base"
                                 />
                               </div>
                             </div>
@@ -329,13 +323,13 @@ export default function FDCalculatorPage() {
                   </div>
                 </div>
               </Card>
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
-                <Button variant="ghost" onClick={() => setStep(1)} className="h-20 rounded-[2rem] font-black text-lg sm:col-span-1 group">
-                    <ChevronLeft className="mr-2 h-6 w-6 group-hover:-translate-x-1 transition-transform" /> Back
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+                <Button variant="ghost" onClick={() => setStep(1)} className="h-16 md:h-20 rounded-[1.75rem] md:rounded-[2rem] font-black text-base md:text-lg group">
+                    <ChevronLeft className="mr-2 h-5 w-5 md:h-6 md:w-6 group-hover:-translate-x-1 transition-transform" /> Back
                 </Button>
-                <motion.div whileTap={{ scale: 0.98 }} className="sm:col-span-3">
-                  <Button onClick={() => setStep(3)} className="h-20 rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/20 w-full hover:scale-[1.02] transition-all">Show Results</Button>
-                </motion.div>
+                <div className="md:col-span-3">
+                  <Button onClick={() => setStep(3)} className="h-16 md:h-20 rounded-[1.75rem] md:rounded-[2rem] text-lg md:text-xl font-black shadow-2xl shadow-primary/20 w-full hover:scale-[1.02] transition-all">Show Results</Button>
+                </div>
               </div>
             </motion.div>
           )}
@@ -343,103 +337,79 @@ export default function FDCalculatorPage() {
           {step === 3 && result && (
             <motion.div
               key="step3"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="space-y-8"
+              className="space-y-6 md:space-y-8"
             >
-              <Card className="card-rounded hero-gradient border-none p-10 sm:p-14 text-white shadow-[0_50px_100px_rgba(0,0,0,0.2)] relative overflow-hidden">
-                <div className="relative z-10 space-y-10">
+              <Card className="card-rounded hero-gradient border-none p-8 md:p-14 text-white shadow-[0_30px_60px_rgba(0,0,0,0.15)] md:shadow-[0_50px_100px_rgba(0,0,0,0.2)] relative overflow-hidden">
+                <div className="relative z-10 space-y-8 md:space-y-10">
                   <div className="text-center">
-                    <p className="text-xs font-black uppercase tracking-[0.4em] opacity-80 mb-4">{t('maturityAmount')}</p>
-                    <motion.h3 
-                      key={result.maturity}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      className="text-5xl sm:text-7xl font-black tracking-tighter flex items-center justify-center gap-2"
-                    >
-                      <IndianRupee className="h-10 w-10 sm:h-14 sm:w-14" strokeWidth={4} />
+                    <p className="text-[10px] md:text-xs font-black uppercase tracking-[0.4em] opacity-80 mb-3 md:mb-4">{t('maturityAmount')}</p>
+                    <h3 className="text-4xl md:text-7xl font-black tracking-tighter flex items-center justify-center gap-2">
+                      <IndianRupee className="h-8 w-8 md:h-14 md:w-14" strokeWidth={4} />
                       {formatNumber(result.maturity)}
-                    </motion.h3>
+                    </h3>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-6">
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="bg-white/10 backdrop-blur-2xl card-rounded p-6 border border-white/20"
-                    >
-                      <p className="text-[11px] font-black uppercase tracking-widest opacity-80 mb-2">{t('totalInterest')}</p>
-                      <p className="text-2xl font-black">₹{formatNumber(result.interest)}</p>
-                    </motion.div>
-                    <motion.div 
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                      className="bg-white/10 backdrop-blur-2xl card-rounded p-6 border border-white/20"
-                    >
-                      <p className="text-[11px] font-black uppercase tracking-widest opacity-80 mb-2">{t('maturityDate')}</p>
-                      <p className="text-2xl font-black">{format(result.maturityDate, "dd MMM yyyy")}</p>
-                    </motion.div>
+                  <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 md:gap-6">
+                    <div className="bg-white/10 backdrop-blur-2xl rounded-2xl md:card-rounded p-5 md:p-6 border border-white/20">
+                      <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest opacity-80 mb-1.5 md:mb-2">{t('totalInterest')}</p>
+                      <p className="text-xl md:text-2xl font-black">₹{formatNumber(result.interest)}</p>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-2xl rounded-2xl md:card-rounded p-5 md:p-6 border border-white/20">
+                      <p className="text-[10px] md:text-[11px] font-black uppercase tracking-widest opacity-80 mb-1.5 md:mb-2">{t('maturityDate')}</p>
+                      <p className="text-xl md:text-2xl font-black">{format(result.maturityDate, "dd MMM yyyy")}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute top-0 right-0 p-6 opacity-10">
-                  <Landmark className="h-48 w-48 -mr-12 -mt-12" />
+                <div className="absolute top-0 right-0 p-6 opacity-10 hidden sm:block">
+                  <Landmark className="h-40 w-40 md:h-48 md:w-48 -mr-10 -mt-10 md:-mr-12 md:-mt-12" />
                 </div>
               </Card>
 
-              <div className="grid grid-cols-2 gap-6">
-                <Button variant="outline" className="h-16 rounded-[1.75rem] font-black text-lg gap-3 border-2 hover:bg-slate-50 dark:hover:bg-slate-900 premium-shadow">
-                  <Download className="h-5 w-5" /> PDF Report
+              <div className="grid grid-cols-2 gap-4 md:gap-6">
+                <Button variant="outline" className="h-14 md:h-16 rounded-2xl md:rounded-[1.75rem] font-black text-sm md:text-lg gap-2.5 md:gap-3 border-2 premium-shadow">
+                  <Download className="h-4 w-4 md:h-5 md:w-5" /> Report
                 </Button>
-                <Button variant="outline" className="h-16 rounded-[1.75rem] font-black text-lg gap-3 border-2 hover:bg-slate-50 dark:hover:bg-slate-900 premium-shadow">
-                  <Share2 className="h-5 w-5" /> Share Plan
+                <Button variant="outline" className="h-14 md:h-16 rounded-2xl md:rounded-[1.75rem] font-black text-sm md:text-lg gap-2.5 md:gap-3 border-2 premium-shadow">
+                  <Share2 className="h-4 w-4 md:h-5 md:w-5" /> Share
                 </Button>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Card className="card-rounded premium-shadow border-none glass-card p-10">
-                  <div className="space-y-10">
-                    <div className="flex items-center justify-between">
-                        <h4 className="text-2xl font-black flex items-center gap-4">
-                          <div className="p-3 bg-primary/10 rounded-2xl">
-                             <Info className="h-6 w-6 text-primary" />
-                          </div>
-                          Investment Insights
-                        </h4>
-                        <div className="bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full">Quarterly Compounding</div>
-                    </div>
-                    <div className="space-y-6">
-                      {[
-                        { label: 'Original Principal', value: `₹${parseFloat(principal).toLocaleString('en-IN')}`, icon: IndianRupee },
-                        { label: 'Annual Interest Rate', value: `${effectiveRate}% p.a.`, icon: TrendingUp },
-                        { label: 'Senior Bonus Applied', value: customerType === 'senior' ? 'Yes (+0.5%)' : 'No (Standard)', icon: UserIcon }
-                      ].map((item, i) => (
-                        <motion.div 
-                          key={item.label} 
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.5 + (i * 0.1) }}
-                          className="flex justify-between items-center py-4 border-b border-muted group last:border-none"
-                        >
-                          <div className="flex items-center gap-4">
-                             <item.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                             <span className="text-base text-muted-foreground font-semibold">{item.label}</span>
-                          </div>
-                          <span className="text-lg font-black text-slate-900 dark:text-slate-50">{item.value}</span>
-                        </motion.div>
-                      ))}
-                    </div>
+              <Card className="card-rounded premium-shadow border-none glass-card p-8 md:p-10">
+                <div className="space-y-8 md:space-y-10">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <h4 className="text-xl md:text-2xl font-black flex items-center gap-3 md:gap-4">
+                        <div className="p-2.5 md:p-3 bg-primary/10 rounded-xl md:rounded-2xl">
+                           <Info className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+                        </div>
+                        Investment Details
+                      </h4>
+                      <div className="bg-primary/5 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 md:px-4 md:py-2 rounded-full">Quarterly Compounding</div>
                   </div>
-                </Card>
-              </motion.div>
+                  <div className="space-y-1">
+                    {[
+                      { label: 'Principal', value: `₹${parseFloat(principal).toLocaleString('en-IN')}`, icon: IndianRupee },
+                      { label: 'Interest Rate', value: `${effectiveRate}% p.a.`, icon: TrendingUp },
+                      { label: 'Customer Type', value: customerType === 'senior' ? 'Senior (+0.5%)' : 'Standard', icon: UserIcon }
+                    ].map((item, i) => (
+                      <div 
+                        key={item.label} 
+                        className="flex justify-between items-center py-4 border-b border-muted group last:border-none"
+                      >
+                        <div className="flex items-center gap-3 md:gap-4">
+                           <item.icon className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                           <span className="text-sm md:text-base text-muted-foreground font-semibold">{item.label}</span>
+                        </div>
+                        <span className="text-base md:text-lg font-black text-slate-900 dark:text-slate-50">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Card>
 
-              <Button onClick={() => setStep(1)} className="w-full h-20 rounded-[2.5rem] text-xl font-black shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-all mb-8">
-                Start New Calculation
+              <Button onClick={() => setStep(1)} className="w-full h-16 md:h-20 rounded-[2rem] md:rounded-[2.5rem] text-lg md:text-xl font-black shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-all mb-12">
+                New Calculation
               </Button>
             </motion.div>
           )}
