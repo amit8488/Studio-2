@@ -226,27 +226,27 @@ export default function FDCalculatorPage() {
               <Card className="rounded-[2.5rem] glass-card border-none p-8">
                 <div className="space-y-8">
                   <div className="m3-input-container">
-                    <span className="m3-label left-16">{t('principalAmount')}</span>
+                    <span className="m3-label left-14">{t('principalAmount')}</span>
                     <div className="relative">
                       <IndianRupee className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                       <Input
                         type="number"
                         value={principal}
                         onChange={(e) => setPrincipal(e.target.value)}
-                        className="m3-input pl-20 text-xl font-black border-none"
+                        className="m3-input pl-14 text-xl font-black border-none"
                       />
                     </div>
                   </div>
 
                   <div className="m3-input-container">
-                    <span className="m3-label left-16">{t('interestRate')}</span>
+                    <span className="m3-label left-14">{t('interestRate')}</span>
                     <div className="relative">
                       <TrendingUp className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                       <Input
                         type="number"
                         value={interestRate}
                         onChange={(e) => setInterestRate(e.target.value)}
-                        className="m3-input pl-20 text-xl font-black border-none"
+                        className="m3-input pl-14 text-xl font-black border-none"
                       />
                       {customerType === 'senior' && (
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg">
