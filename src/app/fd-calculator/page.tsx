@@ -4,7 +4,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { format, addYears, addMonths, addDays } from 'date-fns';
 import { 
   Calendar as CalendarIcon, 
-  Calculator, 
   IndianRupee, 
   Clock, 
   ArrowRight, 
@@ -105,20 +104,6 @@ export default function FDCalculatorPage() {
     setter([Math.min(max, Math.max(0, val))]);
   };
 
-  const StepIndicator = () => (
-    <div className="flex items-center justify-center gap-2 mb-8">
-      {[1, 2, 3].map((s) => (
-        <div 
-          key={s}
-          className={cn(
-            "h-2 rounded-full transition-all duration-500",
-            step === s ? "w-8 bg-primary" : "w-2 bg-muted-foreground/30"
-          )}
-        />
-      ))}
-    </div>
-  );
-
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <AppHeader />
@@ -132,15 +117,27 @@ export default function FDCalculatorPage() {
           <p className="text-muted-foreground font-medium">Plan your future savings with precision</p>
         </motion.div>
 
-        <StepIndicator />
+        <div className="flex items-center justify-center gap-2 mb-8">
+          {[1, 2, 3].map((s) => (
+            <motion.div 
+              key={s}
+              animate={{
+                width: step === s ? 32 : 8,
+                backgroundColor: step === s ? 'hsl(var(--primary))' : 'rgba(100, 116, 139, 0.3)'
+              }}
+              className="h-2 rounded-full"
+            />
+          ))}
+        </div>
 
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div
               key="step1"
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.2 }}
               className="space-y-6"
             >
               <Card className="rounded-[2.5rem] glass-card border-none p-8">
@@ -155,26 +152,20 @@ export default function FDCalculatorPage() {
                       onValueChange={(v) => setCustomerType(v as any)}
                       className="grid grid-cols-2 gap-4"
                     >
-                      <Label 
-                        htmlFor="normal" 
-                        className={cn(
-                          "flex items-center justify-center p-4 rounded-2xl border-2 transition-all cursor-pointer font-bold",
-                          customerType === 'normal' ? "border-primary bg-primary/5 text-primary" : "border-muted bg-muted/50"
-                        )}
-                      >
-                        <RadioGroupItem value="normal" id="normal" className="sr-only" />
-                        {t('normal')}
-                      </Label>
-                      <Label 
-                        htmlFor="senior" 
-                        className={cn(
-                          "flex items-center justify-center p-4 rounded-2xl border-2 transition-all cursor-pointer font-bold text-center",
-                          customerType === 'senior' ? "border-primary bg-primary/5 text-primary" : "border-muted bg-muted/50"
-                        )}
-                      >
-                        <RadioGroupItem value="senior" id="senior" className="sr-only" />
-                        {t('seniorCitizen')}
-                      </Label>
+                      {['normal', 'senior'].map((type) => (
+                        <motion.label 
+                          key={type}
+                          whileTap={{ scale: 0.96 }}
+                          htmlFor={type} 
+                          className={cn(
+                            "flex items-center justify-center p-4 rounded-2xl border-2 transition-all cursor-pointer font-bold text-center",
+                            customerType === type ? "border-primary bg-primary/5 text-primary" : "border-muted bg-muted/50"
+                          )}
+                        >
+                          <RadioGroupItem value={type} id={type} className="sr-only" />
+                          {type === 'normal' ? t('normal') : t('seniorCitizen')}
+                        </motion.label>
+                      ))}
                     </RadioGroup>
                   </div>
 
@@ -213,18 +204,21 @@ export default function FDCalculatorPage() {
                   </div>
                 </div>
               </Card>
-              <Button onClick={() => setStep(2)} className="w-full h-16 rounded-[1.5rem] text-lg font-black shadow-xl shadow-primary/20">
-                Continue <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <motion.div whileTap={{ scale: 0.98 }}>
+                <Button onClick={() => setStep(2)} className="w-full h-16 rounded-[1.5rem] text-lg font-black shadow-xl shadow-primary/20">
+                  Continue <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </motion.div>
             </motion.div>
           )}
 
           {step === 2 && (
             <motion.div
               key="step2"
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.2 }}
               className="space-y-6"
             >
               <Card className="rounded-[2.5rem] glass-card border-none p-8">
@@ -235,7 +229,7 @@ export default function FDCalculatorPage() {
                       placeholder=" "
                       value={principal}
                       onChange={(e) => setPrincipal(e.target.value)}
-                      className="peer m3-input has-icon pl-20 text-xl font-black border-none"
+                      className="peer m3-input has-icon pl-16 text-xl font-black border-none"
                     />
                     <IndianRupee className="m3-icon" />
                     <span className="m3-label left-16">{t('principalAmount')}</span>
@@ -247,14 +241,18 @@ export default function FDCalculatorPage() {
                       placeholder=" "
                       value={interestRate}
                       onChange={(e) => setInterestRate(e.target.value)}
-                      className="peer m3-input has-icon pl-20 text-xl font-black border-none"
+                      className="peer m3-input has-icon pl-16 text-xl font-black border-none"
                     />
                     <TrendingUp className="m3-icon" />
                     <span className="m3-label left-16">{t('interestRate')}</span>
                     {customerType === 'senior' && (
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg z-20">
+                      <motion.div 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-accent/10 text-accent text-[10px] font-black px-2 py-1 rounded-lg z-20"
+                      >
                         +0.5% BONUS
-                      </div>
+                      </motion.div>
                     )}
                   </div>
 
@@ -279,47 +277,65 @@ export default function FDCalculatorPage() {
                     </RadioGroup>
 
                     <div className="space-y-8 pt-4">
-                      {tenureType === 'ymd' ? (
-                        ['year', 'month', 'day'].map((unit, idx) => {
-                          const state = [years, months, days][idx];
-                          const setter = [setYears, setMonths, setDays][idx];
-                          const max = [10, 11, 29][idx];
-                          return (
-                            <div key={unit} className="space-y-4">
-                              <div className="flex justify-between items-center px-1">
-                                <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t(unit as any)}</Label>
-                                <Input
-                                  type="number"
-                                  value={state[0].toString()}
-                                  onChange={handleInputChange(setter, max)}
-                                  className="w-24 h-8 text-center font-bold bg-primary/5 border-none rounded-full text-primary focus-visible:ring-primary/20"
-                                />
-                              </div>
-                              <Slider value={state} onValueChange={setter} max={max} step={1} className="py-2" />
+                      <AnimatePresence mode="wait">
+                        {tenureType === 'ymd' ? (
+                          <motion.div 
+                            key="ymd-inputs"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="space-y-8"
+                          >
+                            {['year', 'month', 'day'].map((unit, idx) => {
+                              const state = [years, months, days][idx];
+                              const setter = [setYears, setMonths, setDays][idx];
+                              const max = [10, 11, 29][idx];
+                              return (
+                                <div key={unit} className="space-y-4">
+                                  <div className="flex justify-between items-center px-1">
+                                    <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t(unit as any)}</Label>
+                                    <Input
+                                      type="number"
+                                      value={state[0].toString()}
+                                      onChange={handleInputChange(setter, max)}
+                                      className="w-24 h-8 text-center font-bold bg-primary/5 border-none rounded-full text-primary focus-visible:ring-primary/20"
+                                    />
+                                  </div>
+                                  <Slider value={state} onValueChange={setter} max={max} step={1} className="py-2" />
+                                </div>
+                              );
+                            })}
+                          </motion.div>
+                        ) : (
+                          <motion.div 
+                            key="days-inputs"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className="space-y-4"
+                          >
+                            <div className="flex justify-between items-center px-1">
+                              <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('day')}</Label>
+                              <Input
+                                type="number"
+                                value={totalDays[0].toString()}
+                                onChange={handleInputChange(setTotalDays, 999)}
+                                className="w-24 h-8 text-center font-bold bg-primary/5 border-none rounded-full text-primary focus-visible:ring-primary/20"
+                              />
                             </div>
-                          );
-                        })
-                      ) : (
-                        <div className="space-y-4">
-                          <div className="flex justify-between items-center px-1">
-                            <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('day')}</Label>
-                            <Input
-                              type="number"
-                              value={totalDays[0].toString()}
-                              onChange={handleInputChange(setTotalDays, 999)}
-                              className="w-24 h-8 text-center font-bold bg-primary/5 border-none rounded-full text-primary focus-visible:ring-primary/20"
-                            />
-                          </div>
-                          <Slider value={totalDays} onValueChange={setTotalDays} max={999} step={1} className="py-2" />
-                        </div>
-                      )}
+                            <Slider value={totalDays} onValueChange={setTotalDays} max={999} step={1} className="py-2" />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
               </Card>
               <div className="grid grid-cols-2 gap-4">
                 <Button variant="ghost" onClick={() => setStep(1)} className="h-16 rounded-[1.5rem] font-bold">Back</Button>
-                <Button onClick={() => setStep(3)} className="h-16 rounded-[1.5rem] text-lg font-black shadow-xl shadow-primary/20">Results</Button>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Button onClick={() => setStep(3)} className="h-16 rounded-[1.5rem] text-lg font-black shadow-xl shadow-primary/20 w-full">Results</Button>
+                </motion.div>
               </div>
             </motion.div>
           )}
@@ -327,29 +343,45 @@ export default function FDCalculatorPage() {
           {step === 3 && result && (
             <motion.div
               key="step3"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", damping: 15 }}
               className="space-y-6"
             >
               <Card className="rounded-[2.5rem] hero-gradient border-none p-8 text-white shadow-2xl relative overflow-hidden">
                 <div className="relative z-10 space-y-6">
                   <div className="text-center">
                     <p className="text-sm font-bold uppercase tracking-[0.2em] opacity-80 mb-2">{t('maturityAmount')}</p>
-                    <h3 className="text-5xl font-black tracking-tight flex items-center justify-center gap-1">
+                    <motion.h3 
+                      key={result.maturity}
+                      initial={{ scale: 0.9 }}
+                      animate={{ scale: 1 }}
+                      className="text-5xl font-black tracking-tight flex items-center justify-center gap-1"
+                    >
                       <IndianRupee className="h-8 w-8" strokeWidth={3} />
                       {formatNumber(result.maturity)}
-                    </h3>
+                    </motion.h3>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4 pt-6">
-                    <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20">
+                    <motion.div 
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20"
+                    >
                       <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">{t('totalInterest')}</p>
                       <p className="text-xl font-black">₹{formatNumber(result.interest)}</p>
-                    </div>
-                    <div className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20">
+                    </motion.div>
+                    <motion.div 
+                      initial={{ x: 20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="bg-white/10 backdrop-blur-md rounded-3xl p-5 border border-white/20"
+                    >
                       <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 mb-1">{t('maturityDate')}</p>
                       <p className="text-xl font-black">{format(result.maturityDate, "dd MMM yyyy")}</p>
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
                 <div className="absolute top-0 right-0 p-4 opacity-20">
@@ -357,35 +389,52 @@ export default function FDCalculatorPage() {
                 </div>
               </Card>
 
-              <div className="grid grid-cols-2 gap-4">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="grid grid-cols-2 gap-4"
+              >
                 <Button variant="outline" className="h-14 rounded-2xl font-bold gap-2">
                   <Download className="h-4 w-4" /> PDF
                 </Button>
                 <Button variant="outline" className="h-14 rounded-2xl font-bold gap-2">
                   <Share2 className="h-4 w-4" /> Share
                 </Button>
-              </div>
+              </motion.div>
 
-              <Card className="rounded-[2.5rem] glass-card border-none p-8">
-                <div className="space-y-6">
-                  <h4 className="text-lg font-bold flex items-center gap-2">
-                    <Info className="h-5 w-5 text-primary" />
-                    Investment Summary
-                  </h4>
-                  <div className="space-y-4">
-                    {[
-                      { label: 'Principal', value: `₹${parseFloat(principal).toLocaleString('en-IN')}` },
-                      { label: 'Interest Rate', value: `${effectiveRate}% p.a.` },
-                      { label: 'Compounding', value: 'Quarterly' }
-                    ].map((item) => (
-                      <div key={item.label} className="flex justify-between items-center py-2 border-b border-muted">
-                        <span className="text-sm text-muted-foreground font-medium">{item.label}</span>
-                        <span className="text-sm font-bold">{item.value}</span>
-                      </div>
-                    ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Card className="rounded-[2.5rem] glass-card border-none p-8">
+                  <div className="space-y-6">
+                    <h4 className="text-lg font-bold flex items-center gap-2">
+                      <Info className="h-5 w-5 text-primary" />
+                      Investment Summary
+                    </h4>
+                    <div className="space-y-4">
+                      {[
+                        { label: 'Principal', value: `₹${parseFloat(principal).toLocaleString('en-IN')}` },
+                        { label: 'Interest Rate', value: `${effectiveRate}% p.a.` },
+                        { label: 'Compounding', value: 'Quarterly' }
+                      ].map((item, i) => (
+                        <motion.div 
+                          key={item.label} 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.5 + (i * 0.1) }}
+                          className="flex justify-between items-center py-2 border-b border-muted"
+                        >
+                          <span className="text-sm text-muted-foreground font-medium">{item.label}</span>
+                          <span className="text-sm font-bold">{item.value}</span>
+                        </motion.div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
 
               <Button onClick={() => setStep(1)} className="w-full h-16 rounded-[1.5rem] text-lg font-black shadow-xl shadow-primary/20">
                 New Calculation

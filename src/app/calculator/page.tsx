@@ -1,7 +1,6 @@
-
 'use client';
 
-import { Divide, Percent, X, Plus, Minus, Delete, Calculator as CalcIcon } from 'lucide-react';
+import { Divide, Percent, X, Plus, Minus, Calculator as CalcIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,8 +12,6 @@ function evaluateExpression(expression: string): number {
   try {
     expression = expression.replace(/(\d*\.?\d+)%(\d*\.?\d+)/g, (match, p1, p2) => `(${p1} / 100 * ${p2})`);
     expression = expression.replace(/(\d*\.?\d+)%/g, (match, p1) => `(${p1}/100)`);
-    const tokens = expression.match(/(\d+\.?\d*|[\+\-\*\/]|\(|\))/g);
-    if (!tokens) throw new Error("Invalid");
     const result = new Function('return ' + expression)();
     if (typeof result !== 'number' || !isFinite(result)) throw new Error("Invalid");
     return result;
@@ -95,35 +92,42 @@ export default function StandardCalculatorPage() {
       <AppHeader />
       <main className="flex-grow flex flex-col items-center justify-center p-4">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
           className="w-full max-w-sm space-y-6"
         >
           <div className="flex items-center gap-3 px-4">
-            <div className="p-2 bg-primary/10 rounded-2xl text-primary">
+            <motion.div 
+              initial={{ rotate: -20 }}
+              animate={{ rotate: 0 }}
+              className="p-2 bg-primary/10 rounded-2xl text-primary"
+            >
               <CalcIcon className="h-6 w-6" />
-            </div>
+            </motion.div>
             <h1 className="text-xl font-bold tracking-tight">Standard Calculator</h1>
           </div>
 
           <Card className="rounded-[3rem] glass-card border-none shadow-2xl overflow-hidden">
             <CardContent className="p-6 space-y-6">
-              <div className="h-40 flex flex-col justify-end items-end px-4 py-6 bg-muted/30 rounded-[2rem] text-right overflow-hidden border border-white/50">
-                <AnimatePresence>
+              <div className="h-40 flex flex-col justify-end items-end px-4 py-6 bg-muted/30 rounded-[2rem] text-right overflow-hidden border border-white/50 relative">
+                <AnimatePresence mode="wait">
                   <motion.div 
-                    key={input}
-                    initial={{ opacity: 0, y: 10 }}
+                    key={input || 'empty'}
+                    initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
                     className="text-muted-foreground text-xl font-medium break-all"
                   >
                     {input || '0'}
                   </motion.div>
                 </AnimatePresence>
-                <AnimatePresence>
+                <AnimatePresence mode="wait">
                   <motion.div 
-                    key={result}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    key={result || 'no-res'}
+                    initial={{ opacity: 0, scale: 0.9, y: 5 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
                     className="text-primary text-5xl font-black break-all pt-2"
                   >
                     {result}
@@ -133,7 +137,7 @@ export default function StandardCalculatorPage() {
 
               <div className="grid grid-cols-4 gap-3">
                 {buttons.map((btn, idx) => (
-                  <motion.div key={idx} whileTap={{ scale: 0.92 }}>
+                  <motion.div key={idx} whileTap={{ scale: 0.92 }} whileHover={{ scale: 1.05 }}>
                     <Button 
                       onClick={() => handleButtonClick(btn)}
                       className={cn(

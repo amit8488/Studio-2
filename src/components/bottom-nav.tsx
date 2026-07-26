@@ -1,9 +1,8 @@
-
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, PieChart, Calculator, Landmark, User, History } from 'lucide-react';
+import { Home, PieChart, Calculator, Landmark, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/language-context';
@@ -42,10 +41,25 @@ export function BottomNav() {
                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
               />
             )}
-            <Icon className={cn("h-6 w-6 mb-0.5", isActive && "scale-110")} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">
+            <motion.div
+              animate={{
+                scale: isActive ? 1.1 : 1,
+                y: isActive ? -2 : 0
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              <Icon className="h-6 w-6 mb-0.5" />
+            </motion.div>
+            <motion.span 
+              initial={false}
+              animate={{
+                opacity: isActive ? 1 : 0.7,
+                scale: isActive ? 1.05 : 1
+              }}
+              className="text-[10px] font-bold uppercase tracking-wider"
+            >
               {item.label}
-            </span>
+            </motion.span>
           </Link>
         );
       })}

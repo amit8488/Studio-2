@@ -55,7 +55,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased selection:bg-primary/20;
+    @apply bg-background text-foreground font-body antialiased selection:bg-primary/20 transition-colors duration-300;
   }
 }
 
@@ -82,7 +82,7 @@
 }
 
 .m3-input.has-icon {
-  @apply pl-14;
+  @apply pl-16;
 }
 
 .m3-input::placeholder {
@@ -95,11 +95,11 @@
 }
 
 .m3-label {
-  @apply absolute left-5 top-1/2 -translate-y-1/2 text-slate-500/60 pointer-events-none transition-all duration-200 text-[16px] font-medium;
+  @apply absolute left-5 top-1/2 -translate-y-1/2 text-slate-500/60 pointer-events-none transition-all duration-300 text-[16px] font-medium;
 }
 
 .m3-input.has-icon ~ .m3-label {
-  @apply left-14;
+  @apply left-16;
 }
 
 .peer:focus ~ .m3-label,
@@ -113,4 +113,8 @@
 
 .peer:focus ~ .m3-icon {
   @apply text-primary;
+}
+
+.page-transition-wrapper {
+  @apply min-h-screen w-full overflow-x-hidden;
 }
