@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -90,7 +89,7 @@ export default function SignupPage() {
           <CardContent className="space-y-6 pt-6">
             <form onSubmit={handleSignup} className="space-y-6">
               <div className="m3-input-container">
-                <span className="m3-label left-16">Email Address</span>
+                <span className="m3-label left-16">Username / Email</span>
                 <div className="relative">
                   <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                   <Input
