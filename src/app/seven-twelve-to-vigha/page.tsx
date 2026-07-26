@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
@@ -89,14 +88,15 @@ export default function SevenTwelveToVighaPage() {
                   { id: 'sqm', label: t('sqmLabel'), val: sqm, set: setSqm }
                 ].map((input) => (
                   <div key={input.id} className="m3-input-container">
-                    <span className="m3-label">{input.label}</span>
                     <Input
                       type="text"
                       inputMode="decimal"
+                      placeholder=" "
                       value={input.val}
                       onChange={handleInputChange(input.set)}
-                      className="m3-input text-center text-xl font-black"
+                      className="peer m3-input text-center text-xl font-black border-none"
                     />
+                    <span className="m3-label">{input.label}</span>
                   </div>
                 ))}
               </div>

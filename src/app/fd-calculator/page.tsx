@@ -171,10 +171,7 @@ export default function FDCalculatorPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-primary ml-1">
-                        {t('fdType')}
-                      </Label>
+                    <div className="m3-input-container">
                       <Select value={fdType} onValueChange={setFdType}>
                         <SelectTrigger className="m3-input font-bold border-none h-[72px] rounded-3xl">
                           <SelectValue />
@@ -184,12 +181,10 @@ export default function FDCalculatorPage() {
                           <SelectItem value="payout">{t('payout')}</SelectItem>
                         </SelectContent>
                       </Select>
+                      <span className="m3-label active">{t('fdType')}</span>
                     </div>
 
-                    <div className="space-y-4">
-                      <Label className="text-xs font-black uppercase tracking-[0.2em] text-primary ml-1">
-                        {t('dateOfFd')}
-                      </Label>
+                    <div className="m3-input-container">
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button variant="ghost" className="m3-input font-bold flex items-center justify-start border-none h-[72px] rounded-3xl w-full bg-slate-100/50 dark:bg-slate-800/40">
@@ -201,6 +196,7 @@ export default function FDCalculatorPage() {
                           <Calendar mode="single" selected={fdDate} onSelect={setFdDate} initialFocus />
                         </PopoverContent>
                       </Popover>
+                      <span className="m3-label active">{t('dateOfFd')}</span>
                     </div>
                   </div>
                 </div>
@@ -227,10 +223,10 @@ export default function FDCalculatorPage() {
                       placeholder=" "
                       value={principal}
                       onChange={(e) => setPrincipal(e.target.value)}
-                      className="peer m3-input has-icon pl-16 text-2xl font-black border-none"
+                      className="peer m3-input has-icon text-2xl font-black border-none"
                     />
                     <IndianRupee className="m3-icon h-6 w-6" />
-                    <span className="m3-label left-16">{t('principalAmount')}</span>
+                    <span className="m3-label">{t('principalAmount')}</span>
                   </div>
 
                   <div className="m3-input-container">
@@ -239,10 +235,10 @@ export default function FDCalculatorPage() {
                       placeholder=" "
                       value={interestRate}
                       onChange={(e) => setInterestRate(e.target.value)}
-                      className="peer m3-input has-icon pl-16 text-2xl font-black border-none"
+                      className="peer m3-input has-icon text-2xl font-black border-none"
                     />
                     <TrendingUp className="m3-icon h-6 w-6" />
-                    <span className="m3-label left-16">{t('interestRate')}</span>
+                    <span className="m3-label">{t('interestRate')}</span>
                     {customerType === 'senior' && (
                       <motion.div 
                         initial={{ scale: 0, opacity: 0 }}

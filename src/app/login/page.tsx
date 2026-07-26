@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
-import { Loader2, Mail, Lock, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Loader2, Mail, Lock, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { motion } from 'framer-motion';
 
@@ -104,7 +104,7 @@ export default function LoginPage() {
                   placeholder=" "
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="peer m3-input has-icon"
+                  className="peer m3-input has-icon border-none font-medium"
                   disabled={isLoading || isGoogleLoading}
                 />
                 <Mail className="m3-icon" />
@@ -117,7 +117,7 @@ export default function LoginPage() {
                   placeholder=" "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="peer m3-input has-icon"
+                  className="peer m3-input has-icon border-none font-medium"
                   disabled={isLoading || isGoogleLoading}
                 />
                 <Lock className="m3-icon" />

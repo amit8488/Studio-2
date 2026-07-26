@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { History, Trash2, Download, ArrowRight, LayoutGrid, Zap, ShieldCheck, PieChart, Landmark, Calculator, AlertCircle } from 'lucide-react';
+import { History, Trash2, Download, ArrowRight, LayoutGrid, Zap, ShieldCheck, PieChart, Landmark, Calculator } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/language-context';
 import { convertArea, UNITS, type ConversionInput } from '@/lib/conversion';
@@ -13,8 +13,9 @@ import Link from 'next/link';
 import { AppHeader } from '@/components/app-header';
 import { useHistory } from '@/hooks/use-history';
 import { useAuth } from '@/contexts/auth-context';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 const formatNumber = (num: number) => {
   if (isNaN(num) || !isFinite(num)) return '0.00';
@@ -151,7 +152,7 @@ export default function Home() {
                     placeholder=" "
                     value={inputValue}
                     onChange={handleInputChange}
-                    className="peer m3-input text-xl font-bold"
+                    className="peer m3-input text-xl font-bold border-none"
                   />
                   <span className="m3-label">{t('enterArea')}</span>
                 </div>
@@ -166,7 +167,7 @@ export default function Home() {
                       <SelectItem value={UNITS.SQM}>{t('sqm')}</SelectItem>
                     </SelectContent>
                   </Select>
-                  <span className="m3-label -top-0 text-[11px] font-black uppercase tracking-widest text-primary translate-y-3">{t('selectUnit')}</span>
+                  <span className={cn("m3-label active")}>{t('selectUnit')}</span>
                 </div>
               </div>
 

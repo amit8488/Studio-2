@@ -71,11 +71,11 @@
 }
 
 .m3-input-container {
-  @apply relative w-full flex flex-col space-y-2;
+  @apply relative w-full flex flex-col;
 }
 
 .m3-input {
-  @apply w-full h-[72px] px-6 pt-7 pb-2 rounded-[22px] bg-slate-100/50 dark:bg-slate-800/40 border-2 border-transparent transition-all duration-300 outline-none text-[17px] font-semibold text-slate-900 dark:text-slate-100;
+  @apply w-full h-[72px] px-6 pt-8 pb-2 rounded-[22px] bg-slate-100/50 dark:bg-slate-800/40 border-2 border-transparent transition-all duration-300 outline-none text-[17px] font-semibold text-slate-900 dark:text-slate-100;
   @apply focus:bg-white dark:focus:bg-slate-900 focus:border-primary/50 focus:shadow-[0_0_0_8px_rgba(15,118,110,0.05)];
 }
 
@@ -84,7 +84,7 @@
 }
 
 .m3-label {
-  @apply absolute left-6 top-1/2 -translate-y-1/2 text-slate-500/60 pointer-events-none transition-all duration-300 text-[16px] font-medium;
+  @apply absolute left-6 top-1/2 -translate-y-1/2 text-slate-500/60 pointer-events-none transition-all duration-300 text-[16px] font-medium z-10;
 }
 
 .m3-input.has-icon ~ .m3-label {
@@ -92,8 +92,9 @@
 }
 
 .peer:focus ~ .m3-label,
-.peer:not(:placeholder-shown) ~ .m3-label {
-  @apply top-3.5 text-[11px] font-black uppercase tracking-[0.15em] text-primary translate-y-0;
+.peer:not(:placeholder-shown) ~ .m3-label,
+.m3-label.active {
+  @apply top-4 text-[11px] font-black uppercase tracking-[0.15em] text-primary translate-y-0;
 }
 
 .m3-icon {
