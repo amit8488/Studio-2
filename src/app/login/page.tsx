@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
-import { Loader2, Mail, Lock, ShieldCheck } from 'lucide-react';
+import { Loader2, Mail, Lock, ShieldCheck, ArrowRight } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { motion } from 'framer-motion';
 
@@ -42,7 +42,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast({ title: 'Success', description: 'Logged in successfully!' });
+      toast({ title: 'Success', description: 'Welcome back! Logged in successfully.' });
       router.push('/');
     } catch (error: any) {
       toast({ variant: 'destructive', title: 'Login Failed', description: error.message });
@@ -56,7 +56,7 @@ export default function LoginPage() {
     try {
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);
-        toast({ title: 'Success', description: 'Logged in successfully!' });
+        toast({ title: 'Success', description: 'Logged in with Google successfully.' });
         router.push('/');
     } catch (error: any) {
         toast({ variant: 'destructive', title: 'Google Sign-In Failed', description: error.message });
@@ -65,51 +65,56 @@ export default function LoginPage() {
     }
   };
 
-  if (loading || user) return <div className="flex h-screen items-center justify-center"><Loader2 className="h-10 w-10 animate-spin text-primary" /></div>;
+  if (loading || user) return <div className="flex h-screen items-center justify-center bg-background"><Loader2 className="h-12 w-12 animate-spin text-primary" /></div>;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background p-4 hero-gradient relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -mr-48 -mt-48 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full -ml-48 -mb-48 blur-3xl" />
+    <div className="flex items-center justify-center min-h-screen bg-background p-6 hero-gradient relative overflow-hidden">
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white rounded-full -mr-64 -mt-64 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent rounded-full -ml-64 -mb-64 blur-[120px]" />
       </div>
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="flex justify-center mb-10">
-          <div className="bg-white/20 backdrop-blur-xl p-4 rounded-[2.5rem] shadow-2xl border border-white/30">
-            <AppLogo className="h-12 w-12 text-white" />
-          </div>
+        <div className="flex justify-center mb-12">
+          <motion.div 
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
+            className="bg-white/25 backdrop-blur-3xl p-5 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-white/40"
+          >
+            <AppLogo className="h-14 w-14 text-white" />
+          </motion.div>
         </div>
 
-        <Card className="rounded-[3rem] shadow-2xl border-none glass-card p-4">
-          <CardHeader className="text-center pt-8">
-            <CardTitle className="text-3xl font-black">Welcome Back</CardTitle>
-            <CardDescription className="text-base pt-2">Enter your credentials to access your tools</CardDescription>
+        <Card className="card-rounded shadow-[0_50px_100px_rgba(0,0,0,0.25)] border-none glass-card p-6 sm:p-10">
+          <CardHeader className="text-center pb-8 space-y-4">
+            <CardTitle className="text-4xl font-black tracking-tight">Welcome Back</CardTitle>
+            <CardDescription className="text-lg font-medium pt-2">Login to sync your land utility tools</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6 pt-6">
-            <form onSubmit={handleLogin} className="space-y-6">
+          <CardContent className="space-y-8">
+            <form onSubmit={handleLogin} className="space-y-8">
               <div className="m3-input-container">
                 <Input
                   type="email"
                   required
-                  placeholder="Username or Email"
+                  placeholder=" "
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="peer m3-input has-icon"
                   disabled={isLoading || isGoogleLoading}
                 />
                 <Mail className="m3-icon" />
-                <span className="m3-label">Username or Email</span>
+                <span className="m3-label">Username / Email</span>
               </div>
               <div className="m3-input-container">
                 <Input
                   type="password"
                   required
-                  placeholder="Password"
+                  placeholder=" "
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="peer m3-input has-icon"
@@ -118,25 +123,30 @@ export default function LoginPage() {
                 <Lock className="m3-icon" />
                 <span className="m3-label">Password</span>
               </div>
-              <Button type="submit" className="w-full h-16 rounded-2xl text-lg font-black shadow-xl shadow-primary/20" disabled={isLoading || isGoogleLoading}>
-                {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <ShieldCheck className="mr-2 h-5 w-5" />}
-                Log In
+              <Button type="submit" className="w-full h-20 rounded-[2rem] text-xl font-black shadow-2xl shadow-primary/20 group hover:scale-[1.02] active:scale-[0.98] transition-all" disabled={isLoading || isGoogleLoading}>
+                {isLoading ? <Loader2 className="mr-3 h-6 w-6 animate-spin" /> : <ShieldCheck className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />}
+                Sign In
               </Button>
             </form>
             
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-muted" /></div>
-              <div className="relative flex justify-center text-xs uppercase"><span className="bg-white dark:bg-slate-900 px-4 text-muted-foreground font-bold">Or</span></div>
+            <div className="relative py-4">
+              <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-slate-200 dark:border-slate-800" /></div>
+              <div className="relative flex justify-center text-xs uppercase"><span className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 text-muted-foreground font-black tracking-widest">Secure Access</span></div>
             </div>
 
-            <Button variant="outline" className="w-full h-16 rounded-2xl font-bold border-2 hover:bg-muted" onClick={handleGoogleSignIn} disabled={isLoading || isGoogleLoading}>
-                {isGoogleLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <GoogleIcon className="mr-3 h-5 w-5" />}
+            <Button 
+                variant="outline" 
+                className="w-full h-18 rounded-[1.75rem] font-black text-lg border-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all premium-shadow flex items-center justify-center gap-4" 
+                onClick={handleGoogleSignIn} 
+                disabled={isLoading || isGoogleLoading}
+            >
+                {isGoogleLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : <GoogleIcon className="h-6 w-6" />}
                 Continue with Google
             </Button>
           </CardContent>
-          <CardFooter className="flex justify-center pb-8 pt-4">
-            <p className="text-sm text-muted-foreground font-medium">
-              New here? <Link href="/signup" className="text-primary font-black hover:underline">Create an account</Link>
+          <CardFooter className="flex justify-center pt-10 pb-4">
+            <p className="text-base text-muted-foreground font-semibold">
+              No account? <Link href="/signup" className="text-primary font-black hover:underline underline-offset-4 ml-1">Create free account</Link>
             </p>
           </CardFooter>
         </Card>
